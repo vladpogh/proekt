@@ -28,10 +28,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ms-auto">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">Начало</a>
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">Продукти</a>
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Products">Продукти</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-muted" href="#">Решения</a>
@@ -43,11 +43,34 @@
                             <a class="nav-link text-muted" href="#">За нас</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">Контакти</a>
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Contact">Контакти</a>
                         </li>
-                        <li class="nav-item ms-2">
-                            <button class="btn btn-primary btn-sm">Свържете се с нас</button>
-                        </li>
+                        @if (Context.Session.GetString("UserEmail") == null)
+                        {
+                            <li class="nav-item ms-2">
+                                <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Home" asp-action="Login" style="color: white; text-decoration: none;">Вход</a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <a class="btn btn-outline-primary btn-sm" asp-area="" asp-controller="Home" asp-action="Register" style="color: #0052CC; text-decoration: none; border-color: #0052CC;">Регистрация</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-2 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #0052CC; font-weight: 600;">
+                                    @Context.Session.GetString("UserName")
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#">Мой профил</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Logout">Изход</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
