@@ -1,5 +1,6 @@
 html {
   font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @media (min-width: 768px) {
@@ -18,7 +19,38 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.btn-primary {
+  background-color: #0052CC;
+  border-color: #0052CC;
+}
+
+.btn-primary:hover {
+  background-color: #0042A8;
+  border-color: #0042A8;
+}
+
+.btn-outline-secondary {
+  color: #6b7280;
+  border-color: #e5e7eb;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  color: #4b5563;
+}
+
+.badge {
+  border-radius: 0.5rem;
+  font-weight: 500;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
