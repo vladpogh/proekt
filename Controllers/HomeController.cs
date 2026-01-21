@@ -29,6 +29,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Support()
+    {
+        return View();
+    }
+
     public IActionResult Login()
     {
         if (HttpContext.Session.GetString("UserEmail") != null)
