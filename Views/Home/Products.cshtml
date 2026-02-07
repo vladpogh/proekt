@@ -1,39 +1,36 @@
 @{
-    ViewData["Title"] = "Продукти - MedReports";
+    ViewData["Title"] = "Продукти - Lovable";
 }
 
 <!-- Products Header -->
 <div class="container-fluid px-0" style="background: linear-gradient(135deg, #f5f7ff 0%, #ffffff 100%); padding: 60px 40px;">
     <div class="container text-center">
-        <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">Нашите продукти</h1>
-        <p style="font-size: 1.1rem; color: #666;">Широка гама от електрически досиета за всякакви приложения</p>
+        <h1 style="font-size: 2.8rem; font-weight: 900; margin-bottom: 0.5rem;">Нашите продукти</h1>
+        <p style="font-size: 1.1rem; color: #666; margin-bottom: 0;">Широка гама от медицински досиета за всякакви приложения</p>
     </div>
 </div>
 
 <!-- Filter Section -->
-<div class="container py-4">
+<div class="container py-5">
     <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #0052CC;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #3b82f6;">
             <path d="M10 18H14V16H10V18ZM3 6V8H21V6H3ZM6 13H18V11H6V13Z" fill="currentColor"/>
         </svg>
-        <span style="font-weight: 700; font-size: 1rem;">Филтър по категория:</span>
+        <span style="font-weight: 700; font-size: 1.1rem; color: #000;">Филтър по категория:</span>
     </div>
 
     <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem;">
-        <button style="padding: 0.5rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600;">
+        <button style="padding: 0.6rem 1.8rem; background: #3b82f6; color: white; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
             Всички
         </button>
-        <button style="padding: 0.5rem 1.5rem; background: white; color: #666; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; font-weight: 600;">
-            Индустриални
+        <button style="padding: 0.6rem 1.8rem; background: white; color: #333; border: 1px solid #d1d5db; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+            Болнични
         </button>
-        <button style="padding: 0.5rem 1.5rem; background: white; color: #666; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; font-weight: 600;">
-            Офисни
+        <button style="padding: 0.6rem 1.8rem; background: white; color: #333; border: 1px solid #d1d5db; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+            Амбулаторни
         </button>
-        <button style="padding: 0.5rem 1.5rem; background: white; color: #666; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; font-weight: 600;">
-            Външно приложение
-        </button>
-        <button style="padding: 0.5rem 1.5rem; background: white; color: #666; border: 1px solid #e5e7eb; border-radius: 0.375rem; cursor: pointer; font-weight: 600;">
-            Компактни
+        <button style="padding: 0.6rem 1.8rem; background: white; color: #333; border: 1px solid #d1d5db; border-radius: 0.5rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+            Дигитални
         </button>
     </div>
 </div>
@@ -41,122 +38,200 @@
 <!-- Products Grid -->
 <div class="container pb-5">
     <div class="row g-4">
-        <!-- Product 1 -->
+        <!-- Product 1: Медицинско досие Стандарт -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=600&h=400&fit=crop" alt="Електрическо досие IP65" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop" alt="Медицинско досие Стандарт" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Индустриални</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Болнични</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Електрическо досие IP65</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 800×600×250mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Водоустойчиво досие за индустриални приложения</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Медицинско досие Стандарт</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: A4 формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Стандартно медицинско досие за болнични заведения</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Пълна история на пациента</li>
+                            <li>Защитена документация</li>
+                            <li>Лесен достъп</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product 2 -->
+        <!-- Product 2: Амбулаторно досие -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&h=400&fit=crop" alt="Компактно досие IP40" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160550-112173f7f869?w=600&h=400&fit=crop" alt="Амбулаторно досие" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Офисни</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Амбулаторни</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Компактно досие IP40</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 400×300×150mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Компактно решение за офисни помещения</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Амбулаторно досие</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: A5 формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Компактно решение за амбулаторни прегледи</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Кратка история</li>
+                            <li>Бързо попълване</li>
+                            <li>Лесен монтаж</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product 3 -->
+        <!-- Product 3: Дигитално медицинско досие -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop" alt="Промишлено досие IP66" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160550-112173f7f869?w=600&h=400&fit=crop" alt="Дигитално медицинско досие" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Външни</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Дигитални</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Промишлено досие IP66</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 1000×700×300mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Универсално досие за външни условия</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Дигитално медицинско досие</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: Електронен формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Цифрова система за управление на пациентски данни</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Облачно съхранение</li>
+                            <li>GDPR съвместимост</li>
+                            <li>Криптиране</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product 4 -->
+        <!-- Product 4: Специализирано досие -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1581092918067-2d4e1361e5d8?w=600&h=400&fit=crop" alt="Модулно досие IP54" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160550-112173f7f869?w=600&h=400&fit=crop" alt="Специализирано досие" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Компактни</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Амбулаторни</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Модулно досие IP54</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 600×400×200mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Модулно решение за различни конфигурации</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Специализирано досие</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: A4 формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Модулна система за специализирани медицински прегледи</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Модулна структура</li>
+                            <li>Персонализирано</li>
+                            <li>Разширяемо</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product 5 -->
+        <!-- Product 5: Клинично досие Про -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1581092162562-40038f56deb1?w=600&h=400&fit=crop" alt="Висока температурно досие IP55" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8c 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&h=400&fit=crop" alt="Клинично досие Про" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Индустриални</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Болнични</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Висока температурно досие IP55</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 900×600×280mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Специално досие за висока температура</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Клинично досие Про</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: A4 разширен формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Пълно досие за клинични проучвания и станционар</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Детайлна история</li>
+                            <li>Лабораторни резултати</li>
+                            <li>Образна диагностика</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product 6 -->
+        <!-- Product 6: Мобилно медицинско досие -->
         <div class="col-md-6">
-            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%;">
-                <div style="position: relative; overflow: hidden; height: 300px;">
-                    <img src="https://images.unsplash.com/photo-1581092918063-91a5b5b4e3f5?w=600&h=400&fit=crop" alt="Стандартно досие IP43" style="width: 100%; height: 100%; object-fit: cover;">
+            <div style="background: white; border: 1px solid #e5e7eb; border-radius: 1rem; overflow: hidden; height: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="position: relative; overflow: hidden; height: 280px; background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);">
+                    <img src="https://images.unsplash.com/photo-1576091160550-112173f7f869?w=600&h=400&fit=crop" alt="Мобилно медицинско досие" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;">
                     <div style="position: absolute; top: 1rem; right: 1rem;">
-                        <span style="background: #0052CC; color: white; padding: 0.4rem 0.8rem; border-radius: 0.375rem; font-size: 0.85rem; font-weight: 600;">Офисни</span>
+                        <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600;">Амбулаторни</span>
                     </div>
                 </div>
                 <div style="padding: 1.5rem;">
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">Стандартно досие IP43</h3>
-                    <p style="color: #0052CC; font-size: 0.9rem; margin-bottom: 0.75rem;">Размери: 500×400×180mm</p>
-                    <p style="color: #666; line-height: 1.6; margin-bottom: 1.5rem;">Стандартно решение за всички приложения</p>
-                    <a href="#" style="display: block; width: 100%; padding: 0.75rem 1.5rem; background: #0052CC; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; text-align: center; text-decoration: none;">
-                        Вижте детайли
-                    </a>
+                    <h3 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 0.5rem; color: #000;">Мобилно медицинско досие</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-bottom: 0.75rem;">Размери: Мобилен формат</p>
+                    <p style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem; font-size: 0.95rem;">Мобилно приложение за достъп до пациентски данни</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <p style="color: #000; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem;">Спецификации:</p>
+                        <ul style="color: #3b82f6; margin: 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                            <li>Мобилен достъп</li>
+                            <li>Компактен интерфейс</li>
+                            <li>Офлайн режим</li>
+                        </ul>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button style="flex: 1; padding: 0.7rem 1.5rem; background: #3b82f6; color: white; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 600; font-size: 0.95rem;">
+                            Запитване
+                        </button>
+                        <button style="padding: 0.7rem 0.8rem; background: white; border: 1px solid #d1d5db; border-radius: 0.375rem; cursor: pointer;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="#3b82f6"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
