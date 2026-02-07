@@ -1,0 +1,52 @@
+<svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="500" fill="#f0f4ff"/>
+  
+  <!-- Hospital building -->
+  <rect x="320" y="150" width="200" height="280" fill="#e8f0ff" stroke="#3b82f6" stroke-width="2"/>
+  
+  <!-- Windows -->
+  <rect x="340" y="170" width="30" height="30" fill="#87ceeb"/>
+  <rect x="390" y="170" width="30" height="30" fill="#87ceeb"/>
+  <rect x="440" y="170" width="30" height="30" fill="#87ceeb"/>
+  
+  <rect x="340" y="230" width="30" height="30" fill="#87ceeb"/>
+  <rect x="390" y="230" width="30" height="30" fill="#87ceeb"/>
+  <rect x="440" y="230" width="30" height="30" fill="#87ceeb"/>
+  
+  <rect x="340" y="290" width="30" height="30" fill="#87ceeb"/>
+  <rect x="390" y="290" width="30" height="30" fill="#87ceeb"/>
+  <rect x="440" y="290" width="30" height="30" fill="#87ceeb"/>
+  
+  <!-- Door -->
+  <rect x="395" y="380" width="40" height="50" fill="#8b4513"/>
+  <circle cx="430" cy="405" r="3" fill="#ffd700"/>
+  
+  <!-- Tablet/Device in foreground -->
+  <rect x="80" y="200" width="160" height="200" rx="15" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="90" y="210" width="140" height="170" fill="#e8f0ff"/>
+  
+  <!-- Screen content lines (representing medical data) -->
+  <line x1="100" y1="230" x2="210" y2="230" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="100" y1="250" x2="210" y2="250" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="100" y1="265" x2="210" y2="265" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="100" y1="280" x2="200" y2="280" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="100" y1="295" x2="210" y2="295" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="100" y1="310" x2="190" y2="310" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="100" y1="325" x2="210" y2="325" stroke="#3b82f6" stroke-width="1"/>
+  
+  <!-- Device bezel -->
+  <rect x="80" y="200" width="160" height="200" rx="15" fill="none" stroke="#555" stroke-width="8"/>
+  
+  <!-- Home button -->
+  <circle cx="160" cy="410" r="5" fill="#555"/>
+  
+  <!-- Medical cross symbol on building -->
+  <g transform="translate(420, 130)">
+    <rect x="-8" y="-20" width="16" height="40" fill="#e74c3c"/>
+    <rect x="-20" y="-8" width="40" height="16" fill="#e74c3c"/>
+  </g>
+  
+  <!-- Shadow -->
+  <ellipse cx="300" cy="420" rx="180" ry="20" fill="#000" opacity="0.1"/>
+</svg>

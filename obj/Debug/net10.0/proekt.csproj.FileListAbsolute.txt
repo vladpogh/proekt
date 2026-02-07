@@ -96,3 +96,7 @@
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/proekt.pdb
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/proekt.genruntimeconfig.cache
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/ref/proekt.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/package-lock.json
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/package.json
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/jc1usp2avu-{0}-m66oix9noq-m66oix9noq.gz
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/zepzubrye0-{0}-w2ryi8gl9x-w2ryi8gl9x.gz

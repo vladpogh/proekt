@@ -1,0 +1,24 @@
+{
+  "name": "proekt",
+  "version": "1.0.0",
+  "description": "CI/CD demo project with GitHub Actions and SmarterASP",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"No tests yet\"",
+    "build": "echo \"Nothing to build\"",
+    "lint": "echo \"No linting\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vladpogh/proekt.git"
+  },
+  "keywords": [
+    "ci",
+    "cd",
+    "github-actions",
+    "smarterasp"
+  ],
+  "author": "Vladimir Poghosyan",
+  "license": "ISC"
+}
