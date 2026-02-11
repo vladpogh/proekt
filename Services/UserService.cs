@@ -12,7 +12,8 @@ public class UserService
             FullName = "Admin",
             Email = "admin@example.com",
             Password = "1234",
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
+            Role = UserRole.Admin
         }
     };
 
@@ -43,7 +44,8 @@ public class UserService
             FullName = fullName,
             Email = email,
             Password = password,
-            CreatedAt = DateTime.Now
+            CreatedAt = DateTime.Now,
+            Role = UserRole.User // Default role
         };
 
         _users.Add(user);
