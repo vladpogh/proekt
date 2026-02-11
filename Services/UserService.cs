@@ -56,4 +56,22 @@ public class UserService
     {
         return _users;
     }
+
+    public void UpdateUserRole(int userId, UserRole newRole)
+    {
+        var user = GetUserById(userId);
+        if (user != null)
+        {
+            user.Role = newRole;
+        }
+    }
+
+    public void RemoveUser(int userId)
+    {
+        var user = GetUserById(userId);
+        if (user != null)
+        {
+            _users.Remove(user);
+        }
+    }
 }

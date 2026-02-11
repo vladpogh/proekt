@@ -56,6 +56,13 @@
                         }
                         else
                         {
+                            var userRole = Context.Session.GetString("UserRole");
+                            if (userRole == "Admin" || userRole == "Manager")
+                            {
+                                <li class="nav-item ms-2">
+                                    <a class="btn btn-warning btn-sm" asp-area="" asp-controller="Home" asp-action="AdminPanel" style="color: #fff; font-weight: 600;">Admin Panel</a>
+                                </li>
+                            }
                             <li class="nav-item ms-2 dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #0052CC; font-weight: 600;">
                                     @Context.Session.GetString("UserName")

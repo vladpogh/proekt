@@ -1,3 +1,12 @@
+    public IActionResult AdminPanel()
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+        {
+            return RedirectToAction("Index");
+        }
+        return View();
+    }
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using proekt.Models;
@@ -52,6 +61,7 @@ public class HomeController : Controller
             {
                 HttpContext.Session.SetString("UserName", user.FullName ?? "User");
                 HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("UserRole", user.Role.ToString());
             }
             return RedirectToAction("Index");
         }
