@@ -11,6 +11,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<MedicalDocumentService>();
 
 var app = builder.Build();
 

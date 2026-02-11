@@ -1,3 +1,21 @@
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using proekt.Models;
+using proekt.Services;
+
+namespace proekt.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly UserService _userService;
+        private readonly MedicalDocumentService _docService;
+
+        public HomeController(UserService userService, MedicalDocumentService docService)
+        {
+            _userService = userService;
+            _docService = docService;
+        }
+
         [HttpPost]
         public IActionResult TerminateUser(int id)
         {
@@ -27,32 +45,16 @@
             _userService.UpdateUserRole(id, UserRole.User);
             return RedirectToAction("AdminPanel");
         }
-    public IActionResult AdminPanel()
-    {
-        var role = HttpContext.Session.GetString("UserRole");
-        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+
+        public IActionResult AdminPanel()
         {
-            return RedirectToAction("Index");
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
         }
-        return View();
-    }
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using proekt.Models;
-using proekt.Services;
-
-namespace proekt.Controllers;
-
-public class HomeController : Controller
-{
-    private readonly UserService _userService;
-    private readonly MedicalDocumentService _docService;
-
-    public HomeController(UserService userService, MedicalDocumentService docService)
-    {
-        _userService = userService;
-        _docService = docService;
-    }
     [HttpPost]
     public IActionResult ApproveDocument(int id, string? comment)
     {
@@ -162,4 +164,5 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+}
 }
