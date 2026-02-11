@@ -4,26 +4,88 @@
 
 <h2>Admin Panel</h2>
 
+@inject proekt.Services.UserService UserService
+@inject proekt.Services.MedicalDocumentService DocService
+@using proekt.Models
+
 <div class="mb-4">
     <h4>Approve Medical Documents</h4>
-    <!-- Placeholder for document approval UI -->
     <div id="documents-list">
-        <!-- Documents will be listed here -->
+        @foreach (var doc in DocService.GetPendingDocuments())
+        {
+            <div class="card mb-2 p-2">
+                <div><b>Document #@doc.Id</b> (User ID: @doc.UserId, File: @doc.FileName)</div>
+                <form asp-action="ApproveDocument" method="post" class="d-inline">
+                    <input type="hidden" name="id" value="@doc.Id" />
+                    <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+                <form asp-action="RejectDocument" method="post" class="d-inline ms-2">
+                    <input type="hidden" name="id" value="@doc.Id" />
+                    <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
+                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            </div>
+        }
+        @if (!DocService.GetPendingDocuments().Any())
+        {
+            <div class="text-muted">No pending documents.</div>
+        }
     </div>
 </div>
 
 <div class="mb-4">
     <h4>Close User Profiles</h4>
-    <!-- Placeholder for user termination UI -->
     <div id="users-list">
-        <!-- Users will be listed here -->
+        @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
+        {
+            <div class="card mb-2 p-2">
+                <b>@user.FullName</b> (ID: @user.Id, Role: @user.Role)
+                <form asp-action="TerminateUser" method="post" class="d-inline ms-2">
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-danger btn-sm">Terminate</button>
+                </form>
+            </div>
+        }
+        @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
+        {
+            <div class="text-muted">No users to terminate.</div>
+        }
     </div>
 </div>
 
-<div class="mb-4">
-    <h4>Make/Remove Admin (Managers only)</h4>
-    <!-- Placeholder for admin management UI -->
-    <div id="admin-management-list">
-        <!-- Admin management will be listed here -->
+@{
+    var currentRole = Context.Session.GetString("UserRole");
+}
+@if (currentRole == "Manager")
+{
+    <div class="mb-4">
+        <h4>Make/Remove Admin (Managers only)</h4>
+        <div id="admin-management-list">
+            @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Manager))
+            {
+                <div class="card mb-2 p-2">
+                    <b>@user.FullName</b> (ID: @user.Id, Role: @user.Role)
+                    @if (user.Role == UserRole.Admin)
+                    {
+                        <form asp-action="RemoveAdmin" method="post" class="d-inline ms-2">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-warning btn-sm">Remove Admin</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="MakeAdmin" method="post" class="d-inline ms-2">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="btn btn-primary btn-sm">Make Admin</button>
+                        </form>
+                    }
+                </div>
+            }
+            @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Manager))
+            {
+                <div class="text-muted">No users to manage.</div>
+            }
+        </div>
     </div>
-</div>
+}

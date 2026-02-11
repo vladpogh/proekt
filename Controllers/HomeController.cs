@@ -1,3 +1,32 @@
+        [HttpPost]
+        public IActionResult TerminateUser(int id)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+                return Unauthorized();
+            _userService.RemoveUser(id);
+            return RedirectToAction("AdminPanel");
+        }
+
+        [HttpPost]
+        public IActionResult MakeAdmin(int id)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.Manager.ToString())
+                return Unauthorized();
+            _userService.UpdateUserRole(id, UserRole.Admin);
+            return RedirectToAction("AdminPanel");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveAdmin(int id)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.Manager.ToString())
+                return Unauthorized();
+            _userService.UpdateUserRole(id, UserRole.User);
+            return RedirectToAction("AdminPanel");
+        }
     public IActionResult AdminPanel()
     {
         var role = HttpContext.Session.GetString("UserRole");
@@ -17,10 +46,31 @@ namespace proekt.Controllers;
 public class HomeController : Controller
 {
     private readonly UserService _userService;
+    private readonly MedicalDocumentService _docService;
 
-    public HomeController(UserService userService)
+    public HomeController(UserService userService, MedicalDocumentService docService)
     {
         _userService = userService;
+        _docService = docService;
+    }
+    [HttpPost]
+    public IActionResult ApproveDocument(int id, string? comment)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            return Unauthorized();
+        _docService.ApproveDocument(id, comment);
+        return RedirectToAction("AdminPanel");
+    }
+
+    [HttpPost]
+    public IActionResult RejectDocument(int id, string? comment)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            return Unauthorized();
+        _docService.RejectDocument(id, comment);
+        return RedirectToAction("AdminPanel");
     }
 
     public IActionResult Index()
