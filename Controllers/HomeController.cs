@@ -124,6 +124,37 @@ namespace proekt.Controllers
             }
             return View();
         }
+
+        public IActionResult Profile()
+        {
+            if (HttpContext.Session.GetString("UserEmail") == null)
+                return RedirectToAction("Login");
+
+            var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var user = _userService.GetUserById(userId);
+            ViewBag.User = user;
+
+            var application = _appService.GetByUserId(userId);
+            ViewBag.Application = application;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(int userId, string newPassword)
+        {
+            var curId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            if (curId != userId) return Unauthorized();
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                TempData["ProfileMessage"] = "Password cannot be empty.";
+                return RedirectToAction("Profile");
+            }
+            var ok = _userService.ChangePassword(userId, newPassword);
+            if (ok) TempData["ProfileMessage"] = "Password changed.";
+            else TempData["ProfileMessage"] = "Failed to change password.";
+            return RedirectToAction("Profile");
+        }
     [HttpPost]
     public IActionResult ApproveDocument(int id, string? comment)
     {
@@ -133,6 +164,7 @@ namespace proekt.Controllers
         _docService.ApproveDocument(id, comment);
         return RedirectToAction("AdminPanel");
     }
+
 
     [HttpPost]
     public IActionResult RejectDocument(int id, string? comment)

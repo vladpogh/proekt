@@ -21,6 +21,11 @@ public class DoctorApplicationService
         return _applications.FirstOrDefault(a => a.Id == id);
     }
 
+    public DoctorApplication? GetByUserId(int userId)
+    {
+        return _applications.OrderByDescending(a => a.CreatedAt).FirstOrDefault(a => a.UserId == userId);
+    }
+
     public void Add(DoctorApplication app)
     {
         app.Id = _applications.Count > 0 ? _applications.Max(a => a.Id) + 1 : 1;

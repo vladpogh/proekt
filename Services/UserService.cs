@@ -66,6 +66,14 @@ public class UserService
         }
     }
 
+    public bool ChangePassword(int userId, string newPassword)
+    {
+        var user = GetUserById(userId);
+        if (user == null) return false;
+        user.Password = newPassword;
+        return true;
+    }
+
     public void RemoveUser(int userId)
     {
         var user = GetUserById(userId);

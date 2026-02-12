@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@using proekt.Models
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-3">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action active" id="link-personal">Personal Info</a>
+                <a class="list-group-item list-group-item-action" id="link-change">Change Password</a>
+                <a class="list-group-item list-group-item-action" id="link-contact">Contact Us</a>
+                <a class="list-group-item list-group-item-action" id="link-application">Doctor Application Status</a>
+            </div>
+        </div>
+        <div class="col-9">
+            @if (TempData["ProfileMessage"] != null)
+            {
+                <div class="alert alert-info">@TempData["ProfileMessage"]</div>
+            }
+
+            <div id="section-personal">
+                <h4>Personal Info</h4>
+                var user = (proekt.Models.User)ViewBag.User;
+                <div><b>Full name:</b> @user?.FullName</div>
+                <div><b>Email:</b> @user?.Email</div>
+                <div><b>Role:</b> @user?.Role</div>
+            </div>
+
+            <div id="section-change" style="display:none;">
+                <h4>Change Password</h4>
+                <form asp-action="ChangePassword" method="post">
+                    <input type="hidden" name="userId" value="@((ViewBag.User as proekt.Models.User)?.Id ?? 0)" />
+                    <div class="mb-3">
+                        <label class="form-label">New password</label>
+                        <input type="password" name="newPassword" class="form-control" required />
+                    </div>
+                    <button class="btn btn-primary">Change Password</button>
+                </form>
+            </div>
+
+            <div id="section-contact" style="display:none;">
+                <h4>Contact Us</h4>
+                <p>If you need help, email <a href="mailto:support@example.com">support@example.com</a> or use the contact page.</p>
+            </div>
+
+            <div id="section-application" style="display:none;">
+                <h4>Doctor Application Status</h4>
+                var app = (proekt.Models.DoctorApplication)ViewBag.Application;
+                @if (app == null)
+                {
+                    <div class="text-muted">You have not submitted an application. <a asp-action="DoctorApplication">Apply now</a>.</div>
+                }
+                else
+                {
+                    <div><b>Status:</b> @app.Status</div>
+                    <div><b>Submitted:</b> @app.CreatedAt.ToString("g")</div>
+                    <div><b>Admin comment:</b> @app.AdminComment</div>
+                    <div class="mt-2">
+                        <a href="@app.EmploymentContractPath" target="_blank">Employment Contract</a><br />
+                        <a href="@app.IdCardPath" target="_blank">ID Card</a><br />
+                        <a href="@app.MedicalLicensePath" target="_blank">Medical License</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function(){
+            const byId = id => document.getElementById(id);
+            const show = id => { ['section-personal','section-change','section-contact','section-application'].forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none'); };
+            byId('link-personal').addEventListener('click', ()=> show('section-personal'));
+            byId('link-change').addEventListener('click', ()=> show('section-change'));
+            byId('link-contact').addEventListener('click', ()=> show('section-contact'));
+            byId('link-application').addEventListener('click', ()=> show('section-application'));
+        })();
+    </script>
+}
