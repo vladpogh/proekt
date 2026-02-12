@@ -31,10 +31,8 @@
                         @Loc.CurrentNativeFlag() @Loc.CurrentNativeName()
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="langDrop">
-                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="en" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("en") English</a></li>
-                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="bg" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("bg") Български</a></li>
-                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="ru" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("ru") Русский</a></li>
-                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="es" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("es") Español</a></li>
+                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="en" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("en") @Loc.NativeNameFor("en")</a></li>
+                        <li><a class="dropdown-item" asp-controller="Home" asp-action="SetLanguage" asp-route-lang="bg" asp-route-returnUrl="@returnUrl">@Loc.FlagFor("bg") @Loc.NativeNameFor("bg")</a></li>
                     </ul>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
