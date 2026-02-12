@@ -1,9 +1,6 @@
-﻿                            if (userRole == "User")
-                            {
-                                <li class="nav-item ms-2">
-                                    <a class="btn btn-info btn-sm" asp-area="" asp-controller="Home" asp-action="DoctorApplication" style="color: #fff; font-weight: 600;">Doctor Application</a>
-                                </li>
-                            }
+﻿                        @{
+                            var userRole = Context.Session.GetString("UserRole");
+                        }
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +48,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Contact">Контакти</a>
                         </li>
+                        @{
+                            var userRole = Context.Session.GetString("UserRole");
+                        }
                         @if (Context.Session.GetString("UserEmail") == null)
                         {
                             <li class="nav-item ms-2">
@@ -62,7 +62,12 @@
                         }
                         else
                         {
-                            var userRole = Context.Session.GetString("UserRole");
+                            if (userRole == "User")
+                            {
+                                <li class="nav-item ms-2">
+                                    <a class="btn btn-info btn-sm" asp-area="" asp-controller="Home" asp-action="DoctorApplication" style="color: #fff; font-weight: 600;">Doctor Application</a>
+                                </li>
+                            }
                             if (userRole == "Admin" || userRole == "Manager")
                             {
                                 <li class="nav-item ms-2">

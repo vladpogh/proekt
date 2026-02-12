@@ -160,6 +160,7 @@ namespace proekt.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetInt32("UserId", user.Id);
+                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
             }
             return RedirectToAction("Index");
         }
