@@ -1,3 +1,15 @@
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using proekt.Models;
+using proekt.Services;
+
+namespace proekt.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly UserService _userService;
+        private readonly MedicalDocumentService _docService;
+
         [HttpGet]
         public IActionResult DoctorApplication()
         {
@@ -17,17 +29,6 @@
             TempData["Message"] = "Your application has been submitted.";
             return RedirectToAction("Index");
         }
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using proekt.Models;
-using proekt.Services;
-
-namespace proekt.Controllers
-{
-    public class HomeController : Controller
-    {
-        private readonly UserService _userService;
-        private readonly MedicalDocumentService _docService;
 
         public HomeController(UserService userService, MedicalDocumentService docService)
         {
