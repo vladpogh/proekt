@@ -22,7 +22,7 @@
 
             <div id="section-personal">
                 <h4>Personal Info</h4>
-                var user = (proekt.Models.User)ViewBag.User;
+                @{ var user = ViewBag.User as proekt.Models.User; }
                 <div><b>Full name:</b> @user?.FullName</div>
                 <div><b>Email:</b> @user?.Email</div>
                 <div><b>Role:</b> @user?.Role</div>
@@ -47,7 +47,7 @@
 
             <div id="section-application" style="display:none;">
                 <h4>Doctor Application Status</h4>
-                var app = (proekt.Models.DoctorApplication)ViewBag.Application;
+                @{ var app = ViewBag.Application as proekt.Models.DoctorApplication; }
                 @if (app == null)
                 {
                     <div class="text-muted">You have not submitted an application. <a asp-action="DoctorApplication">Apply now</a>.</div>
