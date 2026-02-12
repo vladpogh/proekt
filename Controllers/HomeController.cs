@@ -1,4 +1,7 @@
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using proekt.Models;
 using proekt.Services;
@@ -9,6 +12,7 @@ namespace proekt.Controllers
     {
         private readonly UserService _userService;
         private readonly MedicalDocumentService _docService;
+        private readonly DoctorApplicationService _appService;
 
         [HttpGet]
         public IActionResult DoctorApplication()
@@ -20,20 +24,65 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult DoctorApplication(string about, IFormFile employmentContract, IFormFile idCard, IFormFile medicalLicense)
+        public async Task<IActionResult> DoctorApplication(string about, IFormFile employmentContract, IFormFile idCard, IFormFile medicalLicense)
         {
             var role = HttpContext.Session.GetString("UserRole");
             if (role != UserRole.User.ToString())
                 return RedirectToAction("Index");
-            // TODO: Save files and application data, notify admin/manager, etc.
+
+            var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+            string? empPath = null;
+            string? idPath = null;
+            string? licPath = null;
+
+            if (employmentContract != null && employmentContract.Length > 0)
+            {
+                var fname = $"emp_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(employmentContract.FileName)}";
+                var full = Path.Combine(uploads, fname);
+                using var stream = System.IO.File.Create(full);
+                await employmentContract.CopyToAsync(stream);
+                empPath = "/uploads/" + fname;
+            }
+            if (idCard != null && idCard.Length > 0)
+            {
+                var fname = $"id_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(idCard.FileName)}";
+                var full = Path.Combine(uploads, fname);
+                using var stream = System.IO.File.Create(full);
+                await idCard.CopyToAsync(stream);
+                idPath = "/uploads/" + fname;
+            }
+            if (medicalLicense != null && medicalLicense.Length > 0)
+            {
+                var fname = $"lic_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(medicalLicense.FileName)}";
+                var full = Path.Combine(uploads, fname);
+                using var stream = System.IO.File.Create(full);
+                await medicalLicense.CopyToAsync(stream);
+                licPath = "/uploads/" + fname;
+            }
+
+            var app = new DoctorApplication
+            {
+                UserId = userId,
+                About = about,
+                EmploymentContractPath = empPath,
+                IdCardPath = idPath,
+                MedicalLicensePath = licPath,
+                Status = ApplicationStatus.Pending
+            };
+            _appService.Add(app);
+
             TempData["Message"] = "Your application has been submitted.";
             return RedirectToAction("Index");
         }
 
-        public HomeController(UserService userService, MedicalDocumentService docService)
+        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService)
         {
             _userService = userService;
             _docService = docService;
+            _appService = appService;
         }
 
         [HttpPost]
@@ -92,6 +141,42 @@ namespace proekt.Controllers
         if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
             return Unauthorized();
         _docService.RejectDocument(id, comment);
+        return RedirectToAction("AdminPanel");
+    }
+
+    public IActionResult DoctorApplicationDetails(int id)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            return Unauthorized();
+        var app = _appService.GetById(id);
+        if (app == null) return NotFound();
+        return View(app);
+    }
+
+    [HttpPost]
+    public IActionResult ApproveDoctorApplication(int id, string? adminComment)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            return Unauthorized();
+        var app = _appService.GetById(id);
+        if (app == null) return NotFound();
+        _appService.UpdateStatus(id, ApplicationStatus.Approved, adminComment);
+        // Make the user a Doctor
+        _userService.UpdateUserRole(app.UserId, UserRole.Doctor);
+        return RedirectToAction("AdminPanel");
+    }
+
+    [HttpPost]
+    public IActionResult RejectDoctorApplication(int id, string? adminComment)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+            return Unauthorized();
+        var app = _appService.GetById(id);
+        if (app == null) return NotFound();
+        _appService.UpdateStatus(id, ApplicationStatus.Rejected, adminComment);
         return RedirectToAction("AdminPanel");
     }
 

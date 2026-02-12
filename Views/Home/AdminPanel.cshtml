@@ -6,6 +6,7 @@
 
 @inject proekt.Services.UserService UserService
 @inject proekt.Services.MedicalDocumentService DocService
+@inject proekt.Services.DoctorApplicationService AppService
 @using proekt.Models
 
 <div class="mb-4">
@@ -33,6 +34,23 @@
         }
     </div>
 </div>
+
+    <div class="mb-4">
+        <h4>Doctor Applications (Approve/Review)</h4>
+        <div id="applications-list">
+            @foreach (var app in AppService.GetPending())
+            {
+                <div class="card mb-2 p-2">
+                    <div><b>Application #@app.Id</b> (User ID: @app.UserId, Submitted: @app.CreatedAt.ToString("g"))</div>
+                    <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-outline-primary btn-sm mt-2">Show More</a>
+                </div>
+            }
+            @if (!AppService.GetPending().Any())
+            {
+                <div class="text-muted">No pending doctor applications.</div>
+            }
+        </div>
+    </div>
 
 <div class="mb-4">
     <h4>Close User Profiles</h4>

@@ -12,6 +12,7 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MedicalDocumentService>();
+builder.Services.AddSingleton<DoctorApplicationService>();
 
 var app = builder.Build();
 
