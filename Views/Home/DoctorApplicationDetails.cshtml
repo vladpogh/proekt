@@ -8,43 +8,43 @@
 
 <div class="card p-3">
     <div><b>User ID:</b> @Model.UserId</div>
-    <div><b>Submitted:</b> @Model.CreatedAt.ToString("g")</div>
+    <div><b>@Loc.T("Submitted"):</b> @Model.CreatedAt.ToString("g")</div>
     <div class="mt-2"><b>About:</b>
         <p>@Model.About</p>
     </div>
     <div class="mt-2"><b>Employment Contract:</b>
-        @if (!string.IsNullOrEmpty(Model.EmploymentContractPath))
+        if (!string.IsNullOrEmpty(Model.EmploymentContractPath))
         {
-            <div><a href="@Model.EmploymentContractPath" target="_blank">View file</a></div>
+            <div><a href="@Model.EmploymentContractPath" target="_blank">@Loc.T("ViewFile")</a></div>
         }
-        else { <div class="text-muted">Not provided</div> }
+        else { <div class="text-muted">@Loc.T("NotProvided")</div> }
     </div>
     <div class="mt-2"><b>ID Card:</b>
         @if (!string.IsNullOrEmpty(Model.IdCardPath))
         {
             <div><a href="@Model.IdCardPath" target="_blank">View file</a></div>
         }
-        else { <div class="text-muted">Not provided</div> }
+        else { <div class="text-muted">@Loc.T("NotProvided")</div> }
     </div>
     <div class="mt-2"><b>Medical License:</b>
         @if (!string.IsNullOrEmpty(Model.MedicalLicensePath))
         {
             <div><a href="@Model.MedicalLicensePath" target="_blank">View file</a></div>
         }
-        else { <div class="text-muted">Not provided</div> }
+        else { <div class="text-muted">@Loc.T("NotProvided")</div> }
     </div>
 
     <div class="mt-3">
         <form asp-action="ApproveDoctorApplication" method="post" class="d-inline">
             <input type="hidden" name="id" value="@Model.Id" />
             <input type="text" name="adminComment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-            <button type="submit" class="btn btn-success btn-sm ms-2">Approve</button>
+            <button type="submit" class="btn btn-success btn-sm ms-2">@Loc.T("Approve")</button>
         </form>
 
         <form asp-action="RejectDoctorApplication" method="post" class="d-inline ms-2">
             <input type="hidden" name="id" value="@Model.Id" />
             <input type="text" name="adminComment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-            <button type="submit" class="btn btn-danger btn-sm ms-2">Reject</button>
+            <button type="submit" class="btn btn-danger btn-sm ms-2">@Loc.T("Reject")</button>
         </form>
     </div>
 </div>

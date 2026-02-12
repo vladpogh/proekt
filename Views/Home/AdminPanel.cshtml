@@ -1,8 +1,9 @@
+@inject proekt.Services.TranslationService Loc
 @{
-    ViewData["Title"] = "Admin Panel";
+    ViewData["Title"] = Loc.T("AdminPanel");
 }
 
-<h2>Admin Panel</h2>
+<h2>@Loc.T("AdminPanel")</h2>
 
 @inject proekt.Services.UserService UserService
 @inject proekt.Services.MedicalDocumentService DocService
@@ -10,7 +11,7 @@
 @using proekt.Models
 
 <div class="mb-4">
-    <h4>Approve Medical Documents</h4>
+    <h4>@Loc.T("ApproveMedicalDocuments")</h4>
     <div id="documents-list">
         @foreach (var doc in DocService.GetPendingDocuments())
         {
@@ -19,35 +20,35 @@
                 <form asp-action="ApproveDocument" method="post" class="d-inline">
                     <input type="hidden" name="id" value="@doc.Id" />
                     <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    <button type="submit" class="btn btn-success btn-sm">@Loc.T("Approve")</button>
                 </form>
                 <form asp-action="RejectDocument" method="post" class="d-inline ms-2">
                     <input type="hidden" name="id" value="@doc.Id" />
                     <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    <button type="submit" class="btn btn-danger btn-sm">@Loc.T("Reject")</button>
                 </form>
             </div>
         }
         @if (!DocService.GetPendingDocuments().Any())
         {
-            <div class="text-muted">No pending documents.</div>
+            <div class="text-muted">@Loc.T("NoPending")</div>
         }
     </div>
 </div>
 
     <div class="mb-4">
-        <h4>Doctor Applications (Approve/Review)</h4>
+        <h4>@Loc.T("DoctorApplications")</h4>
         <div id="applications-list">
             @foreach (var app in AppService.GetPending())
             {
                 <div class="card mb-2 p-2">
                     <div><b>Application #@app.Id</b> (User ID: @app.UserId, Submitted: @app.CreatedAt.ToString("g"))</div>
-                    <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-outline-primary btn-sm mt-2">Show More</a>
+                        <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-outline-primary btn-sm mt-2">@Loc.T("ShowMore")</a>
                 </div>
             }
             @if (!AppService.GetPending().Any())
             {
-                <div class="text-muted">No pending doctor applications.</div>
+                <div class="text-muted">@Loc.T("NoPending")</div>
             }
         </div>
     </div>

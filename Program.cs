@@ -13,6 +13,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MedicalDocumentService>();
 builder.Services.AddSingleton<DoctorApplicationService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<TranslationService>();
 
 var app = builder.Build();
 

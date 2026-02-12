@@ -212,6 +212,18 @@ namespace proekt.Controllers
         return RedirectToAction("AdminPanel");
     }
 
+    [HttpGet]
+    public IActionResult SetLanguage(string lang, string? returnUrl)
+    {
+        // save to session
+        // use TranslationService via HttpContext.RequestServices
+        var svc = HttpContext.RequestServices.GetService(typeof(TranslationService)) as TranslationService;
+        svc?.SetLanguage(lang ?? "en");
+        if (!string.IsNullOrEmpty(returnUrl))
+            return Redirect(returnUrl);
+        return RedirectToAction("Index");
+    }
+
     public IActionResult Index()
     {
         return View();
