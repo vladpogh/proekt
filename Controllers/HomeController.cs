@@ -1,3 +1,22 @@
+        [HttpGet]
+        public IActionResult DoctorApplication()
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.User.ToString())
+                return RedirectToAction("Index");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DoctorApplication(string about, IFormFile employmentContract, IFormFile idCard, IFormFile medicalLicense)
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            if (role != UserRole.User.ToString())
+                return RedirectToAction("Index");
+            // TODO: Save files and application data, notify admin/manager, etc.
+            TempData["Message"] = "Your application has been submitted.";
+            return RedirectToAction("Index");
+        }
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using proekt.Models;

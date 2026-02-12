@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Doctor Application";
+}
+
+<h2>Doctor Application</h2>
+
+<form asp-action="DoctorApplication" method="post" enctype="multipart/form-data" class="mt-4">
+    <div class="mb-3">
+        <label for="about" class="form-label"><b>Tell us more about yourself</b></label>
+        <textarea class="form-control" id="about" name="about" rows="4" required></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="employmentContract" class="form-label"><b>Employment Contract</b></label>
+        <input class="form-control" type="file" id="employmentContract" name="employmentContract" required />
+    </div>
+    <div class="mb-3">
+        <label for="idCard" class="form-label"><b>ID Card</b></label>
+        <input class="form-control" type="file" id="idCard" name="idCard" required />
+    </div>
+    <div class="mb-3">
+        <label for="medicalLicense" class="form-label"><b>Medical License</b></label>
+        <input class="form-control" type="file" id="medicalLicense" name="medicalLicense" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Application</button>
+</form>
