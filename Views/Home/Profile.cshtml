@@ -48,16 +48,16 @@
             </div>
 
             <div id="section-application" style="display:none;">
-                            <div id="section-inquiries" style="display:none;">
-                                <h4>My Inquiries</h4>
-                                @{
-                                    var user = ViewBag.User as proekt.Models.User;
-                                    var allInquiries = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
-                                    var myInquiries = allInquiries.Where(i => i.Email == user?.Email).ToList();
-                                }
-                                @if (!myInquiries.Any())
-                                {
-                                    <div class="text-muted">No inquiries yet.</div>
+            <div id="section-inquiries" style="display:none;">
+                <h4>My Inquiries</h4>
+                @{
+                    var currentUser = ViewBag.User as proekt.Models.User;
+                    var allInquiries = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
+                    var myInquiries = allInquiries.Where(i => i.Email == currentUser?.Email).ToList();
+                }
+                @if (!myInquiries.Any())
+                {
+                    <div class="text-muted">No inquiries yet.</div>
                                 }
                                 else
                                 {
