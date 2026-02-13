@@ -1,0 +1,214 @@
+<footer class="site-footer" aria-label="Site Footer">
+    <div class="footer-container">
+        <div class="footer-col company">
+            <h2 class="footer-title">Proekt</h2>
+            <p class="footer-desc">A modern platform for professional business and portfolio needs. Empowering your digital presence.</p>
+        </div>
+        <nav class="footer-col nav" aria-label="Footer Navigation">
+            <h3>Navigation</h3>
+            <ul>
+                <li><a href="/" class="footer-link">Home</a></li>
+                <li><a href="/about" class="footer-link">About</a></li>
+                <li><a href="/services" class="footer-link">Services</a></li>
+                <li><a href="/blog" class="footer-link">Blog</a></li>
+                <li><a href="/contact" class="footer-link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="footer-col contact">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="mailto:info@proekt.com" aria-label="Email"><span class="footer-icon">📧</span> info@proekt.com</a></li>
+                <li><a href="tel:+1234567890" aria-label="Phone"><span class="footer-icon">📞</span> +1 234 567 890</a></li>
+                <li><span class="footer-icon">📍</span> Sofia, Bulgaria</li>
+            </ul>
+        </div>
+        <div class="footer-col social-news">
+            <h3>Follow Us</h3>
+            <div class="footer-social">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com" target="_blank" aria-label="Twitter/X" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://github.com" target="_blank" aria-label="GitHub" class="footer-social-link"><i class="fab fa-github"></i></a>
+            </div>
+            <form class="footer-newsletter" aria-label="Newsletter Subscription" onsubmit="return validateNewsletterEmail(event)">
+                <label for="newsletter-email" class="visually-hidden">Email address</label>
+                <input type="email" id="newsletter-email" name="email" placeholder="Your email" required aria-required="true" />
+                <button type="submit">Subscribe</button>
+                <span id="newsletter-error" class="newsletter-error" aria-live="polite"></span>
+            </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; <span id="footer-year"></span> Proekt. All rights reserved.</span>
+    </div>
+</footer>
+
+<!-- Font Awesome CDN for icons (or use SVGs if preferred) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+
+<style>
+.site-footer {
+    background: #181a1b;
+    color: #f3f4f6;
+    padding: 3rem 1.5rem 1rem 1.5rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin-top: 3rem;
+}
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
+.footer-col {
+    flex: 1 1 220px;
+    min-width: 220px;
+    margin-bottom: 2rem;
+}
+.footer-title {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+.footer-desc {
+    font-size: 1rem;
+    color: #b0b3b8;
+    margin-bottom: 1.5rem;
+}
+.footer-col h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #e5e7eb;
+}
+.footer-link {
+    color: #f3f4f6;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline-block;
+    padding: 0.2rem 0;
+}
+.footer-link:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.footer-col ul li {
+    margin-bottom: 0.7rem;
+    font-size: 1rem;
+}
+.footer-icon {
+    margin-right: 0.5rem;
+}
+.footer-social {
+    display: flex;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+}
+.footer-social-link {
+    color: #f3f4f6;
+    font-size: 1.3rem;
+    transition: color 0.2s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+.footer-social-link:hover {
+    color: #60a5fa;
+    transform: translateY(-3px) scale(1.15);
+}
+.footer-newsletter {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+.footer-newsletter input[type="email"] {
+    padding: 0.5rem 0.8rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    outline: none;
+    flex: 1 1 120px;
+}
+.footer-newsletter button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.footer-newsletter button:hover {
+    background: #1e40af;
+}
+.newsletter-error {
+    color: #f87171;
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+    align-self: center;
+}
+.footer-bottom {
+    border-top: 1px solid #23272a;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    text-align: center;
+    color: #b0b3b8;
+    font-size: 1rem;
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+@media (max-width: 900px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+    .footer-col {
+        min-width: 0;
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+// Newsletter email validation
+function validateNewsletterEmail(event) {
+    event.preventDefault();
+    var emailInput = document.getElementById('newsletter-email');
+    var errorSpan = document.getElementById('newsletter-error');
+    var email = emailInput.value.trim();
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        errorSpan.textContent = 'Please enter a valid email address.';
+        emailInput.setAttribute('aria-invalid', 'true');
+        return false;
+    }
+    errorSpan.textContent = 'Subscribed!';
+    emailInput.setAttribute('aria-invalid', 'false');
+    emailInput.value = '';
+    setTimeout(function(){ errorSpan.textContent = ''; }, 2000);
+    return false;
+}
+// Set current year
+window.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+});
+</script>
