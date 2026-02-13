@@ -10,6 +10,7 @@
 @inject proekt.Services.DoctorApplicationService AppService
 @using proekt.Models
 
+@await Html.PartialAsync("~/Views/ClientMessages/_ClientMessagesNav.cshtml")
 <div class="mb-4">
     <h4>@Loc.T("ApproveMedicalDocuments")</h4>
     <div id="documents-list">

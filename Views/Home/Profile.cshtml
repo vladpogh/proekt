@@ -13,6 +13,7 @@
                 <a class="list-group-item list-group-item-action" id="link-change">Change Password</a>
                 <a class="list-group-item list-group-item-action" id="link-contact">Contact Us</a>
                 <a class="list-group-item list-group-item-action" id="link-application">Doctor Application Status</a>
+                <a class="list-group-item list-group-item-action" id="link-inquiries">My Inquiries</a>
             </div>
         </div>
         <div class="col-9">
@@ -47,6 +48,37 @@
             </div>
 
             <div id="section-application" style="display:none;">
+                            <div id="section-inquiries" style="display:none;">
+                                <h4>My Inquiries</h4>
+                                @{
+                                    var user = ViewBag.User as proekt.Models.User;
+                                    var allInquiries = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
+                                    var myInquiries = allInquiries.Where(i => i.Email == user?.Email).ToList();
+                                }
+                                @if (!myInquiries.Any())
+                                {
+                                    <div class="text-muted">No inquiries yet.</div>
+                                }
+                                else
+                                {
+                                    <table class="table">
+                                        <thead>
+                                            <tr><th>Subject</th><th>Message</th><th>Response</th><th>Date</th></tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var inquiry in myInquiries)
+                                        {
+                                            <tr>
+                                                <td>@inquiry.Subject</td>
+                                                <td>@inquiry.Message</td>
+                                                <td>@(string.IsNullOrEmpty(inquiry.AdminResponse) ? "No response yet." : inquiry.AdminResponse)</td>
+                                                <td>@inquiry.CreatedAt.ToString("g")</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
                 <h4>@Loc.T("ApplicationStatus")</h4>
                 @{ var app = ViewBag.Application as proekt.Models.DoctorApplication; }
                 @if (app == null)
@@ -73,11 +105,12 @@
     <script>
         (function(){
             const byId = id => document.getElementById(id);
-            const show = id => { ['section-personal','section-change','section-contact','section-application'].forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none'); };
+            const show = id => { ['section-personal','section-change','section-contact','section-application','section-inquiries'].forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none'); };
             byId('link-personal').addEventListener('click', ()=> show('section-personal'));
             byId('link-change').addEventListener('click', ()=> show('section-change'));
             byId('link-contact').addEventListener('click', ()=> show('section-contact'));
             byId('link-application').addEventListener('click', ()=> show('section-application'));
+            byId('link-inquiries').addEventListener('click', ()=> show('section-inquiries'));
         })();
     </script>
 }

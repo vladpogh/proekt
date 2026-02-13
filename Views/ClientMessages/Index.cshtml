@@ -1,0 +1,30 @@
+@model List<proekt.Models.ContactInquiry>
+@{
+    ViewData["Title"] = "Client Messages";
+}
+<h2>Client Messages</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var inquiry in Model)
+        {
+            <tr>
+                <td>@inquiry.Name</td>
+                <td>@inquiry.Email</td>
+                <td>@inquiry.Subject</td>
+                <td>@inquiry.CreatedAt.ToString("g")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@inquiry.Id" class="btn btn-primary btn-sm">Show More</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

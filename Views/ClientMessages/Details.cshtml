@@ -1,0 +1,25 @@
+@model proekt.Models.ContactInquiry
+@{
+    ViewData["Title"] = "Inquiry Details";
+}
+<h2>Inquiry Details</h2>
+<div class="card p-3 mb-3">
+    <div><b>Name:</b> @Model.Name</div>
+    <div><b>Email:</b> @Model.Email</div>
+    <div><b>Phone:</b> @Model.Phone</div>
+    <div><b>Subject:</b> @Model.Subject</div>
+    <div><b>Message:</b> @Model.Message</div>
+    <div><b>Date:</b> @Model.CreatedAt.ToString("g")</div>
+    <div><b>Admin Response:</b> @(string.IsNullOrEmpty(Model.AdminResponse) ? "No response yet." : Model.AdminResponse)</div>
+</div>
+@if (string.IsNullOrEmpty(Model.AdminResponse))
+{
+    <form asp-action="Respond" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="mb-2">
+            <label>Response:</label>
+            <textarea name="response" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Send Response</button>
+    </form>
+}

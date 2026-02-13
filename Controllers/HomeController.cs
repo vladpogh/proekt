@@ -13,6 +13,7 @@ namespace proekt.Controllers
         private readonly UserService _userService;
         private readonly MedicalDocumentService _docService;
         private readonly DoctorApplicationService _appService;
+        private readonly ContactInquiryService _inquiryService;
 
         [HttpGet]
         public IActionResult DoctorApplication()
@@ -78,11 +79,12 @@ namespace proekt.Controllers
             return RedirectToAction("Index");
         }
 
-        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService)
+        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService, ContactInquiryService inquiryService)
         {
             _userService = userService;
             _docService = docService;
             _appService = appService;
+            _inquiryService = inquiryService;
         }
 
         [HttpPost]
@@ -136,6 +138,9 @@ namespace proekt.Controllers
 
             var application = _appService.GetByUserId(userId);
             ViewBag.Application = application;
+
+            // Pass all inquiries for this user to the view
+            ViewBag.AllInquiries = _inquiryService.GetAllInquiries();
 
             return View();
         }
@@ -234,9 +239,27 @@ namespace proekt.Controllers
         return View();
     }
 
+
+    [HttpGet]
     public IActionResult Contact()
     {
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult Contact(string Name, string Email, string Phone, string Subject, string Message)
+    {
+        var inquiry = new ContactInquiry
+        {
+            Name = Name,
+            Email = Email,
+            Phone = Phone,
+            Subject = Subject,
+            Message = Message
+        };
+        _inquiryService.AddInquiry(inquiry);
+        TempData["Message"] = "Your inquiry has been sent.";
+        return RedirectToAction("Contact");
     }
 
     public IActionResult Support()
