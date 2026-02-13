@@ -1,3 +1,45 @@
+            <div id="section-answers" style="display:none;">
+                <h4>Admin Answers to My Inquiries</h4>
+                @{
+                    var currentUserAnswers = ViewBag.User as proekt.Models.User;
+                    var allInquiriesAnswers = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
+                    var answeredInquiries = allInquiriesAnswers;
+                    if (currentUserAnswers != null)
+                    {
+                        answeredInquiries = allInquiriesAnswers.Where(i => i.Email != null && i.Email.ToLower() == currentUserAnswers.Email?.ToLower() && !string.IsNullOrEmpty(i.AdminResponse)).ToList();
+                    }
+                }
+                @if (!answeredInquiries.Any())
+                {
+                    <div class="text-muted">No answers from admin yet.</div>
+                }
+                else
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Admin Response</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var inquiry in answeredInquiries.OrderByDescending(i => i.CreatedAt))
+                        {
+                            <tr>
+                                <td>@inquiry.Subject</td>
+                                <td>@inquiry.Message</td>
+                                <td>Answered</td>
+                                <td>@inquiry.AdminResponse</td>
+                                <td>@inquiry.CreatedAt.ToString("g")</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
 @{
     ViewData["Title"] = "Profile";
 }
@@ -8,12 +50,13 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-3">
-            <div class="list-group">
+            <div class="list-group" id="profile-nav">
                 <a class="list-group-item list-group-item-action active" id="link-personal">Personal Info</a>
                 <a class="list-group-item list-group-item-action" id="link-change">Change Password</a>
                 <a class="list-group-item list-group-item-action" id="link-contact">Contact Us</a>
                 <a class="list-group-item list-group-item-action" id="link-application">Doctor Application Status</a>
                 <a class="list-group-item list-group-item-action" id="link-inquiries">My Inquiries</a>
+                <a class="list-group-item list-group-item-action" id="link-answers">Admin Answers</a>
             </div>
         </div>
         <div class="col-9">
@@ -72,7 +115,11 @@
                 @{
                     var currentUser = ViewBag.User as proekt.Models.User;
                     var allInquiries = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
-                    var myInquiries = allInquiries.Where(i => i.Email == currentUser?.Email).ToList();
+                    var myInquiries = allInquiries;
+                    if (currentUser != null)
+                    {
+                        myInquiries = allInquiries.Where(i => i.Email != null && i.Email.ToLower() == currentUser.Email?.ToLower()).ToList();
+                    }
                 }
                 @if (!myInquiries.Any())
                 {
@@ -82,15 +129,30 @@
                 {
                     <table class="table">
                         <thead>
-                            <tr><th>Subject</th><th>Message</th><th>Response</th><th>Date</th></tr>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Admin Response</th>
+                                <th>Date</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach (var inquiry in myInquiries)
+                        @foreach (var inquiry in myInquiries.OrderByDescending(i => i.CreatedAt))
                         {
                             <tr>
                                 <td>@inquiry.Subject</td>
                                 <td>@inquiry.Message</td>
-                                <td>@(string.IsNullOrEmpty(inquiry.AdminResponse) ? "No response yet." : inquiry.AdminResponse)</td>
+                                <td>
+                                    @(string.IsNullOrEmpty(inquiry.AdminResponse) ? "Pending" : "Answered")
+                                </td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(inquiry.AdminResponse)) {
+                                        <span class="text-muted">-</span>
+                                    } else {
+                                        @inquiry.AdminResponse
+                                    }
+                                </td>
                                 <td>@inquiry.CreatedAt.ToString("g")</td>
                             </tr>
                         }
@@ -108,12 +170,16 @@
     <script>
         (function(){
             const byId = id => document.getElementById(id);
-            const show = id => { ['section-personal','section-change','section-contact','section-application','section-inquiries'].forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none'); };
-            byId('link-personal').addEventListener('click', ()=> show('section-personal'));
-            byId('link-change').addEventListener('click', ()=> show('section-change'));
-            byId('link-contact').addEventListener('click', ()=> show('section-contact'));
-            byId('link-application').addEventListener('click', ()=> show('section-application'));
-            byId('link-inquiries').addEventListener('click', ()=> show('section-inquiries'));
+            const navIds = ['link-personal','link-change','link-contact','link-application','link-inquiries','link-answers'];
+            const sectionIds = ['section-personal','section-change','section-contact','section-application','section-inquiries','section-answers'];
+            const show = id => {
+                sectionIds.forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none');
+                navIds.forEach(n => byId(n).classList.remove('active'));
+                byId('link-' + id.split('-')[1]).classList.add('active');
+            };
+            navIds.forEach((nav, idx) => {
+                byId(nav).addEventListener('click', ()=> show(sectionIds[idx]));
+            });
         })();
     </script>
 }
