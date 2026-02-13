@@ -14,6 +14,15 @@ public class UserService
             Password = "1234",
             CreatedAt = DateTime.Now,
             Role = UserRole.Admin
+        },
+        new User
+        {
+            Id = 2,
+            FullName = "Manager",
+            Email = "manager@example.com",
+            Password = "1234",
+            CreatedAt = DateTime.Now,
+            Role = UserRole.Manager
         }
     };
 
