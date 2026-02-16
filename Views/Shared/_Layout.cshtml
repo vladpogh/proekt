@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - proekt</title>
+    <title>@ViewData["Title"]</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -48,13 +48,10 @@
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Products">@Loc.T("Products")</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Contact">@Loc.T("Contact")</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="About">@Loc.T("About Us")</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Services">@Loc.T("Services")</a>
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Contact">@Loc.T("Contact")</a>
                         </li>
                         @{
                             var userRole = Context.Session.GetString("UserRole");
@@ -104,7 +101,146 @@
     </header>
     <main role="main">
         @RenderBody()
-        @await Html.PartialAsync("_Footer")
+        <footer class="bg-light text-center text-lg-start">
+            <!-- Grid container -->
+            <div class="container p-4">
+                <!-- Section: Social media -->
+                <section class="mb-4">
+                    <!-- Facebook -->
+                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #3b5998;" href="#!" role="button"
+                       data-mdb-ripple-color="dark">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+
+                    <!-- Twitter -->
+                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #55acee;" href="#!" role="button"
+                       data-mdb-ripple-color="dark">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+
+                    <!-- Google -->
+                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #dd4b39;" href="#!" role="button"
+                       data-mdb-ripple-color="dark">
+                        <i class="fab fa-google"></i>
+                    </a>
+
+                    <!-- Instagram -->
+                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #ac2bac;" href="#!" role="button"
+                       data-mdb-ripple-color="dark">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #0077b5;" href="#!" role="button"
+                       data-mdb-ripple-color="dark">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </section>
+                <!-- Section: Social media -->
+
+                <!-- Section: Links -->
+                <section class="">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-uppercase">About</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-dark">Company</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Team</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Careers</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-uppercase">Services</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-dark">Consulting</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Support</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Sales</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Training</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-uppercase">Resources</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-dark">Blog</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Documentation</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">API Reference</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">FAQs</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                            <h5 class="text-uppercase">Legal</h5>
+
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a href="#!" class="text-dark">Terms of Service</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Privacy Policy</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Cookie Policy</a>
+                                </li>
+
+                                <li>
+                                    <a href="#!" class="text-dark">Accessibility</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                <!-- Section: Links -->
+            </div>
+            <!-- Grid container -->
+
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
+                © 2023 Copyright:
+                <a class="text-dark" href="https://mdbootstrap.com/">MedReports.com</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
