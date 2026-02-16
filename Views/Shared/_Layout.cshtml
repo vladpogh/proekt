@@ -1,4 +1,4 @@
-﻿                        @{
+﻿@{
                             var userRole = Context.Session.GetString("UserRole");
                         }
 <!DOCTYPE html>
@@ -48,16 +48,13 @@
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Products">@Loc.T("Products")</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">@Loc.T("Solutions")</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Support">@Loc.T("Support")</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" href="#">@Loc.T("AboutUs")</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Contact">@Loc.T("Contact")</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="About">@Loc.T("About Us")</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Services">@Loc.T("Services")</a>
                         </li>
                         @{
                             var userRole = Context.Session.GetString("UserRole");
