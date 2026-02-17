@@ -267,6 +267,11 @@ namespace proekt.Controllers
         return View();
     }
 
+    public IActionResult FAQ()
+    {
+        return View();
+    }
+
     public IActionResult Login()
     {
         if (HttpContext.Session.GetString("UserEmail") != null)
