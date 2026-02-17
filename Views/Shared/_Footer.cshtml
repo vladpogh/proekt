@@ -1,46 +1,49 @@
 <footer class="site-footer" aria-label="Site Footer">
     <div class="footer-container">
         <div class="footer-col company">
-            <h2 class="footer-title">Proekt</h2>
-            <p class="footer-desc">A modern platform for professional business and portfolio needs. Empowering your digital presence.</p>
+            <div style="display: flex; align-items: center; gap: 0.7rem;">
+                <div style="background: #2563eb; border-radius: 12px; padding: 7px; display: flex; align-items: center; justify-content: center; height: 44px; width: 44px;">
+                    <i class="fa-regular fa-heart" style="color: #fff; font-size: 1.7rem;"></i>
+                </div>
+                <h2 class="footer-title" style="margin: 0; font-weight: 700; color: #fff;">MedReports</h2>
+            </div>
+            <p class="footer-desc" style="margin-top: 1rem;">Професионални решения за медицински досиета и здравна документация.</p>
+            <div class="footer-social" style="margin-top: 1.2rem; gap: 1.1rem;">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://twitter.com" target="_blank" aria-label="Twitter" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+            </div>
         </div>
         <nav class="footer-col nav" aria-label="Footer Navigation">
-            <h3>Navigation</h3>
+            <h3 style="text-transform: uppercase; font-weight: 700; color: #e5e7eb;">НАВИГАЦИЯ</h3>
             <ul>
-                <li><a href="/" class="footer-link">Home</a></li>
-                <li><a href="/about" class="footer-link">About</a></li>
-                <li><a href="/services" class="footer-link">Services</a></li>
-                <li><a href="/blog" class="footer-link">Blog</a></li>
-                <li><a href="/contact" class="footer-link">Contact</a></li>
+                <li><a href="/" class="footer-link">Начало</a></li>
+                <li><a href="/products" class="footer-link">Продукти</a></li>
+                <li><a href="/solutions" class="footer-link">Решения</a></li>
+                <li><a href="/about" class="footer-link">За нас</a></li>
+                <li><a href="/contact" class="footer-link">Контакти</a></li>
             </ul>
         </nav>
-        <div class="footer-col contact">
-            <h3>Contact</h3>
+        <div class="footer-col support">
+            <h3 style="text-transform: uppercase; font-weight: 700; color: #e5e7eb;">ПОДДРЪЖКА</h3>
             <ul>
-                <li><a href="mailto:info@proekt.com" aria-label="Email"><span class="footer-icon">📧</span> info@proekt.com</a></li>
-                <li><a href="tel:+1234567890" aria-label="Phone"><span class="footer-icon">📞</span> +1 234 567 890</a></li>
-                <li><span class="footer-icon">📍</span> Sofia, Bulgaria</li>
+                <li><a href="#" class="footer-link">Документация</a></li>
+                <li><a href="/faq" class="footer-link">Често задавани въпроси</a></li>
+                <li><a href="/support" class="footer-link">Техническа помощ</a></li>
+                <li><a href="/login" class="footer-link">Вход / Регистрация</a></li>
             </ul>
         </div>
-        <div class="footer-col social-news">
-            <h3>Follow Us</h3>
-            <div class="footer-social">
-                <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://twitter.com" target="_blank" aria-label="Twitter/X" class="footer-social-link"><i class="fab fa-twitter"></i></a>
-                <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="footer-social-link"><i class="fab fa-instagram"></i></a>
-                <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://github.com" target="_blank" aria-label="GitHub" class="footer-social-link"><i class="fab fa-github"></i></a>
-            </div>
-            <form class="footer-newsletter" aria-label="Newsletter Subscription" onsubmit="return validateNewsletterEmail(event)">
-                <label for="newsletter-email" class="visually-hidden">Email address</label>
-                <input type="email" id="newsletter-email" name="email" placeholder="Your email" required aria-required="true" />
-                <button type="submit">Subscribe</button>
-                <span id="newsletter-error" class="newsletter-error" aria-live="polite"></span>
-            </form>
+        <div class="footer-col contact">
+            <h3 style="text-transform: uppercase; font-weight: 700; color: #e5e7eb;">КОНТАКТИ</h3>
+            <ul>
+                <li><span class="footer-icon"><i class="fas fa-map-marker-alt" style="color: #60a5fa;"></i></span> гр. София, бул. Витоша 123</li>
+                <li><a href="tel:+35921234567" class="footer-link"><span class="footer-icon"><i class="fas fa-phone" style="color: #60a5fa;"></i></span> +359 2 123 4567</a></li>
+                <li><a href="mailto:info@lovable.bg" class="footer-link"><span class="footer-icon"><i class="fas fa-envelope" style="color: #60a5fa;"></i></span> info@lovable.bg</a></li>
+            </ul>
         </div>
     </div>
     <div class="footer-bottom">
-        <span>&copy; <span id="footer-year"></span> Proekt. All rights reserved.</span>
+        <span>&copy; <span id="footer-year"></span> MedReports. All rights reserved.</span>
     </div>
 </footer>
 

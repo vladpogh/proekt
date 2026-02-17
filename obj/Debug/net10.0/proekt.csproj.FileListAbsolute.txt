@@ -22,7 +22,6 @@
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/bundle/proekt.styles.css
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/projectbundle/proekt.bundle.scp.css
-/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-og0lxyd07b-og0lxyd07b.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/e15j5ysem7-{0}-61n19gt1b8-61n19gt1b8.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/yydxxz0qcg-{0}-fr7q2aak1r-fr7q2aak1r.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/0qsve7ai46-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -100,3 +99,4 @@
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/package.json
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/jc1usp2avu-{0}-m66oix9noq-m66oix9noq.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/zepzubrye0-{0}-w2ryi8gl9x-w2ryi8gl9x.gz
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-x2xyebj1l9-x2xyebj1l9.gz

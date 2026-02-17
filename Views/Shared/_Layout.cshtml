@@ -101,146 +101,99 @@
     </header>
     <main role="main">
         @RenderBody()
-        <footer class="bg-light text-center text-lg-start">
-            <!-- Grid container -->
-            <div class="container p-4">
-                <!-- Section: Social media -->
-                <section class="mb-4">
-                    <!-- Facebook -->
-                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #3b5998;" href="#!" role="button"
-                       data-mdb-ripple-color="dark">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
+<footer class="main-footer">
+        <div class="container">
+            <!-- CTA Section -->
+            <div class="footer-cta">
+                <div class="cta-text">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35C12 21.35 12.3789 21.35 12.8711 20.8578C16.8578 16.8711 21 12.7289 21 8.8289C21 5.3789 18.2578 3 15.6 3C14.0711 3 12.9289 3.81445 12 4.90664C11.0711 3.81445 9.92891 3 8.39111 3C5.74219 3 3 5.3789 3 8.8289C3 12.7289 7.14219 16.8711 11.1289 20.8578C11.6211 21.35 12 21.35 12 21.35Z" stroke="#0066ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 11.5C16 11.5 15.1145 12.5 14 12.5C12.8855 12.5 12 11.5 12 11.5" stroke="#0066ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 7.5V7.51" stroke="#0066ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Are you a doctor? Get your rights here!</span>
+                </div>
+                <a href="#" class="btn-cta">
+                    Apply Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
 
-                    <!-- Twitter -->
-                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #55acee;" href="#!" role="button"
-                       data-mdb-ripple-color="dark">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-
-                    <!-- Google -->
-                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #dd4b39;" href="#!" role="button"
-                       data-mdb-ripple-color="dark">
-                        <i class="fab fa-google"></i>
-                    </a>
-
-                    <!-- Instagram -->
-                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #ac2bac;" href="#!" role="button"
-                       data-mdb-ripple-color="dark">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-
-                    <!-- LinkedIn -->
-                    <a class="btn btn-link btn-floating btn-lg text-light" style="background-color: #0077b5;" href="#!" role="button"
-                       data-mdb-ripple-color="dark">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </section>
-                <!-- Section: Social media -->
-
-                <!-- Section: Links -->
-                <section class="">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                            <h5 class="text-uppercase">About</h5>
-
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!" class="text-dark">Company</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Team</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Careers</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Contact</a>
-                                </li>
-                            </ul>
+            <div class="row">
+                <!-- Brand Column -->
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="footer-brand">
+                        <div style="background-color: #0066ff; border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="white"/>
+                            </svg>
                         </div>
-
-                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                            <h5 class="text-uppercase">Services</h5>
-
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!" class="text-dark">Consulting</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Support</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Sales</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Training</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                            <h5 class="text-uppercase">Resources</h5>
-
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!" class="text-dark">Blog</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Documentation</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">API Reference</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">FAQs</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                            <h5 class="text-uppercase">Legal</h5>
-
-                            <ul class="list-unstyled mb-0">
-                                <li>
-                                    <a href="#!" class="text-dark">Terms of Service</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Privacy Policy</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Cookie Policy</a>
-                                </li>
-
-                                <li>
-                                    <a href="#!" class="text-dark">Accessibility</a>
-                                </li>
-                            </ul>
-                        </div>
+                        Lovable
                     </div>
-                </section>
-                <!-- Section: Links -->
-            </div>
-            <!-- Grid container -->
+                    <p class="footer-description">
+                        Professional solutions for medical records and health documentation.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
 
-            <!-- Copyright -->
-            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.1);">
-                © 2023 Copyright:
-                <a class="text-dark" href="https://mdbootstrap.com/">MedReports.com</a>
+                <!-- Navigation Column -->
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h5>NAVIGATION</h5>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Products">Products</a></li>
+                        @if (Context.Session.GetString("UserRole") == "User")
+                        {
+                            <li><a asp-controller="Home" asp-action="DoctorApplication">@Loc.T("DoctorApplication")</a></li>
+                        }
+                        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contacts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Column -->
+                <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
+                    <h5>SUPPORT</h5>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Technical Support</a></li>
+                        <li><a asp-controller="Home" asp-action="Login">Login / Register</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Column -->
+                <div class="col-lg-4 col-md-4">
+                    <h5>CONTACTS</h5>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Sofia, Vitosha Blvd 123</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>+359 2 123 4567</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@lovable.bg</span>
+                    </div>
+                </div>
             </div>
-            <!-- Copyright -->
-        </footer>
+        </div>
+    </footer>
     </main>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
