@@ -146,6 +146,24 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        public IActionResult UpdateProfile(string fullName, string? phone, string? location)
+        {
+            var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            if (userId == 0) return RedirectToAction("Login");
+
+            _userService.UpdateUserProfile(userId, fullName, phone, location);
+            
+            // Update session if name changed
+            if (!string.IsNullOrEmpty(fullName))
+            {
+                HttpContext.Session.SetString("UserName", fullName);
+            }
+            
+            TempData["ProfileMessage"] = "Profile updated successfully.";
+            return RedirectToAction("Profile");
+        }
+
+        [HttpPost]
         public IActionResult ChangePassword(int userId, string newPassword)
         {
             var curId = HttpContext.Session.GetInt32("UserId") ?? 0;

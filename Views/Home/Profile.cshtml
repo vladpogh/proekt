@@ -1,166 +1,124 @@
-            <div id="section-answers" style="display:none;">
-                <h4>Admin Answers to My Inquiries</h4>
-                @{
-                    var currentUserAnswers = ViewBag.User as proekt.Models.User;
-                    var allInquiriesAnswers = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
-                    var answeredInquiries = allInquiriesAnswers;
-                    if (currentUserAnswers != null)
-                    {
-                        answeredInquiries = allInquiriesAnswers.Where(i => i.Email != null && i.Email.ToLower() == currentUserAnswers.Email?.ToLower() && !string.IsNullOrEmpty(i.AdminResponse)).ToList();
-                    }
-                }
-                @if (!answeredInquiries.Any())
-                {
-                    <div class="text-muted">No answers from admin yet.</div>
-                }
-                else
-                {
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Subject</th>
-                                <th>Message</th>
-                                <th>Status</th>
-                                <th>Admin Response</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var inquiry in answeredInquiries.OrderByDescending(i => i.CreatedAt))
-                        {
-                            <tr>
-                                <td>@inquiry.Subject</td>
-                                <td>@inquiry.Message</td>
-                                <td>Answered</td>
-                                <td>@inquiry.AdminResponse</td>
-                                <td>@inquiry.CreatedAt.ToString("g")</td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-                }
-            </div>
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "My Profile";
+    var user = ViewBag.User as proekt.Models.User;
+    var application = ViewBag.Application as proekt.Models.DoctorApplication;
+    var inquiries = ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>;
+    var userRole = Context.Session.GetString("UserRole");
 }
 
-@using proekt.Models
-@inject proekt.Services.TranslationService Loc
-
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-3">
-            <div class="list-group" id="profile-nav">
-                <a class="list-group-item list-group-item-action active" id="link-personal">Personal Info</a>
-                <a class="list-group-item list-group-item-action" id="link-change">Change Password</a>
-                <a class="list-group-item list-group-item-action" id="link-contact">Contact Us</a>
-                <a class="list-group-item list-group-item-action" id="link-application">Doctor Application Status</a>
-                <a class="list-group-item list-group-item-action" id="link-inquiries">My Inquiries</a>
-                <a class="list-group-item list-group-item-action" id="link-answers">Admin Answers</a>
+<div class="profile-container">
+    <!-- Sidebar -->
+    <div class="profile-sidebar">
+        <div class="sidebar-header">
+            <div class="avatar-circle">
+                @(user?.FullName?.Substring(0, 1).ToUpper() ?? "U")
             </div>
+            <h5 class="mt-2 mb-0 text-white">@user?.FullName</h5>
+            <small class="text-white-50">@user?.Email</small>
+            <span class="badg-role mt-2">@user?.Role</span>
         </div>
-        <div class="col-9">
-            @if (TempData["ProfileMessage"] != null)
-            {
-                <div class="alert alert-info">@TempData["ProfileMessage"]</div>
-            }
+        
+        <div class="sidebar-menu">
+            <a href="#" class="menu-item active">
+                <i class="bi bi-person"></i> Personal Info <i class="bi bi-chevron-right ms-auto"></i>
+            </a>
+            <a href="#" class="menu-item">
+                <i class="bi bi-lock"></i> Change Password
+            </a>
+            <a href="@Url.Action("Contact", "Home")" class="menu-item">
+                <i class="bi bi-envelope"></i> Contact Us
+            </a>
+            <a href="#" class="menu-item">
+                <i class="bi bi-chat-left-text"></i> My Inquiries & Answers
+                 @if(inquiries != null && inquiries.Count > 0) {
+                    <span class="badge bg-primary ms-auto">@inquiries.Count</span>
+                 }
+            </a>
+            <a href="@Url.Action("Logout", "Home")" class="menu-item text-danger mt-auto">
+                <i class="bi bi-box-arrow-right"></i> Sign Out
+            </a>
+        </div>
+    </div>
 
-            <div id="section-personal">
-                <h4>@Loc.T("PersonalInfo")</h4>
-                @{ var user = ViewBag.User as proekt.Models.User; }
-                <div><b>Full name:</b> @user?.FullName</div>
-                <div><b>Email:</b> @user?.Email</div>
-                <div><b>Role:</b> @user?.Role</div>
+    <!-- Main Content -->
+    <div class="profile-content">
+        @if (TempData["ProfileMessage"] != null)
+        {
+            <div class="alert alert-info mb-4">@TempData["ProfileMessage"]</div>
+        }
+
+        <div class="content-card">
+            <div class="card-header-clean">
+                <div>
+                    <h4 class="mb-1">Personal Information</h4>
+                    <p class="text-muted mb-0">Manage your personal details and contact info</p>
+                </div>
+                <div>
+                    <!-- Toggle Edit Mode Button -->
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnEditProfile" onclick="toggleEditMode()">
+                        <i class="bi bi-pencil"></i> Edit Profile
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="btnCancelEdit" onclick="cancelEditMode()">
+                        <i class="bi bi-x"></i> Cancel
+                    </button>
+                </div>
             </div>
 
-            <div id="section-change" style="display:none;">
-                <h4>@Loc.T("ChangePassword")</h4>
-                <form asp-action="ChangePassword" method="post">
-                    <input type="hidden" name="userId" value="@((ViewBag.User as proekt.Models.User)?.Id ?? 0)" />
-                    <div class="mb-3">
-                        <label class="form-label">@Loc.T("NewPassword")</label>
-                        <input type="password" name="newPassword" class="form-control" required />
+            <form asp-action="UpdateProfile" method="post" id="profileForm">
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-person"></i> FULL NAME</label>
+                            <input type="text" class="form-control-custom" name="fullName" value="@user?.FullName" readonly>
+                        </div>
                     </div>
-                    <button class="btn btn-primary">@Loc.T("ChangePassword")</button>
-                </form>
-            </div>
-
-            <div id="section-contact" style="display:none;">
-                <h4>@Loc.T("ContactUs")</h4>
-                <p>If you need help, email <a href="mailto:support@example.com">support@example.com</a> or use the contact page.</p>
-            </div>
-
-            <div id="section-application" style="display:none;">
-                <h4>@Loc.T("ApplicationStatus")</h4>
-                @{ var app = ViewBag.Application as proekt.Models.DoctorApplication; }
-                @if (app == null)
-                {
-                    <div class="text-muted">@Loc.T("NoPending") <a asp-action="DoctorApplication">@Loc.T("ApplyNow")</a>.</div>
-                }
-                else
-                {
-                    <div><b>@Loc.T("ApplicationStatus"):</b> @app.Status</div>
-                    <div><b>@Loc.T("Submitted"):</b> @app.CreatedAt.ToString("g")</div>
-                    <div><b>@Loc.T("AdminComment"):</b> @app.AdminComment</div>
-                    <div class="mt-2">
-                        <a href="@app.EmploymentContractPath" target="_blank">@Loc.T("EmploymentContract")</a><br />
-                        <a href="@app.IdCardPath" target="_blank">@Loc.T("IDCard")</a><br />
-                        <a href="@app.MedicalLicensePath" target="_blank">@Loc.T("MedicalLicense")</a>
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-envelope"></i> EMAIL ADDRESS</label>
+                            <div class="form-control-static">@user?.Email</div>
+                        </div>
                     </div>
-                }
-            </div>
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-shield"></i> ROLE</label>
+                            <div class="form-control-static fw-bold">@user?.Role</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-telephone"></i> PHONE NUMBER</label>
+                            <input type="text" class="form-control-custom" name="phone" value="@user?.PhoneNumber" placeholder="+359 ..." readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-geo-alt"></i> LOCATION</label>
+                            <input type="text" class="form-control-custom" name="location" value="@user?.Location" placeholder="City, Country" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-custom">
+                            <label><i class="bi bi-calendar"></i> MEMBER SINCE</label>
+                            <div class="form-control-static">@user?.CreatedAt.ToString("MMMM yyyy")</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-none mt-4 text-end" id="saveActions">
+                     <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
 
-            <div id="section-inquiries" style="display:none;">
-                <h4>My Inquiries</h4>
-                @{
-                    var currentUser = ViewBag.User as proekt.Models.User;
-                    var allInquiries = (ViewBag.AllInquiries as List<proekt.Models.ContactInquiry>) ?? new List<proekt.Models.ContactInquiry>();
-                    var myInquiries = allInquiries;
-                    if (currentUser != null)
-                    {
-                        myInquiries = allInquiries.Where(i => i.Email != null && i.Email.ToLower() == currentUser.Email?.ToLower()).ToList();
-                    }
-                }
-                @if (!myInquiries.Any())
-                {
-                    <div class="text-muted">No inquiries yet.</div>
-                }
-                else
-                {
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Subject</th>
-                                <th>Message</th>
-                                <th>Status</th>
-                                <th>Admin Response</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var inquiry in myInquiries.OrderByDescending(i => i.CreatedAt))
-                        {
-                            <tr>
-                                <td>@inquiry.Subject</td>
-                                <td>@inquiry.Message</td>
-                                <td>
-                                    @(string.IsNullOrEmpty(inquiry.AdminResponse) ? "Pending" : "Answered")
-                                </td>
-                                <td>
-                                    @if (string.IsNullOrEmpty(inquiry.AdminResponse)) {
-                                        <span class="text-muted">-</span>
-                                    } else {
-                                        @inquiry.AdminResponse
-                                    }
-                                </td>
-                                <td>@inquiry.CreatedAt.ToString("g")</td>
-                            </tr>
-                        }
-                        </tbody>
-                    </table>
-                }
-            </div>
-            <!-- Application Status section already declared above, so just close the div here. -->
+        <div class="content-card mt-4 bg-light-blue">
+            <div class="d-flex align-items-start">
+                <div class="icon-box me-3">
+                    <i class="bi bi-shield-check text-primary"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1">Account Security</h6>
+                    <p class="text-muted small mb-0">Your account is protected with email verification. Keep your information up to date for better security.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -168,18 +126,33 @@
 
 @section Scripts {
     <script>
-        (function(){
-            const byId = id => document.getElementById(id);
-            const navIds = ['link-personal','link-change','link-contact','link-application','link-inquiries','link-answers'];
-            const sectionIds = ['section-personal','section-change','section-contact','section-application','section-inquiries','section-answers'];
-            const show = id => {
-                sectionIds.forEach(s => document.getElementById(s).style.display = (s===id)?'block':'none');
-                navIds.forEach(n => byId(n).classList.remove('active'));
-                byId('link-' + id.split('-')[1]).classList.add('active');
-            };
-            navIds.forEach((nav, idx) => {
-                byId(nav).addEventListener('click', ()=> show(sectionIds[idx]));
+        function toggleEditMode() {
+            var inputs = document.querySelectorAll('#profileForm input[name]');
+            inputs.forEach(input => {
+                input.readOnly = false;
+                input.classList.add('editable');
             });
-        })();
+            
+            document.getElementById('btnEditProfile').classList.add('d-none');
+            document.getElementById('btnCancelEdit').classList.remove('d-none');
+            document.getElementById('saveActions').classList.remove('d-none');
+        }
+
+        function cancelEditMode() {
+             var inputs = document.querySelectorAll('#profileForm input[name]');
+            inputs.forEach(input => {
+                input.readOnly = true;
+                input.classList.remove('editable');
+                // Reset value (would need original values causing complexity, simple reload is easier or just leave as is)
+                // For now just disable
+            });
+             document.getElementById('btnEditProfile').classList.remove('d-none');
+            document.getElementById('btnCancelEdit').classList.add('d-none');
+            document.getElementById('saveActions').classList.add('d-none');
+            
+            // Optional: reload to reset values
+            location.reload();
+        }
     </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 }

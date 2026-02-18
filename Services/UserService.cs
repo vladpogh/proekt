@@ -91,4 +91,14 @@ public class UserService
             _users.Remove(user);
         }
     }
+    public void UpdateUserProfile(int userId, string fullName, string? phone, string? location)
+    {
+        var user = GetUserById(userId);
+        if (user != null)
+        {
+            user.FullName = fullName;
+            user.PhoneNumber = phone;
+            user.Location = location;
+        }
+    }
 }
