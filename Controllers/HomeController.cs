@@ -176,7 +176,7 @@ namespace proekt.Controllers
             var ok = _userService.ChangePassword(userId, newPassword);
             if (ok) TempData["ProfileMessage"] = "Password changed.";
             else TempData["ProfileMessage"] = "Failed to change password.";
-            return RedirectToAction("Profile");
+            return RedirectToAction("Profile", new { tab = "password" });
         }
     [HttpPost]
     public IActionResult ApproveDocument(int id, string? comment)

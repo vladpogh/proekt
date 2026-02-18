@@ -19,10 +19,10 @@
         </div>
         
         <div class="sidebar-menu">
-            <a href="#" class="menu-item active">
+            <a href="#" class="menu-item active" id="link-personal-info" onclick="showSection('personal-info')">
                 <i class="bi bi-person"></i> Personal Info <i class="bi bi-chevron-right ms-auto"></i>
             </a>
-            <a href="#" class="menu-item">
+            <a href="#" class="menu-item" id="link-change-password" onclick="showSection('change-password')">
                 <i class="bi bi-lock"></i> Change Password
             </a>
             <a href="@Url.Action("Contact", "Home")" class="menu-item">
@@ -47,67 +47,102 @@
             <div class="alert alert-info mb-4">@TempData["ProfileMessage"]</div>
         }
 
-        <div class="content-card">
-            <div class="card-header-clean">
-                <div>
-                    <h4 class="mb-1">Personal Information</h4>
-                    <p class="text-muted mb-0">Manage your personal details and contact info</p>
+        <div id="personal-info-section">
+            <div class="content-card">
+                <div class="card-header-clean">
+                    <div>
+                        <h4 class="mb-1">Personal Information</h4>
+                        <p class="text-muted mb-0">Manage your personal details and contact info</p>
+                    </div>
+                    <div>
+                        <!-- Toggle Edit Mode Button -->
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="btnEditProfile" onclick="toggleEditMode()">
+                            <i class="bi bi-pencil"></i> Edit Profile
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="btnCancelEdit" onclick="cancelEditMode()">
+                            <i class="bi bi-x"></i> Cancel
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <!-- Toggle Edit Mode Button -->
-                    <button type="button" class="btn btn-outline-secondary btn-sm" id="btnEditProfile" onclick="toggleEditMode()">
-                        <i class="bi bi-pencil"></i> Edit Profile
-                    </button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="btnCancelEdit" onclick="cancelEditMode()">
-                        <i class="bi bi-x"></i> Cancel
-                    </button>
-                </div>
-            </div>
 
-            <form asp-action="UpdateProfile" method="post" id="profileForm">
-                <div class="row g-4 mt-2">
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-person"></i> FULL NAME</label>
-                            <input type="text" class="form-control-custom" name="fullName" value="@user?.FullName" readonly>
+                <form asp-action="UpdateProfile" method="post" id="profileForm">
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-person"></i> FULL NAME</label>
+                                <input type="text" class="form-control-custom" name="fullName" value="@user?.FullName" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-envelope"></i> EMAIL ADDRESS</label>
+                                <div class="form-control-static">@user?.Email</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-shield"></i> ROLE</label>
+                                <div class="form-control-static fw-bold">@user?.Role</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-telephone"></i> PHONE NUMBER</label>
+                                <input type="text" class="form-control-custom" name="phone" value="@user?.PhoneNumber" placeholder="+359 ..." readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-geo-alt"></i> LOCATION</label>
+                                <input type="text" class="form-control-custom" name="location" value="@user?.Location" placeholder="City, Country" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-calendar"></i> MEMBER SINCE</label>
+                                <div class="form-control-static">@user?.CreatedAt.ToString("MMMM yyyy")</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-envelope"></i> EMAIL ADDRESS</label>
-                            <div class="form-control-static">@user?.Email</div>
-                        </div>
+                    
+                    <div class="d-none mt-4 text-end" id="saveActions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-shield"></i> ROLE</label>
-                            <div class="form-control-static fw-bold">@user?.Role</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-telephone"></i> PHONE NUMBER</label>
-                            <input type="text" class="form-control-custom" name="phone" value="@user?.PhoneNumber" placeholder="+359 ..." readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-geo-alt"></i> LOCATION</label>
-                            <input type="text" class="form-control-custom" name="location" value="@user?.Location" placeholder="City, Country" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-custom">
-                            <label><i class="bi bi-calendar"></i> MEMBER SINCE</label>
-                            <div class="form-control-static">@user?.CreatedAt.ToString("MMMM yyyy")</div>
-                        </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="change-password-section" class="d-none">
+            <div class="content-card">
+                <div class="card-header-clean">
+                    <div>
+                        <h4 class="mb-1">Change Password</h4>
+                        <p class="text-muted mb-0">Ensure your account is secure by using a strong password</p>
                     </div>
                 </div>
-                
-                <div class="d-none mt-4 text-end" id="saveActions">
-                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
+
+                <form asp-action="ChangePassword" method="post" id="passwordForm" onsubmit="return validatePassword()">
+                    <input type="hidden" name="userId" value="@user?.Id" />
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-lock"></i> NEW PASSWORD</label>
+                                <input type="password" class="form-control-custom" name="newPassword" id="newPassword" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group-custom">
+                                <label><i class="bi bi-lock-fill"></i> CONFIRM PASSWORD</label>
+                                <input type="password" class="form-control-custom" id="confirmPassword" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div class="content-card mt-4 bg-light-blue">
@@ -143,8 +178,6 @@
             inputs.forEach(input => {
                 input.readOnly = true;
                 input.classList.remove('editable');
-                // Reset value (would need original values causing complexity, simple reload is easier or just leave as is)
-                // For now just disable
             });
              document.getElementById('btnEditProfile').classList.remove('d-none');
             document.getElementById('btnCancelEdit').classList.add('d-none');
@@ -153,6 +186,47 @@
             // Optional: reload to reset values
             location.reload();
         }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.getElementById('personal-info-section').classList.add('d-none');
+            document.getElementById('change-password-section').classList.add('d-none');
+            
+            // Remove active class from sidebar links
+            document.getElementById('link-personal-info').classList.remove('active');
+            document.getElementById('link-change-password').classList.remove('active');
+            
+            // Remove chevron from all links
+            document.querySelectorAll('.menu-item .bi-chevron-right').forEach(el => el.remove());
+
+            // Show selected section
+            document.getElementById(sectionName + '-section').classList.remove('d-none');
+            
+            // Add active class and chevron
+            var activeLink = document.getElementById('link-' + sectionName);
+            activeLink.classList.add('active');
+            if (!activeLink.querySelector('.bi-chevron-right')) {
+                activeLink.innerHTML += ' <i class="bi bi-chevron-right ms-auto"></i>';
+            }
+        }
+
+        function validatePassword() {
+            var newPass = document.getElementById('newPassword').value;
+            var confirmPass = document.getElementById('confirmPassword').value;
+            if (newPass !== confirmPass) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            return true;
+        }
+
+        // Check for section query param or hash on load
+        window.onload = function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tab') === 'password') {
+                showSection('change-password');
+            }
+        };
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 }
