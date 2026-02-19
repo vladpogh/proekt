@@ -42,6 +42,12 @@ public class UserService
         return user != null && user.Password == password;
     }
 
+    public bool VerifyPassword(int userId, string password)
+    {
+        var user = GetUserById(userId);
+        return user != null && user.Password == password;
+    }
+
     public bool RegisterUser(string fullName, string email, string password)
     {
         if (GetUserByEmail(email) != null)

@@ -164,17 +164,25 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
-        public IActionResult ChangePassword(int userId, string newPassword)
+        public IActionResult ChangePassword(int userId, string currentPassword, string newPassword)
         {
             var curId = HttpContext.Session.GetInt32("UserId") ?? 0;
             if (curId != userId) return Unauthorized();
+
+            if (!_userService.VerifyPassword(userId, currentPassword))
+            {
+               TempData["ProfileMessage"] = "Current password is incorrect.";
+               return RedirectToAction("Profile", new { tab = "password" });
+            }
+
             if (string.IsNullOrEmpty(newPassword))
             {
-                TempData["ProfileMessage"] = "Password cannot be empty.";
-                return RedirectToAction("Profile");
+                TempData["ProfileMessage"] = "New password cannot be empty.";
+                return RedirectToAction("Profile", new { tab = "password" });
             }
+
             var ok = _userService.ChangePassword(userId, newPassword);
-            if (ok) TempData["ProfileMessage"] = "Password changed.";
+            if (ok) TempData["ProfileMessage"] = "Password changed successfully.";
             else TempData["ProfileMessage"] = "Failed to change password.";
             return RedirectToAction("Profile", new { tab = "password" });
         }

@@ -123,7 +123,15 @@
 
                 <form asp-action="ChangePassword" method="post" id="passwordForm" onsubmit="return validatePassword()">
                     <input type="hidden" name="userId" value="@user?.Id" />
+                    
                     <div class="row g-4 mt-2">
+                        <div class="col-md-12">
+                             <div class="form-group-custom">
+                                <label><i class="bi bi-key"></i> CURRENT PASSWORD</label>
+                                 <input type="password" class="form-control-custom" name="currentPassword" id="currentPassword" required>
+                             </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group-custom">
                                 <label><i class="bi bi-lock"></i> NEW PASSWORD</label>
