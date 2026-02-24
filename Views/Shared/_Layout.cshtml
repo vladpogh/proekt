@@ -44,9 +44,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Index">@Loc.T("Home")</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="Products">@Loc.T("Products")</a>
-                        </li>
+                        @if (Context.Session.GetString("UserEmail") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-muted" asp-area="" asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">@Loc.T("Medical Record")</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-muted" asp-area="" asp-controller="Home" asp-action="About">@Loc.T("About Us")</a>
                         </li>
@@ -161,7 +164,10 @@
                     <h5>NAVIGATION</h5>
                     <ul>
                         <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="Products">Products</a></li>
+                        @if (Context.Session.GetString("UserEmail") != null)
+                        {
+                            <li><a asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">Medical Record</a></li>
+                        }
                         <li><a asp-controller="Home" asp-action="About">About Us</a></li>
                         <li><a asp-controller="Home" asp-action="Contact">Contacts</a></li>
                     </ul>
