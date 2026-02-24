@@ -16,6 +16,7 @@ builder.Services.AddSingleton<DoctorApplicationService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<TranslationService>();
 builder.Services.AddSingleton<ContactInquiryService>();
+builder.Services.AddSingleton<MedicalRecordService>();
 
 var app = builder.Build();
 

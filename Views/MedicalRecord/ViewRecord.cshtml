@@ -1,0 +1,356 @@
+@model proekt.Models.ViewModels.MedicalRecordViewModel
+@{
+    ViewData["Title"] = "Medical Record – " + Model.Patient.FullName;
+    var canEdit = Model.CanEdit;
+    var record = Model.Record;
+    var userId = Model.Patient.Id;
+
+    var operations  = record.Entries.Where(e => e.Type == proekt.Models.MedicalEntryType.Operation  && !e.IsDeleted).OrderByDescending(e => e.Date).ToList();
+    var diagnoses   = record.Entries.Where(e => e.Type == proekt.Models.MedicalEntryType.Diagnosis  && !e.IsDeleted).OrderByDescending(e => e.Date).ToList();
+    var medications = record.Entries.Where(e => e.Type == proekt.Models.MedicalEntryType.Medication && !e.IsDeleted).OrderByDescending(e => e.Date).ToList();
+    var notes       = record.Entries.Where(e => e.Type == proekt.Models.MedicalEntryType.Note       && !e.IsDeleted).OrderByDescending(e => e.Date).ToList();
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<div class="mr-page">
+    <!-- ── Header ─────────────────────────────────────── -->
+    <div class="mr-header">
+        <div class="mr-header-left">
+            <div class="mr-avatar">@(Model.Patient.FullName?.Substring(0,1).ToUpper() ?? "?")</div>
+            <div>
+                <h2 class="mb-0">@Model.Patient.FullName</h2>
+                <small class="text-white-50">@Model.Patient.Email &nbsp;|&nbsp; Member since @Model.Patient.CreatedAt.ToString("MMM yyyy")</small>
+                <div class="mt-1"><span class="mr-role-badge">@Model.Patient.Role</span></div>
+            </div>
+        </div>
+        <div class="mr-header-right">
+            @if (canEdit)
+            {
+                <button class="btn btn-light btn-sm" onclick="openEditInfoModal()">
+                    <i class="bi bi-pencil-square"></i> Edit General Info
+                </button>
+            }
+            <a href="@(Context.Session.GetString("UserRole") is "Doctor" or "Admin" or "Manager" ? Url.Action("DoctorDashboard","MedicalRecord") : Url.Action("Profile","Home"))"
+               class="btn btn-outline-light btn-sm">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["RecordMessage"] != null)
+    {
+        <div class="alert alert-success mx-3 mt-3 mb-0">@TempData["RecordMessage"]</div>
+    }
+
+    <!-- ── General Info Cards ─────────────────────────── -->
+    <div class="mr-info-grid">
+        <div class="mr-info-card">
+            <div class="mr-info-icon" style="background:#fee2e2;color:#dc2626;"><i class="bi bi-droplet-fill"></i></div>
+            <div>
+                <div class="mr-info-label">Blood Type</div>
+                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
+            </div>
+        </div>
+        <div class="mr-info-card">
+            <div class="mr-info-icon" style="background:#fef3c7;color:#d97706;"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <div>
+                <div class="mr-info-label">Allergies</div>
+                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None recorded" : record.Allergies)</div>
+            </div>
+        </div>
+        <div class="mr-info-card">
+            <div class="mr-info-icon" style="background:#dbeafe;color:#2563eb;"><i class="bi bi-heart-pulse-fill"></i></div>
+            <div>
+                <div class="mr-info-label">Chronic Conditions</div>
+                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None recorded" : record.ChronicConditions)</div>
+            </div>
+        </div>
+        <div class="mr-info-card">
+            <div class="mr-info-icon" style="background:#d1fae5;color:#059669;"><i class="bi bi-journal-text"></i></div>
+            <div>
+                <div class="mr-info-label">General Notes</div>
+                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.GeneralNotes) ? "—" : record.GeneralNotes)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Tabs ───────────────────────────────────────── -->
+    <div class="mr-tabs-wrap">
+        <div class="mr-tabs" id="mrTabs">
+            <button class="mr-tab active" onclick="switchTab('operations', this)">
+                <i class="bi bi-scissors"></i> Operations
+                <span class="mr-tab-count">@operations.Count</span>
+            </button>
+            <button class="mr-tab" onclick="switchTab('diagnoses', this)">
+                <i class="bi bi-activity"></i> Diagnoses
+                <span class="mr-tab-count">@diagnoses.Count</span>
+            </button>
+            <button class="mr-tab" onclick="switchTab('medications', this)">
+                <i class="bi bi-capsule"></i> Medications
+                <span class="mr-tab-count">@medications.Count</span>
+            </button>
+            <button class="mr-tab" onclick="switchTab('notes', this)">
+                <i class="bi bi-sticky"></i> Notes
+                <span class="mr-tab-count">@notes.Count</span>
+            </button>
+            <button class="mr-tab" onclick="switchTab('history', this)">
+                <i class="bi bi-clock-history"></i> History
+                <span class="mr-tab-count">@Model.AuditLogs.Count</span>
+            </button>
+        </div>
+
+        @if (canEdit)
+        {
+            <button class="btn btn-primary btn-sm" onclick="openAddModal()">
+                <i class="bi bi-plus-lg"></i> Add Entry
+            </button>
+        }
+    </div>
+
+    <!-- ── Operations Tab ────────────────────────────── -->
+    <div class="mr-tab-content active" id="tab-operations">
+        @if (!operations.Any())
+        {
+            <div class="mr-empty"><i class="bi bi-scissors"></i><p>No operations recorded.</p></div>
+        }
+        @foreach (var e in operations)
+        {
+            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
+                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#dc2626" }
+            })
+        }
+    </div>
+
+    <!-- ── Diagnoses Tab ─────────────────────────────── -->
+    <div class="mr-tab-content" id="tab-diagnoses">
+        @if (!diagnoses.Any())
+        {
+            <div class="mr-empty"><i class="bi bi-activity"></i><p>No diagnoses recorded.</p></div>
+        }
+        @foreach (var e in diagnoses)
+        {
+            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
+                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#2563eb" }
+            })
+        }
+    </div>
+
+    <!-- ── Medications Tab ──────────────────────────── -->
+    <div class="mr-tab-content" id="tab-medications">
+        @if (!medications.Any())
+        {
+            <div class="mr-empty"><i class="bi bi-capsule"></i><p>No medications recorded.</p></div>
+        }
+        @foreach (var e in medications)
+        {
+            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
+                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#7c3aed" }
+            })
+        }
+    </div>
+
+    <!-- ── Notes Tab ───────────────────────────────── -->
+    <div class="mr-tab-content" id="tab-notes">
+        @if (!notes.Any())
+        {
+            <div class="mr-empty"><i class="bi bi-sticky"></i><p>No notes recorded.</p></div>
+        }
+        @foreach (var e in notes)
+        {
+            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
+                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#059669" }
+            })
+        }
+    </div>
+
+    <!-- ── History Tab ─────────────────────────────── -->
+    <div class="mr-tab-content" id="tab-history">
+        @if (!Model.AuditLogs.Any())
+        {
+            <div class="mr-empty"><i class="bi bi-clock-history"></i><p>No history yet.</p></div>
+        }
+        <div class="mr-timeline">
+            @foreach (var log in Model.AuditLogs)
+            {
+                <div class="mr-timeline-item">
+                    <div class="mr-timeline-dot"></div>
+                    <div class="mr-timeline-body">
+                        <div class="mr-timeline-header">
+                            <strong>@log.ActionType</strong>
+                            <span class="mr-timeline-meta">
+                                <i class="bi bi-person-badge"></i> @log.DoctorName
+                                &nbsp;&nbsp;
+                                <i class="bi bi-clock"></i> @log.Timestamp.ToString("dd MMM yyyy, HH:mm")
+                            </span>
+                        </div>
+                        <div class="text-muted small">@log.Details</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- ══ Add Entry Modal ══════════════════════════════════════════ -->
+@if (canEdit)
+{
+    <div class="mr-modal-overlay" id="addEntryModal" onclick="closeFn(event,'addEntryModal')">
+        <div class="mr-modal">
+            <div class="mr-modal-header">
+                <h5><i class="bi bi-plus-circle-fill text-primary me-2"></i>Add Medical Entry</h5>
+                <button type="button" onclick="closeModal('addEntryModal')"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <form asp-controller="MedicalRecord" asp-action="AddEntry" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="userId" value="@userId" />
+                <div class="mr-modal-body">
+                    <div class="mr-form-row">
+                        <div class="mr-form-group">
+                            <label>Entry Type</label>
+                            <select name="type" class="mr-select" required>
+                                <option value="Operation">Operation</option>
+                                <option value="Diagnosis" selected>Diagnosis</option>
+                                <option value="Medication">Medication</option>
+                                <option value="Note">Note</option>
+                            </select>
+                        </div>
+                        <div class="mr-form-group">
+                            <label>Date</label>
+                            <input type="date" name="date" class="mr-input" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                        </div>
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" class="mr-input" placeholder="e.g. Appendectomy" required />
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Description</label>
+                        <textarea name="description" class="mr-textarea" rows="4" placeholder="Detailed description..."></textarea>
+                    </div>
+                </div>
+                <div class="mr-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addEntryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══ Edit Entry Modal ═══════════════════════════════════════ -->
+    <div class="mr-modal-overlay" id="editEntryModal" onclick="closeFn(event,'editEntryModal')">
+        <div class="mr-modal">
+            <div class="mr-modal-header">
+                <h5><i class="bi bi-pencil-fill text-warning me-2"></i>Edit Entry</h5>
+                <button type="button" onclick="closeModal('editEntryModal')"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <form asp-controller="MedicalRecord" asp-action="EditEntry" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="entryId" id="edit_entryId" />
+                <input type="hidden" name="userId" value="@userId" />
+                <div class="mr-modal-body">
+                    <div class="mr-form-row">
+                        <div class="mr-form-group">
+                            <label>Entry Type</label>
+                            <select name="type" id="edit_type" class="mr-select" required>
+                                <option value="Operation">Operation</option>
+                                <option value="Diagnosis">Diagnosis</option>
+                                <option value="Medication">Medication</option>
+                                <option value="Note">Note</option>
+                            </select>
+                        </div>
+                        <div class="mr-form-group">
+                            <label>Date</label>
+                            <input type="date" name="date" id="edit_date" class="mr-input" required />
+                        </div>
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" id="edit_title" class="mr-input" required />
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Description</label>
+                        <textarea name="description" id="edit_description" class="mr-textarea" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="mr-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editEntryModal')">Cancel</button>
+                    <button type="submit" class="btn btn-warning text-white"><i class="bi bi-check-lg me-1"></i>Update Entry</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ══ Edit General Info Modal ═══════════════════════════════ -->
+    <div class="mr-modal-overlay" id="editInfoModal" onclick="closeFn(event,'editInfoModal')">
+        <div class="mr-modal">
+            <div class="mr-modal-header">
+                <h5><i class="bi bi-clipboard2-pulse-fill text-success me-2"></i>Edit General Information</h5>
+                <button type="button" onclick="closeModal('editInfoModal')"><i class="bi bi-x-lg"></i></button>
+            </div>
+            <form asp-controller="MedicalRecord" asp-action="UpdateRecordInfo" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="userId" value="@userId" />
+                <div class="mr-modal-body">
+                    <div class="mr-form-group">
+                        <label>Blood Type</label>
+                        <select name="bloodType" class="mr-select">
+                            <option value="">— Unknown —</option>
+                            @foreach (var bt in new[]{"A+","A-","B+","B-","AB+","AB-","O+","O-"})
+                            {
+                                if (record.BloodType == bt)
+                                {
+                                    <option value="@bt" selected>@bt</option>
+                                }
+                                else
+                                {
+                                    <option value="@bt">@bt</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Allergies</label>
+                        <textarea name="allergies" class="mr-textarea" rows="2" placeholder="e.g. Penicillin, Pollen...">@record.Allergies</textarea>
+                    </div>
+                    <div class="mr-form-group">
+                        <label>Chronic Conditions</label>
+                        <textarea name="chronicConditions" class="mr-textarea" rows="2" placeholder="e.g. Hypertension, Diabetes...">@record.ChronicConditions</textarea>
+                    </div>
+                    <div class="mr-form-group">
+                        <label>General Notes</label>
+                        <textarea name="generalNotes" class="mr-textarea" rows="3">@record.GeneralNotes</textarea>
+                    </div>
+                </div>
+                <div class="mr-modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editInfoModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+<script>
+function switchTab(name, btn) {
+    document.querySelectorAll('.mr-tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.mr-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+function openAddModal()  { document.getElementById('addEntryModal').classList.add('show'); }
+function openEditInfoModal() { document.getElementById('editInfoModal').classList.add('show'); }
+function closeModal(id)  { document.getElementById(id).classList.remove('show'); }
+function closeFn(e, id) { if (e.target.id === id) closeModal(id); }
+
+function openEditModal(entryId, type, title, description, date) {
+    document.getElementById('edit_entryId').value     = entryId;
+    document.getElementById('edit_type').value        = type;
+    document.getElementById('edit_title').value       = title;
+    document.getElementById('edit_description').value = description;
+    document.getElementById('edit_date').value        = date;
+    document.getElementById('editEntryModal').classList.add('show');
+}
+</script>
+}

@@ -14,6 +14,7 @@ namespace proekt.Controllers
         private readonly MedicalDocumentService _docService;
         private readonly DoctorApplicationService _appService;
         private readonly ContactInquiryService _inquiryService;
+        private readonly MedicalRecordService _medRecordService;
 
         [HttpGet]
         public IActionResult DoctorApplication()
@@ -79,12 +80,13 @@ namespace proekt.Controllers
             return RedirectToAction("Index");
         }
 
-        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService, ContactInquiryService inquiryService)
+        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService, ContactInquiryService inquiryService, MedicalRecordService medRecordService)
         {
             _userService = userService;
             _docService = docService;
             _appService = appService;
             _inquiryService = inquiryService;
+            _medRecordService = medRecordService;
         }
 
         [HttpPost]
@@ -343,7 +345,9 @@ namespace proekt.Controllers
             if (user != null)
             {
                 HttpContext.Session.SetInt32("UserId", user.Id);
-                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
+                HttpContext.Session.SetString("UserRole", user.Role.ToString());
+                // Auto-create empty medical record for new user
+                _medRecordService.CreateEmptyRecord(user.Id);
             }
             return RedirectToAction("Index");
         }

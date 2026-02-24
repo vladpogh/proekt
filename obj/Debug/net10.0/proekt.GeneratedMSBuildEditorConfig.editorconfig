@@ -82,6 +82,22 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9TdXBwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/DoctorDashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9Eb2N0b3JEYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/Unauthorized.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9VbmF1dGhvcml6ZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/ViewRecord.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9WaWV3UmVjb3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/_EntryCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9fRW50cnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/vladimirpoghosyan/Desktop/proekt/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

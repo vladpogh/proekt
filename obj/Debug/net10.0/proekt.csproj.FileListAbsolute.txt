@@ -99,4 +99,4 @@
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/package.json
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/jc1usp2avu-{0}-m66oix9noq-m66oix9noq.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/zepzubrye0-{0}-w2ryi8gl9x-w2ryi8gl9x.gz
-/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-mb3isgfip4-mb3isgfip4.gz
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-x4b24s7flk-x4b24s7flk.gz

@@ -73,6 +73,15 @@
                                     <a class="btn btn-warning btn-sm" asp-area="" asp-controller="Home" asp-action="AdminPanel" style="color: #fff; font-weight: 600;">@Loc.T("AdminPanel")</a>
                                 </li>
                             }
+                            if (userRole == "Doctor" || userRole == "Admin" || userRole == "Manager")
+                            {
+                                <li class="nav-item ms-2">
+                                    <a class="btn btn-sm" asp-controller="MedicalRecord" asp-action="DoctorDashboard"
+                                       style="background:#059669;color:#fff;font-weight:600;">
+                                       <i class="bi bi-clipboard2-pulse" style="margin-right:4px;"></i>Doctor Dashboard
+                                    </a>
+                                </li>
+                            }
                             <li class="nav-item ms-2 dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #0052CC; font-weight: 600;">
                                     @Context.Session.GetString("UserName")

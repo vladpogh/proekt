@@ -1,0 +1,40 @@
+@{
+    var entry = ViewData["Entry"] as proekt.Models.MedicalEntry;
+    var userId = (int)ViewData["UserId"]!;
+    var canEdit = (bool)ViewData["CanEdit"]!;
+    var borderColor = ViewData["BorderColor"]?.ToString() ?? "#0066ff";
+
+    var safeTitle = (entry?.Title ?? "").Replace("'", "\\'").Replace("\"", "&quot;");
+    var safeDesc  = (entry?.Description ?? "").Replace("'", "\\'").Replace("\"", "&quot;");
+    var dateStr   = entry?.Date.ToString("yyyy-MM-dd") ?? "";
+    var typeStr   = entry?.Type.ToString() ?? "Note";
+}
+
+<div class="mr-entry-card" style="border-left-color: @borderColor;">
+    <div class="mr-entry-header">
+        <div>
+            <span class="mr-entry-type-badge" style="background: @(borderColor + "22"); color: @borderColor;">
+                @typeStr
+            </span>
+            <strong class="ms-2">@entry!.Title</strong>
+        </div>
+        <div class="mr-entry-meta">
+            <span><i class="bi bi-calendar3"></i> @entry.Date.ToString("dd MMM yyyy")</span>
+            <span><i class="bi bi-person-badge"></i> Dr. @entry.CreatedByDoctorName</span>
+            @if (canEdit)
+            {
+                <button type="button" class="btn btn-sm btn-outline-secondary ms-2"
+                    onclick="openEditModal(@entry.Id, '@typeStr', '@safeTitle', '@safeDesc', '@dateStr')">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            }
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(entry.Description))
+    {
+        <div class="mr-entry-desc">@entry.Description</div>
+    }
+    <div class="mr-entry-foot">
+        Added @entry.CreatedAt.ToString("dd MMM yyyy, HH:mm")
+    </div>
+</div>
