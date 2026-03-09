@@ -1,33 +1,40 @@
+using proekt.Data;
 using proekt.Models;
 
 namespace proekt.Services
 {
     public class ContactInquiryService
     {
-        private static List<ContactInquiry> _inquiries = new();
+        private readonly ApplicationDbContext _db;
+
+        public ContactInquiryService(ApplicationDbContext db)
+        {
+            _db = db;
+        }
 
         public void AddInquiry(ContactInquiry inquiry)
         {
-            inquiry.Id = _inquiries.Count > 0 ? _inquiries.Max(i => i.Id) + 1 : 1;
-            _inquiries.Add(inquiry);
+            _db.ContactInquiries.Add(inquiry);
+            _db.SaveChanges();
         }
 
         public List<ContactInquiry> GetAllInquiries()
         {
-            return _inquiries;
+            return _db.ContactInquiries.ToList();
         }
 
         public ContactInquiry? GetInquiryById(int id)
         {
-            return _inquiries.FirstOrDefault(i => i.Id == id);
+            return _db.ContactInquiries.Find(id);
         }
 
         public void RespondToInquiry(int id, string response)
         {
-            var inquiry = GetInquiryById(id);
+            var inquiry = _db.ContactInquiries.Find(id);
             if (inquiry != null)
             {
                 inquiry.AdminResponse = response;
+                _db.SaveChanges();
             }
         }
     }

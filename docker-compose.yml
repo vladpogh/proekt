@@ -1,0 +1,15 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    platform: linux/arm64
+    environment:
+      ACCEPT_EULA: "1"
+      MSSQL_SA_PASSWORD: "YourStrong!Password1"
+    ports:
+      - "1435:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:

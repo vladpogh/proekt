@@ -1,44 +1,56 @@
+using proekt.Data;
 using proekt.Models;
 
 namespace proekt.Services;
 
 public class DoctorApplicationService
 {
-    private static List<DoctorApplication> _applications = new();
+    private readonly ApplicationDbContext _db;
+
+    public DoctorApplicationService(ApplicationDbContext db)
+    {
+        _db = db;
+    }
 
     public List<DoctorApplication> GetAll()
     {
-        return _applications;
+        return _db.DoctorApplications.ToList();
     }
 
     public List<DoctorApplication> GetPending()
     {
-        return _applications.Where(a => a.Status == ApplicationStatus.Pending).ToList();
+        return _db.DoctorApplications
+                  .Where(a => a.Status == ApplicationStatus.Pending)
+                  .ToList();
     }
 
     public DoctorApplication? GetById(int id)
     {
-        return _applications.FirstOrDefault(a => a.Id == id);
+        return _db.DoctorApplications.Find(id);
     }
 
     public DoctorApplication? GetByUserId(int userId)
     {
-        return _applications.OrderByDescending(a => a.CreatedAt).FirstOrDefault(a => a.UserId == userId);
+        return _db.DoctorApplications
+                  .Where(a => a.UserId == userId)
+                  .OrderByDescending(a => a.CreatedAt)
+                  .FirstOrDefault();
     }
 
     public void Add(DoctorApplication app)
     {
-        app.Id = _applications.Count > 0 ? _applications.Max(a => a.Id) + 1 : 1;
-        _applications.Add(app);
+        _db.DoctorApplications.Add(app);
+        _db.SaveChanges();
     }
 
     public void UpdateStatus(int id, ApplicationStatus status, string? adminComment = null)
     {
-        var a = GetById(id);
+        var a = _db.DoctorApplications.Find(id);
         if (a != null)
         {
             a.Status = status;
             a.AdminComment = adminComment;
+            _db.SaveChanges();
         }
     }
 }

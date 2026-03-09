@@ -1,44 +1,54 @@
+using proekt.Data;
 using proekt.Models;
 
 namespace proekt.Services;
 
 public class MedicalDocumentService
 {
-    private static List<MedicalDocument> _documents = new();
+    private readonly ApplicationDbContext _db;
+
+    public MedicalDocumentService(ApplicationDbContext db)
+    {
+        _db = db;
+    }
 
     public List<MedicalDocument> GetAllDocuments()
     {
-        return _documents;
+        return _db.MedicalDocuments.ToList();
     }
 
     public List<MedicalDocument> GetPendingDocuments()
     {
-        return _documents.Where(d => d.Status == DocumentStatus.Pending).ToList();
+        return _db.MedicalDocuments
+                  .Where(d => d.Status == DocumentStatus.Pending)
+                  .ToList();
     }
 
     public void AddDocument(MedicalDocument doc)
     {
-        doc.Id = _documents.Count > 0 ? _documents.Max(d => d.Id) + 1 : 1;
-        _documents.Add(doc);
+        _db.MedicalDocuments.Add(doc);
+        _db.SaveChanges();
     }
 
     public void ApproveDocument(int id, string? comment = null)
     {
-        var doc = _documents.FirstOrDefault(d => d.Id == id);
+        var doc = _db.MedicalDocuments.Find(id);
         if (doc != null)
         {
             doc.Status = DocumentStatus.Approved;
             doc.Comment = comment;
+            _db.SaveChanges();
         }
     }
 
     public void RejectDocument(int id, string? comment = null)
     {
-        var doc = _documents.FirstOrDefault(d => d.Id == id);
+        var doc = _db.MedicalDocuments.Find(id);
         if (doc != null)
         {
             doc.Status = DocumentStatus.Rejected;
             doc.Comment = comment;
+            _db.SaveChanges();
         }
     }
 }

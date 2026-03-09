@@ -1,38 +1,46 @@
+using proekt.Data;
 using proekt.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace proekt.Services;
 
 public class MedicalRecordService
 {
-    private static List<MedicalRecord> _records = new();
-    private static List<MedicalAuditLog> _auditLogs = new();
-    private static int _nextRecordId = 1;
-    private static int _nextEntryId = 1;
-    private static int _nextLogId = 1;
+    private readonly ApplicationDbContext _db;
+
+    public MedicalRecordService(ApplicationDbContext db)
+    {
+        _db = db;
+    }
 
     // ─── Records ───────────────────────────────────────────────────────────────
 
     public MedicalRecord CreateEmptyRecord(int userId)
     {
         // Guard: only one record per user
-        if (_records.Any(r => r.UserId == userId))
-            return _records.First(r => r.UserId == userId);
+        var existing = _db.MedicalRecords.FirstOrDefault(r => r.UserId == userId);
+        if (existing != null) return existing;
 
         var record = new MedicalRecord
         {
-            Id = _nextRecordId++,
             UserId = userId,
             CreatedAt = DateTime.Now,
             Entries = new List<MedicalEntry>()
         };
-        _records.Add(record);
+        _db.MedicalRecords.Add(record);
+        _db.SaveChanges();
         return record;
     }
 
     public MedicalRecord? GetRecordByUserId(int userId)
-        => _records.FirstOrDefault(r => r.UserId == userId);
+        => _db.MedicalRecords
+              .Include(r => r.Entries.Where(e => !e.IsDeleted))
+              .FirstOrDefault(r => r.UserId == userId);
 
-    public List<MedicalRecord> GetAllRecords() => _records;
+    public List<MedicalRecord> GetAllRecords()
+        => _db.MedicalRecords
+              .Include(r => r.Entries.Where(e => !e.IsDeleted))
+              .ToList();
 
     // ─── Entries ───────────────────────────────────────────────────────────────
 
@@ -44,7 +52,6 @@ public class MedicalRecordService
 
         var entry = new MedicalEntry
         {
-            Id = _nextEntryId++,
             MedicalRecordId = record.Id,
             Type = type,
             Title = title,
@@ -54,7 +61,8 @@ public class MedicalRecordService
             CreatedByDoctorName = doctorName,
             CreatedAt = DateTime.Now
         };
-        record.Entries.Add(entry);
+        _db.MedicalEntries.Add(entry);
+        _db.SaveChanges();
 
         AddAuditLog(record.Id, entry.Id, "AddEntry", doctorId, doctorName,
             $"Added {type}: \"{title}\"");
@@ -65,45 +73,36 @@ public class MedicalRecordService
     public bool EditEntry(int entryId, MedicalEntryType type, string title,
         string? description, DateTime date, int doctorId, string doctorName)
     {
-        foreach (var record in _records)
-        {
-            var entry = record.Entries.FirstOrDefault(e => e.Id == entryId && !e.IsDeleted);
-            if (entry == null) continue;
+        var entry = _db.MedicalEntries.FirstOrDefault(e => e.Id == entryId && !e.IsDeleted);
+        if (entry == null) return false;
 
-            entry.Type = type;
-            entry.Title = title;
-            entry.Description = description;
-            entry.Date = date;
+        entry.Type = type;
+        entry.Title = title;
+        entry.Description = description;
+        entry.Date = date;
+        _db.SaveChanges();
 
-            AddAuditLog(record.Id, entryId, "EditEntry", doctorId, doctorName,
-                $"Edited {type}: \"{title}\"");
-            return true;
-        }
-        return false;
+        AddAuditLog(entry.MedicalRecordId, entryId, "EditEntry", doctorId, doctorName,
+            $"Edited {type}: \"{title}\"");
+        return true;
     }
 
     public MedicalEntry? GetEntryById(int entryId)
-    {
-        foreach (var record in _records)
-        {
-            var entry = record.Entries.FirstOrDefault(e => e.Id == entryId && !e.IsDeleted);
-            if (entry != null) return entry;
-        }
-        return null;
-    }
+        => _db.MedicalEntries.FirstOrDefault(e => e.Id == entryId && !e.IsDeleted);
 
     // ─── General record info update ────────────────────────────────────────────
 
     public void UpdateRecordInfo(int userId, string? bloodType, string? allergies,
         string? chronicConditions, string? generalNotes, int doctorId, string doctorName)
     {
-        var record = GetRecordByUserId(userId);
+        var record = _db.MedicalRecords.FirstOrDefault(r => r.UserId == userId);
         if (record == null) return;
 
         record.BloodType = bloodType;
         record.Allergies = allergies;
         record.ChronicConditions = chronicConditions;
         record.GeneralNotes = generalNotes;
+        _db.SaveChanges();
 
         AddAuditLog(record.Id, null, "UpdateRecord", doctorId, doctorName,
             "Updated general record information");
@@ -114,9 +113,8 @@ public class MedicalRecordService
     private void AddAuditLog(int recordId, int? entryId, string actionType,
         int doctorId, string doctorName, string details)
     {
-        _auditLogs.Add(new MedicalAuditLog
+        _db.MedicalAuditLogs.Add(new MedicalAuditLog
         {
-            Id = _nextLogId++,
             MedicalRecordId = recordId,
             EntryId = entryId,
             ActionType = actionType,
@@ -125,10 +123,12 @@ public class MedicalRecordService
             Timestamp = DateTime.Now,
             Details = details
         });
+        _db.SaveChanges();
     }
 
     public List<MedicalAuditLog> GetAuditLogs(int recordId)
-        => _auditLogs.Where(l => l.MedicalRecordId == recordId)
-                     .OrderByDescending(l => l.Timestamp)
-                     .ToList();
+        => _db.MedicalAuditLogs
+              .Where(l => l.MedicalRecordId == recordId)
+              .OrderByDescending(l => l.Timestamp)
+              .ToList();
 }

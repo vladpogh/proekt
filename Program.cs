@@ -1,6 +1,12 @@
 using proekt.Services;
+using proekt.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Register SQL Server DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -10,15 +16,25 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddSingleton<UserService>();
-builder.Services.AddSingleton<MedicalDocumentService>();
-builder.Services.AddSingleton<DoctorApplicationService>();
+
+// All services that use DbContext must be Scoped (not Singleton)
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<MedicalDocumentService>();
+builder.Services.AddScoped<DoctorApplicationService>();
+builder.Services.AddScoped<ContactInquiryService>();
+builder.Services.AddScoped<MedicalRecordService>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<TranslationService>();
-builder.Services.AddSingleton<ContactInquiryService>();
-builder.Services.AddSingleton<MedicalRecordService>();
 
 var app = builder.Build();
+
+// Auto-apply migrations on startup so the database and tables are created automatically
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

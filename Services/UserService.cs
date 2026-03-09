@@ -1,39 +1,27 @@
+using proekt.Data;
 using proekt.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace proekt.Services;
 
 public class UserService
 {
-    private static List<User> _users = new()
+    private readonly ApplicationDbContext _db;
+
+    // ApplicationDbContext is injected by ASP.NET Core automatically
+    public UserService(ApplicationDbContext db)
     {
-        new User
-        {
-            Id = 1,
-            FullName = "Admin",
-            Email = "admin@example.com",
-            Password = "1234",
-            CreatedAt = DateTime.Now,
-            Role = UserRole.Admin
-        },
-        new User
-        {
-            Id = 2,
-            FullName = "Manager",
-            Email = "manager@example.com",
-            Password = "1234",
-            CreatedAt = DateTime.Now,
-            Role = UserRole.Manager
-        }
-    };
+        _db = db;
+    }
 
     public User? GetUserByEmail(string email)
     {
-        return _users.FirstOrDefault(u => u.Email?.ToLower() == email.ToLower());
+        return _db.Users.FirstOrDefault(u => u.Email != null && u.Email.ToLower() == email.ToLower());
     }
 
     public User? GetUserById(int id)
     {
-        return _users.FirstOrDefault(u => u.Id == id);
+        return _db.Users.Find(id);
     }
 
     public bool VerifyPassword(string email, string password)
@@ -53,58 +41,61 @@ public class UserService
         if (GetUserByEmail(email) != null)
             return false; // User already exists
 
-        var user = new User
+        _db.Users.Add(new User
         {
-            Id = _users.Count > 0 ? _users.Max(u => u.Id) + 1 : 1,
             FullName = fullName,
             Email = email,
             Password = password,
             CreatedAt = DateTime.Now,
-            Role = UserRole.User // Default role
-        };
-
-        _users.Add(user);
+            Role = UserRole.User
+        });
+        _db.SaveChanges(); // Write to PostgreSQL
         return true;
     }
 
     public List<User> GetAllUsers()
     {
-        return _users;
+        return _db.Users.ToList();
     }
 
     public void UpdateUserRole(int userId, UserRole newRole)
     {
-        var user = GetUserById(userId);
+        var user = _db.Users.Find(userId);
         if (user != null)
         {
             user.Role = newRole;
+            _db.SaveChanges(); // Write to PostgreSQL
         }
     }
 
     public bool ChangePassword(int userId, string newPassword)
     {
-        var user = GetUserById(userId);
+        var user = _db.Users.Find(userId);
         if (user == null) return false;
         user.Password = newPassword;
+        _db.SaveChanges(); // Write to PostgreSQL
         return true;
     }
 
     public void RemoveUser(int userId)
     {
-        var user = GetUserById(userId);
+        var user = _db.Users.Find(userId);
         if (user != null)
         {
-            _users.Remove(user);
+            _db.Users.Remove(user);
+            _db.SaveChanges(); // Write to PostgreSQL
         }
     }
+
     public void UpdateUserProfile(int userId, string fullName, string? phone, string? location)
     {
-        var user = GetUserById(userId);
+        var user = _db.Users.Find(userId);
         if (user != null)
         {
             user.FullName = fullName;
             user.PhoneNumber = phone;
             user.Location = location;
+            _db.SaveChanges(); // Write to PostgreSQL
         }
     }
 }

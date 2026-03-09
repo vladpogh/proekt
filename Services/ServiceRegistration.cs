@@ -7,7 +7,7 @@ namespace proekt
     {
         public static void AddProjectServices(this IServiceCollection services)
         {
-            services.AddSingleton<UserService>();
+            services.AddScoped<UserService>(); // Scoped because UserService now depends on ApplicationDbContext
             services.AddSingleton<MedicalDocumentService>();
             services.AddSingleton<DoctorApplicationService>();
             services.AddSingleton<TranslationService>();
