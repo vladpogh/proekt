@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Lovable - Системи за медицински досиета";
+    ViewData["Title"] = "MedReports - Системи за медицински досиета";
 }
 
 <!-- Hero Section -->
@@ -119,16 +119,16 @@
 <div class="container py-5">
     <div class="row text-center">
         <div class="col-md-4 mb-4">
-            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">500+</div>
-            <div style="color: #666; margin-top: 0.5rem;">Проекта</div>
+            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">@(ViewBag.TotalRecords ?? 0)+</div>
+            <div style="color: #666; margin-top: 0.5rem;">Медицински записи</div>
         </div>
         <div class="col-md-4 mb-4">
-            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">15+</div>
-            <div style="color: #666; margin-top: 0.5rem;">Години опит</div>
+            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">@(ViewBag.TotalDoctors ?? 0)+</div>
+            <div style="color: #666; margin-top: 0.5rem;">Специалисти</div>
         </div>
         <div class="col-md-4 mb-4">
-            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">99%</div>
-            <div style="color: #666; margin-top: 0.5rem;">Удовлетворени</div>
+            <div style="font-size: 2.5rem; font-weight: 900; color: #3b82f6;">@(ViewBag.TotalUsers ?? 0)+</div>
+            <div style="color: #666; margin-top: 0.5rem;">Потребители</div>
         </div>
     </div>
 </div>

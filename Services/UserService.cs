@@ -87,15 +87,20 @@ public class UserService
         }
     }
 
-    public void UpdateUserProfile(int userId, string fullName, string? phone, string? location)
-    {
-        var user = _db.Users.Find(userId);
-        if (user != null)
+        public void UpdateUserProfile(int userId, string fullName, string? phone, string? location)
         {
-            user.FullName = fullName;
-            user.PhoneNumber = phone;
-            user.Location = location;
-            _db.SaveChanges(); // Write to PostgreSQL
+            var user = _db.Users.Find(userId);
+            if (user != null)
+            {
+                user.FullName = fullName;
+                user.PhoneNumber = phone;
+                user.Location = location;
+                _db.SaveChanges(); // Write to PostgreSQL
+            }
+        }
+
+        public int GetCountByRole(UserRole role)
+        {
+            return _db.Users.Count(u => u.Role == role);
         }
     }
-}

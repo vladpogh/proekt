@@ -131,4 +131,9 @@ public class MedicalRecordService
               .Where(l => l.MedicalRecordId == recordId)
               .OrderByDescending(l => l.Timestamp)
               .ToList();
+
+    public int GetTotalRecordsCount()
+    {
+        return _db.MedicalRecords.Count();
+    }
 }

@@ -264,10 +264,15 @@ namespace proekt.Controllers
         return RedirectToAction("Index");
     }
 
-    public IActionResult Index()
-    {
-        return View();
-    }
+        public IActionResult Index()
+        {
+            // Fetch real stats from DB
+            ViewBag.TotalRecords = _medRecordService.GetTotalRecordsCount();
+            ViewBag.TotalDoctors = _userService.GetCountByRole(UserRole.Doctor);
+            ViewBag.TotalUsers = _userService.GetAllUsers().Count; // Total registered users
+            
+            return View();
+        }
 
     public IActionResult Products()
     {
