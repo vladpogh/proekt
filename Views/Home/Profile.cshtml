@@ -29,7 +29,7 @@
             <a href="@Url.Action("Contact", "Home")" class="menu-item">
                 <i class="bi bi-envelope"></i> Contact Us
             </a>
-            <a href="#" class="menu-item">
+            <a href="#" class="menu-item" id="link-inquiries" onclick="showSection('inquiries')">
                 <i class="bi bi-chat-left-text"></i> My Inquiries & Answers
                  @if(inquiries != null && inquiries.Count > 0) {
                     <span class="badge bg-primary ms-auto">@inquiries.Count</span>
@@ -154,6 +154,86 @@
             </div>
         </div>
 
+        <div id="inquiries-section" class="d-none">
+            <div class="content-card">
+                <div class="card-header-clean">
+                    <div>
+                        <h4 class="mb-1">My Inquiries & Answers</h4>
+                        <p class="text-muted mb-0">Track your help requests and application status</p>
+                    </div>
+                </div>
+
+                <!-- Doctor Application Status -->
+                <div class="mt-4">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-clipboard2-pulse me-2"></i>Doctor Application Status</h6>
+                    @if (application != null)
+                    {
+                        <div class="alert @(application.Status == proekt.Models.ApplicationStatus.Approved ? "alert-success" : (application.Status == proekt.Models.ApplicationStatus.Rejected ? "alert-danger" : "alert-warning"))">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <strong>Status: @application.Status</strong>
+                                <small>Submitted on @application.CreatedAt.ToString("dd MMM yyyy")</small>
+                            </div>
+                            @if (!string.IsNullOrEmpty(application.AdminComment))
+                            {
+                                <div class="mt-2 border-top pt-2">
+                                    <strong>Admin Feedback:</strong>
+                                    <p class="mb-0">@application.AdminComment</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">You haven't submitted a doctor application yet.</p>
+                        <a asp-action="DoctorApplication" class="btn btn-sm btn-outline-primary">Apply Now</a>
+                    }
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Contact Inquiries -->
+                <div>
+                    <h6 class="fw-bold mb-3"><i class="bi bi-chat-dots me-2"></i>Contact History</h6>
+                    @if (inquiries != null && inquiries.Any())
+                    {
+                        <div class="inquiry-list">
+                            @foreach (var inq in inquiries)
+                            {
+                                <div class="inquiry-item mb-3 p-3 border rounded">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="fw-bold text-primary mb-1">@inq.Subject</h6>
+                                        <small class="text-muted">@inq.CreatedAt.ToString("g")</small>
+                                    </div>
+                                    <p class="mb-2">@inq.Message</p>
+                                    @if (!string.IsNullOrEmpty(inq.AdminResponse))
+                                    {
+                                        <div class="bg-light p-3 rounded mt-2 border-start border-4 border-primary">
+                                            <div class="d-flex align-items-center mb-1">
+                                                <i class="bi bi-reply-fill text-primary me-2"></i>
+                                                <strong class="small">Admin Response:</strong>
+                                            </div>
+                                            <p class="mb-0 italic small">@inq.AdminResponse</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="text-muted small mt-2">
+                                            <i class="bi bi-clock me-1"></i> Awaiting response...
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">You haven't sent any inquiries yet.</p>
+                        <a asp-action="Contact" class="btn btn-sm btn-outline-secondary">Send an Inquiry</a>
+                    }
+                </div>
+            </div>
+        </div>
+
         <div class="content-card mt-4 bg-light-blue">
             <div class="d-flex align-items-start">
                 <div class="icon-box me-3">
@@ -200,10 +280,12 @@
             // Hide all sections
             document.getElementById('personal-info-section').classList.add('d-none');
             document.getElementById('change-password-section').classList.add('d-none');
+            document.getElementById('inquiries-section').classList.add('d-none');
             
             // Remove active class from sidebar links
             document.getElementById('link-personal-info').classList.remove('active');
             document.getElementById('link-change-password').classList.remove('active');
+            document.getElementById('link-inquiries').classList.remove('active');
             
             // Remove chevron from all links
             document.querySelectorAll('.menu-item .bi-chevron-right').forEach(el => el.remove());

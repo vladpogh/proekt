@@ -141,8 +141,15 @@ namespace proekt.Controllers
             var application = _appService.GetByUserId(userId);
             ViewBag.Application = application;
 
-            // Pass all inquiries for this user to the view
-            ViewBag.AllInquiries = _inquiryService.GetAllInquiries();
+            // Pass only inquiries for this user to the view
+            if (user != null && !string.IsNullOrEmpty(user.Email))
+            {
+                ViewBag.AllInquiries = _inquiryService.GetInquiriesByEmail(user.Email);
+            }
+            else
+            {
+                ViewBag.AllInquiries = new List<ContactInquiry>();
+            }
 
             return View();
         }

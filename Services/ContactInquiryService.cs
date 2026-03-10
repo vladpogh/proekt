@@ -20,7 +20,15 @@ namespace proekt.Services
 
         public List<ContactInquiry> GetAllInquiries()
         {
-            return _db.ContactInquiries.ToList();
+            return _db.ContactInquiries.OrderByDescending(i => i.CreatedAt).ToList();
+        }
+
+        public List<ContactInquiry> GetInquiriesByEmail(string email)
+        {
+            return _db.ContactInquiries
+                      .Where(i => i.Email.ToLower() == email.ToLower())
+                      .OrderByDescending(i => i.CreatedAt)
+                      .ToList();
         }
 
         public ContactInquiry? GetInquiryById(int id)
