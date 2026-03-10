@@ -38,6 +38,12 @@ public class TranslationService
                 ["DemoAccount"] = "Demo account:",
                 ["DemoEmail"] = "Email: admin@example.com",
                 ["DemoPassword"] = "Password: 1234",
+                ["About Us"] = "About Us",
+                ["Medical Record"] = "Medical Record",
+                ["Contact"] = "Contact",
+                ["AdminPanel"] = "Admin Panel",
+                ["MyProfile"] = "My Profile",
+                ["Logout"] = "Logout",
             },
             ["bg"] = new Dictionary<string, string>
             {
@@ -51,6 +57,12 @@ public class TranslationService
                 ["DemoAccount"] = "Демо акаунт:",
                 ["DemoEmail"] = "Email: admin@example.com",
                 ["DemoPassword"] = "Парола: 1234",
+                ["About Us"] = "За нас",
+                ["Medical Record"] = "Мед. Досие",
+                ["Contact"] = "Контакти",
+                ["AdminPanel"] = "Админ Панел",
+                ["MyProfile"] = "Моят Профил",
+                ["Logout"] = "Изход",
             }
         };
     }
