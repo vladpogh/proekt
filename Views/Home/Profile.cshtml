@@ -168,7 +168,7 @@
                     </div>
                     
                     <div class="mt-4 text-end">
-                        <button type="submit" class="btn btn-primary">Update Password</button>
+                        <button type="submit" id="passwordSubmitBtn" disabled class="btn btn-primary" style="background: #999; border-color: #999; cursor: not-allowed;">Update Password</button>
                     </div>
                 </form>
             </div>
@@ -340,6 +340,8 @@
             const reqNot1234 = document.getElementById('req-not1234');
 
             if (passwordInput) {
+                const submitBtn = document.getElementById('passwordSubmitBtn');
+                
                 passwordInput.addEventListener('focus', () => {
                     requirementsDiv.style.display = 'block';
                 });
@@ -347,17 +349,29 @@
                 passwordInput.addEventListener('input', function() {
                     const val = this.value;
                     
-                    // Validate length
-                    updateRequirement(reqLength, val.length >= 8);
-                    
-                    // Validate special char
-                    updateRequirement(reqSpecial, /[^A-Za-z0-9]/.test(val));
-                    
-                    // Validate number
-                    updateRequirement(reqNumber, /[0-9]/.test(val));
-                    
-                    // Validate not 1234
-                    updateRequirement(reqNot1234, val !== '1234' && val.length > 0);
+                    const isLengthValid = val.length >= 8;
+                    const isSpecialValid = /[^A-Za-z0-9]/.test(val);
+                    const isNumberValid = /[0-9]/.test(val);
+                    const isNot1234Valid = val !== '1234' && val.length > 0;
+
+                    // Validate requirements
+                    updateRequirement(reqLength, isLengthValid);
+                    updateRequirement(reqSpecial, isSpecialValid);
+                    updateRequirement(reqNumber, isNumberValid);
+                    updateRequirement(reqNot1234, isNot1234Valid);
+
+                    // Enable/Disable Button
+                    if (isLengthValid && isSpecialValid && isNumberValid && isNot1234Valid) {
+                        submitBtn.disabled = false;
+                        submitBtn.style.background = ''; // reset to default primary
+                        submitBtn.style.borderColor = '';
+                        submitBtn.style.cursor = 'pointer';
+                    } else {
+                        submitBtn.disabled = true;
+                        submitBtn.style.background = '#999';
+                        submitBtn.style.borderColor = '#999';
+                        submitBtn.style.cursor = 'not-allowed';
+                    }
                 });
             }
 

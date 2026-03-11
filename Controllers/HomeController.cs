@@ -356,26 +356,27 @@ namespace proekt.Controllers
     {
         if (model.Password == "1234")
         {
-            ModelState.AddModelError("", "Password '1234' is not allowed");
-            return View(model);
+            ModelState.AddModelError("Password", "Password '1234' is not allowed");
         }
 
-        if (!string.IsNullOrEmpty(model.FullName) && !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password) && _userService.RegisterUser(model.FullName, model.Email, model.Password))
+        if (ModelState.IsValid)
         {
-            HttpContext.Session.SetString("UserEmail", model.Email);
-            HttpContext.Session.SetString("UserName", model.FullName);
-            var user = _userService.GetUserByEmail(model.Email);
-            if (user != null)
+            if (_userService.RegisterUser(model.FullName ?? "", model.Email ?? "", model.Password ?? ""))
             {
-                HttpContext.Session.SetInt32("UserId", user.Id);
-                HttpContext.Session.SetString("UserRole", user.Role.ToString());
-                // Auto-create empty medical record for new user
-                _medRecordService.CreateEmptyRecord(user.Id);
+                HttpContext.Session.SetString("UserEmail", model.Email ?? "");
+                HttpContext.Session.SetString("UserName", model.FullName ?? "");
+                var user = _userService.GetUserByEmail(model.Email ?? "");
+                if (user != null)
+                {
+                    HttpContext.Session.SetInt32("UserId", user.Id);
+                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
+                    _medRecordService.CreateEmptyRecord(user.Id);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            ModelState.AddModelError("", "Email already exists or invalid data");
         }
 
-        ModelState.AddModelError("", "Email already exists or invalid data");
         return View(model);
     }
 
