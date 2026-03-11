@@ -49,6 +49,15 @@ public class TranslationService
                 ["PassSpecial"] = "At least 1 special character",
                 ["PassNumber"] = "At least 1 number",
                 ["PassNot1234"] = "Cannot be '1234'",
+                ["DoctorApplication"] = "Doctor Application",
+                ["TellUsMore"] = "Tell us about your experience",
+                ["EmploymentContract"] = "Employment Contract",
+                ["IDCard"] = "ID Card (Front & Back)",
+                ["MedicalLicense"] = "Medical License",
+                ["SubmitApplication"] = "Submit Application",
+                ["AppDescription"] = "Join our network of healthcare professionals. Please provide the required documents for verification.",
+                ["FileUpload"] = "Click to upload or drag and drop",
+                ["FileRequired"] = "PDF, JPG or PNG (max. 10MB)",
             },
             ["bg"] = new Dictionary<string, string>
             {
@@ -73,6 +82,15 @@ public class TranslationService
                 ["PassSpecial"] = "Поне 1 специален символ",
                 ["PassNumber"] = "Поне 1 цифра",
                 ["PassNot1234"] = "Не може да бъде '1234'",
+                ["DoctorApplication"] = "Кандидатура за лекар",
+                ["TellUsMore"] = "Разкажете ни за вашия опит",
+                ["EmploymentContract"] = "Трудов договор",
+                ["IDCard"] = "Лична карта (двустранно)",
+                ["MedicalLicense"] = "Медицински лиценз",
+                ["SubmitApplication"] = "Изпрати кандидатура",
+                ["AppDescription"] = "Присъединете се към нашата мрежа. Моля, предоставете необходимите документи за проверка.",
+                ["FileUpload"] = "Кликнете за качване или плъзнете тук",
+                ["FileRequired"] = "PDF, JPG или PNG (макс. 10MB)",
             }
         };
     }
