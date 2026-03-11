@@ -44,6 +44,11 @@ public class TranslationService
                 ["AdminPanel"] = "Admin Panel",
                 ["MyProfile"] = "My Profile",
                 ["Logout"] = "Logout",
+                ["PassRequirements"] = "Password Requirements",
+                ["PassLength"] = "At least 8 characters",
+                ["PassSpecial"] = "At least 1 special character",
+                ["PassNumber"] = "At least 1 number",
+                ["PassNot1234"] = "Cannot be '1234'",
             },
             ["bg"] = new Dictionary<string, string>
             {
@@ -63,6 +68,11 @@ public class TranslationService
                 ["AdminPanel"] = "Админ Панел",
                 ["MyProfile"] = "Моят Профил",
                 ["Logout"] = "Изход",
+                ["PassRequirements"] = "Изисквания за парола",
+                ["PassLength"] = "Поне 8 символа",
+                ["PassSpecial"] = "Поне 1 специален символ",
+                ["PassNumber"] = "Поне 1 цифра",
+                ["PassNot1234"] = "Не може да бъде '1234'",
             }
         };
     }

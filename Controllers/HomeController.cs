@@ -184,9 +184,9 @@ namespace proekt.Controllers
                return RedirectToAction("Profile", new { tab = "password" });
             }
 
-            if (string.IsNullOrEmpty(newPassword))
+            if (newPassword == "1234")
             {
-                TempData["ProfileMessage"] = "New password cannot be empty.";
+                TempData["ProfileMessage"] = "Password '1234' is not allowed.";
                 return RedirectToAction("Profile", new { tab = "password" });
             }
 
@@ -354,6 +354,12 @@ namespace proekt.Controllers
     [HttpPost]
     public IActionResult Register(RegisterViewModel model)
     {
+        if (model.Password == "1234")
+        {
+            ModelState.AddModelError("", "Password '1234' is not allowed");
+            return View(model);
+        }
+
         if (!string.IsNullOrEmpty(model.FullName) && !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password) && _userService.RegisterUser(model.FullName, model.Email, model.Password))
         {
             HttpContext.Session.SetString("UserEmail", model.Email);

@@ -1,3 +1,4 @@
+@inject proekt.Services.TranslationService Loc
 @{
     ViewData["Title"] = "My Profile";
     var user = ViewBag.User as proekt.Models.User;
@@ -137,6 +138,25 @@
                             <div class="form-group-custom">
                                 <label><i class="bi bi-lock"></i> NEW PASSWORD</label>
                                 <input type="password" class="form-control-custom" name="newPassword" id="newPassword" required>
+                                
+                                <!-- Password Requirements UI -->
+                                <div id="passwordRequirements" style="margin-top: 0.75rem; font-size: 0.85rem; display: none;">
+                                    <p style="font-weight: 600; margin-bottom: 0.5rem; color: #666;">@Loc.T("PassRequirements")</p>
+                                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.25rem;">
+                                        <li id="req-length" style="color: #999; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span class="icon">○</span> @Loc.T("PassLength")
+                                        </li>
+                                        <li id="req-special" style="color: #999; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span class="icon">○</span> @Loc.T("PassSpecial")
+                                        </li>
+                                        <li id="req-number" style="color: #999; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span class="icon">○</span> @Loc.T("PassNumber")
+                                        </li>
+                                        <li id="req-not1234" style="color: #999; display: flex; align-items: center; gap: 0.5rem;">
+                                            <span class="icon">○</span> @Loc.T("PassNot1234")
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -310,6 +330,49 @@
             }
             return true;
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('newPassword');
+            const requirementsDiv = document.getElementById('passwordRequirements');
+            const reqLength = document.getElementById('req-length');
+            const reqSpecial = document.getElementById('req-special');
+            const reqNumber = document.getElementById('req-number');
+            const reqNot1234 = document.getElementById('req-not1234');
+
+            if (passwordInput) {
+                passwordInput.addEventListener('focus', () => {
+                    requirementsDiv.style.display = 'block';
+                });
+
+                passwordInput.addEventListener('input', function() {
+                    const val = this.value;
+                    
+                    // Validate length
+                    updateRequirement(reqLength, val.length >= 8);
+                    
+                    // Validate special char
+                    updateRequirement(reqSpecial, /[^A-Za-z0-9]/.test(val));
+                    
+                    // Validate number
+                    updateRequirement(reqNumber, /[0-9]/.test(val));
+                    
+                    // Validate not 1234
+                    updateRequirement(reqNot1234, val !== '1234' && val.length > 0);
+                });
+            }
+
+            function updateRequirement(el, isValid) {
+                if (!el) return;
+                const icon = el.querySelector('.icon');
+                if (isValid) {
+                    el.style.color = '#059669'; // success green
+                    icon.textContent = '●';
+                } else {
+                    el.style.color = '#999';
+                    icon.textContent = '○';
+                }
+            }
+        });
 
         // Check for section query param or hash on load
         window.onload = function() {
