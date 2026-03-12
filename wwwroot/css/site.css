@@ -1368,3 +1368,81 @@ body {
     .hp-title { font-size: 3rem; }
     .hp-hero { padding: 60px 0; }
 }
+
+/* Responsive Refinements */
+@media (max-width: 768px) {
+    /* Navbar Polish for Mobile */
+    .navbar-collapse {
+        padding: 1rem 0;
+    }
+    
+    .nav-premium-btn {
+        margin: 0.5rem 0;
+        width: 100% !important;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .hp-title {
+        font-size: 2.2rem;
+        letter-spacing: -1px;
+    }
+
+    .hp-badge {
+        font-size: 0.8rem;
+        padding: 6px 16px;
+    }
+
+    .hp-feature-card {
+        padding: 1.5rem;
+    }
+
+    .hp-stat-glass {
+        padding: 1.5rem;
+    }
+
+    .hp-stat-value {
+        font-size: 2.2rem;
+    }
+
+    /* Dashboard Grid Adjustments */
+    .mr-info-grid {
+        padding: 1rem;
+        grid-template-columns: 1fr;
+    }
+
+    .mr-header {
+        padding: 1.5rem;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .mr-header-left {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .mr-tabs-wrap {
+        padding: 0.5rem 1rem;
+    }
+
+    .mr-tab {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hp-title {
+        font-size: 1.8rem;
+    }
+
+    .hp-desc {
+        font-size: 0.95rem;
+    }
+
+    .hp-hero-img-container img {
+        border-radius: 20px;
+        border-width: 4px;
+    }
+}
