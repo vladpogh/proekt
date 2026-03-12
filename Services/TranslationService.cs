@@ -248,6 +248,16 @@ public class TranslationService
                 ["DangerZone"] = "Danger Zone",
                 ["TerminateFull"] = "Terminate User Account",
                 ["ManagerAction"] = "Manager Action Required",
+                ["ClientMessages"] = "Client Messages",
+                ["Subject"] = "Subject",
+                ["Message"] = "Message",
+                ["Date"] = "Date",
+                ["AdminResponse"] = "Admin Response",
+                ["NoResponseYet"] = "No response yet.",
+                ["SendResponse"] = "Send Response",
+                ["InquiryDetails"] = "Inquiry Details",
+                ["NeedsResponse"] = "Needs Response",
+                ["Responded"] = "Responded",
             },
             ["bg"] = new Dictionary<string, string>
             {
@@ -474,6 +484,16 @@ public class TranslationService
                 ["DangerZone"] = "Опасна зона",
                 ["TerminateFull"] = "Прекратяване на потребителски акаунт",
                 ["ManagerAction"] = "Изисква се действие от мениджър",
+                ["ClientMessages"] = "Клиентски съобщения",
+                ["Subject"] = "Тема",
+                ["Message"] = "Съобщение",
+                ["Date"] = "Дата",
+                ["AdminResponse"] = "Административен отговор",
+                ["NoResponseYet"] = "Все още няма отговор.",
+                ["SendResponse"] = "Изпрати отговор",
+                ["InquiryDetails"] = "Детайли на запитването",
+                ["NeedsResponse"] = "Нуждае се от отговор",
+                ["Responded"] = "Отговорено",
             }
         };
     }

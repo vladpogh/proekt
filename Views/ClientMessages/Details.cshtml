@@ -1,25 +1,136 @@
+@inject proekt.Services.TranslationService Loc
 @model proekt.Models.ContactInquiry
+
 @{
-    ViewData["Title"] = "Inquiry Details";
+    ViewData["Title"] = Loc.T("InquiryDetails") + " #" + Model.Id;
 }
-<h2>Inquiry Details</h2>
-<div class="card p-3 mb-3">
-    <div><b>Name:</b> @Model.Name</div>
-    <div><b>Email:</b> @Model.Email</div>
-    <div><b>Phone:</b> @Model.Phone</div>
-    <div><b>Subject:</b> @Model.Subject</div>
-    <div><b>Message:</b> @Model.Message</div>
-    <div><b>Date:</b> @Model.CreatedAt.ToString("g")</div>
-    <div><b>Admin Response:</b> @(string.IsNullOrEmpty(Model.AdminResponse) ? "No response yet." : Model.AdminResponse)</div>
-</div>
-@if (string.IsNullOrEmpty(Model.AdminResponse))
-{
-    <form asp-action="Respond" method="post">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <div class="mb-2">
-            <label>Response:</label>
-            <textarea name="response" class="form-control" required></textarea>
+
+<div class="admin-details-container py-5">
+    <div class="container">
+        <!-- Breadcrumb / Back -->
+        <div class="mb-4">
+            <a asp-action="AdminPanel" asp-controller="Home" class="btn btn-link text-decoration-none p-0 d-inline-flex align-items-center gap-2 text-muted hover-primary">
+                <i class="bi bi-arrow-left"></i>
+                <span>@Loc.T("Cancel")</span>
+            </a>
         </div>
-        <button type="submit" class="btn btn-success">Send Response</button>
-    </form>
+
+        <div class="row g-4">
+            <!-- Left Column: Inquiry Content -->
+            <div class="col-lg-8">
+                <div class="content-card premium-card">
+                    <div class="card-header-clean border-bottom pb-3 mb-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="h4 mb-1 fw-bold">@Loc.T("InquiryDetails") #@Model.Id</h2>
+                            <p class="text-muted small mb-0">@Loc.T("Date"): @Model.CreatedAt.ToString("g")</p>
+                        </div>
+                        @if (string.IsNullOrEmpty(Model.AdminResponse))
+                        {
+                            <span class="badge bg-warning-soft text-warning px-3 py-2 rounded-pill fw-bold">@Loc.T("NeedsResponse")</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success-soft text-success px-3 py-2 rounded-pill fw-bold">@Loc.T("Responded")</span>
+                        }
+                    </div>
+
+                    <div class="inquiry-metadata mb-4 border-bottom pb-4">
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase fw-bold d-block mb-1">@Loc.T("FullName")</label>
+                                <p class="mb-0 fw-bold">@Model.Name</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase fw-bold d-block mb-1">@Loc.T("Email")</label>
+                                <p class="mb-0 fw-bold">@Model.Email</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-muted small text-uppercase fw-bold d-block mb-1">@Loc.T("Phone")</label>
+                                <p class="mb-0 fw-bold">@(string.IsNullOrEmpty(Model.Phone) ? "N/A" : Model.Phone)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inquiry-body mb-5">
+                        <label class="text-muted small text-uppercase fw-bold mb-3 d-block">@Loc.T("Message")</label>
+                        <div class="p-4 bg-light rounded-4 italic-message shadow-sm border-0">
+                            <h6 class="fw-bold text-primary mb-3">@Model.Subject</h6>
+                            <p class="mb-0 text-dark" style="white-space: pre-wrap;">@Model.Message</p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.AdminResponse))
+                    {
+                        <div class="admin-response-section bg-primary-soft p-4 rounded-4 border border-primary border-opacity-10">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
+                                    <i class="bi bi-person-check-fill" style="font-size: 0.8rem;"></i>
+                                </div>
+                                <h6 class="mb-0 fw-bold text-primary">@Loc.T("AdminResponse")</h6>
+                            </div>
+                            <p class="mb-0 text-dark-emphasis">@Model.AdminResponse</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Right Column: Response Action -->
+            <div class="col-lg-4">
+                @if (string.IsNullOrEmpty(Model.AdminResponse))
+                {
+                    <div class="content-card sticky-top" style="top: 2rem; z-index: 10;">
+                        <div class="d-flex align-items-center gap-2 mb-4">
+                            <i class="bi bi-reply-all-fill text-success fs-4"></i>
+                            <h5 class="fw-bold mb-0">@Loc.T("SendResponse")</h5>
+                        </div>
+                        
+                        <form asp-action="Respond" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold text-muted">@Loc.T("AdminResponse")</label>
+                                <textarea name="response" class="form-control rounded-3" rows="6" required 
+                                          placeholder="@Loc.T("AdminResponse")..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-4 shadow-sm hover-lift d-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-send-fill"></i> @Loc.T("SendResponse")
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="content-card text-center p-5">
+                        <div class="bg-success-soft text-success rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 64px; height: 64px;">
+                            <i class="bi bi-check2-all fs-2"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2">@Loc.T("Responded")</h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .admin-details-container { background: #f8faff; min-height: 100vh; }
+    .premium-card { border-top: 5px solid #0052CC; }
+    .bg-warning-soft { background: rgba(255, 193, 7, 0.1); }
+    .bg-success-soft { background: rgba(5, 150, 105, 0.1); }
+    .bg-primary-soft { background: rgba(0, 82, 204, 0.05); }
+    .hover-primary:hover { color: #0052CC !important; }
+    
+    .content-card {
+        background: #fff;
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+        border: 1px solid #edf2f7;
+    }
+    
+    .italic-message { color: #4a5568; line-height: 1.6; }
+    .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(0,0,0,0.08); }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 }
