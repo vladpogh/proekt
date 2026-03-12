@@ -81,7 +81,7 @@
                                 <li class="nav-item ms-2">
                                     <a class="btn btn-sm" asp-controller="MedicalRecord" asp-action="DoctorDashboard"
                                        style="background:#059669;color:#fff;font-weight:600;">
-                                       <i class="bi bi-clipboard2-pulse" style="margin-right:4px;"></i>Doctor Dashboard
+                                       <i class="bi bi-clipboard2-pulse" style="margin-right:4px;"></i>@Loc.T("DoctorDashboard")
                                     </a>
                                 </li>
                             }
@@ -187,15 +187,15 @@
                     <h5>@Loc.T("Footer_Contact_Title")</h5>
                     <div class="footer-contact-item">
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Sofia, Vitosha Blvd 123</span>
+                        <span>@Loc.T("Contact_Info_Addr_Desc")</span>
                     </div>
                     <div class="footer-contact-item">
                         <i class="fas fa-phone-alt"></i>
-                        <span>+359 2 123 4567</span>
+                        <span>@Loc.T("Contact_Info_Phone_Desc")</span>
                     </div>
                     <div class="footer-contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span>info@medreports.bg</span>
+                        <span>@Loc.T("Contact_Info_Email_Desc")</span>
                     </div>
                 </div>
             </div>

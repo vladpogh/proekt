@@ -6,36 +6,11 @@
 <h2>@Loc.T("AdminPanel")</h2>
 
 @inject proekt.Services.UserService UserService
-@inject proekt.Services.MedicalDocumentService DocService
 @inject proekt.Services.DoctorApplicationService AppService
 @using proekt.Models
 
 @await Html.PartialAsync("~/Views/ClientMessages/_ClientMessagesNav.cshtml")
-<div class="mb-4">
-    <h4>@Loc.T("ApproveMedicalDocuments")</h4>
-    <div id="documents-list">
-        @foreach (var doc in DocService.GetPendingDocuments())
-        {
-            <div class="card mb-2 p-2">
-                <div><b>Document #@doc.Id</b> (User ID: @doc.UserId, File: @doc.FileName)</div>
-                <form asp-action="ApproveDocument" method="post" class="d-inline">
-                    <input type="hidden" name="id" value="@doc.Id" />
-                    <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-                    <button type="submit" class="btn btn-success btn-sm">@Loc.T("Approve")</button>
-                </form>
-                <form asp-action="RejectDocument" method="post" class="d-inline ms-2">
-                    <input type="hidden" name="id" value="@doc.Id" />
-                    <input type="text" name="comment" placeholder="Comment (optional)" class="form-control d-inline w-auto" />
-                    <button type="submit" class="btn btn-danger btn-sm">@Loc.T("Reject")</button>
-                </form>
-            </div>
-        }
-        @if (!DocService.GetPendingDocuments().Any())
-        {
-            <div class="text-muted">@Loc.T("NoPending")</div>
-        }
-    </div>
-</div>
+
 
     <div class="mb-4">
         <h4>@Loc.T("DoctorApplications")</h4>
@@ -43,7 +18,7 @@
             @foreach (var app in AppService.GetPending())
             {
                 <div class="card mb-2 p-2">
-                    <div><b>Application #@app.Id</b> (User ID: @app.UserId, Submitted: @app.CreatedAt.ToString("g"))</div>
+                    <div><b>@Loc.T("DoctorApplications") #@app.Id</b> (@Loc.T("FullName"): @(UserService.GetUserById(app.UserId)?.FullName ?? "N/A"), @Loc.T("SubmittedOn"): @app.CreatedAt.ToString("g"))</div>
                         <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-outline-primary btn-sm mt-2">@Loc.T("ShowMore")</a>
                 </div>
             }
@@ -55,21 +30,21 @@
     </div>
 
 <div class="mb-4">
-    <h4>Close User Profiles</h4>
+    <h4>@Loc.T("CloseUserProfiles")</h4>
     <div id="users-list">
         @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
         {
             <div class="card mb-2 p-2">
-                <b>@user.FullName</b> (ID: @user.Id, Role: @user.Role)
+                <div><b>@user.FullName</b> (ID: @user.Id, @Loc.T("Role"): @Loc.T(user.Role.ToString()))</div>
                 <form asp-action="TerminateUser" method="post" class="d-inline ms-2">
                     <input type="hidden" name="id" value="@user.Id" />
-                    <button type="submit" class="btn btn-danger btn-sm">Terminate</button>
+                    <button type="submit" class="btn btn-danger btn-sm">@Loc.T("Terminate")</button>
                 </form>
             </div>
         }
         @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
         {
-            <div class="text-muted">No users to terminate.</div>
+            <div class="text-muted">@Loc.T("NoUsersToTerminate")</div>
         }
     </div>
 </div>
@@ -80,31 +55,31 @@
 @if (currentRole == "Manager")
 {
     <div class="mb-4">
-        <h4>Make/Remove Admin (Managers only)</h4>
+        <h4>@Loc.T("MakeRemoveAdmin")</h4>
         <div id="admin-management-list">
             @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Manager))
             {
                 <div class="card mb-2 p-2">
-                    <b>@user.FullName</b> (ID: @user.Id, Role: @user.Role)
+                    <div><b>@user.FullName</b> (ID: @user.Id, @Loc.T("Role"): @Loc.T(user.Role.ToString()))</div>
                     @if (user.Role == UserRole.Admin)
                     {
                         <form asp-action="RemoveAdmin" method="post" class="d-inline ms-2">
                             <input type="hidden" name="id" value="@user.Id" />
-                            <button type="submit" class="btn btn-warning btn-sm">Remove Admin</button>
+                            <button type="submit" class="btn btn-warning btn-sm">@Loc.T("RemoveAdmin")</button>
                         </form>
                     }
                     else
                     {
                         <form asp-action="MakeAdmin" method="post" class="d-inline ms-2">
                             <input type="hidden" name="id" value="@user.Id" />
-                            <button type="submit" class="btn btn-primary btn-sm">Make Admin</button>
+                            <button type="submit" class="btn btn-primary btn-sm">@Loc.T("MakeAdmin")</button>
                         </form>
                     }
                 </div>
             }
             @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Manager))
             {
-                <div class="text-muted">No users to manage.</div>
+                <div class="text-muted">@Loc.T("NoUsersToManage")</div>
             }
         </div>
     </div>

@@ -1,4 +1,5 @@
 @model proekt.Models.ViewModels.MedicalRecordViewModel
+@inject proekt.Services.TranslationService Loc
 @{
     ViewData["Title"] = "Medical Record – " + Model.Patient.FullName;
     var canEdit = Model.CanEdit;
@@ -28,12 +29,12 @@
             @if (canEdit)
             {
                 <button class="btn btn-light btn-sm" onclick="openEditInfoModal()">
-                    <i class="bi bi-pencil-square"></i> Edit General Info
+                    <i class="bi bi-pencil-square"></i> @Loc.T("EditGeneralInfo")
                 </button>
             }
             <a href="@(Context.Session.GetString("UserRole") is "Doctor" or "Admin" or "Manager" ? Url.Action("DoctorDashboard","MedicalRecord") : Url.Action("Profile","Home"))"
                class="btn btn-outline-light btn-sm">
-                <i class="bi bi-arrow-left"></i> Back
+                <i class="bi bi-arrow-left"></i> @Loc.T("Back")
             </a>
         </div>
     </div>
@@ -48,28 +49,28 @@
         <div class="mr-info-card">
             <div class="mr-info-icon" style="background:#fee2e2;color:#dc2626;"><i class="bi bi-droplet-fill"></i></div>
             <div>
-                <div class="mr-info-label">Blood Type</div>
+                <div class="mr-info-label">@Loc.T("BloodType")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
             </div>
         </div>
         <div class="mr-info-card">
             <div class="mr-info-icon" style="background:#fef3c7;color:#d97706;"><i class="bi bi-exclamation-triangle-fill"></i></div>
             <div>
-                <div class="mr-info-label">Allergies</div>
+                <div class="mr-info-label">@Loc.T("Allergies")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None recorded" : record.Allergies)</div>
             </div>
         </div>
         <div class="mr-info-card">
             <div class="mr-info-icon" style="background:#dbeafe;color:#2563eb;"><i class="bi bi-heart-pulse-fill"></i></div>
             <div>
-                <div class="mr-info-label">Chronic Conditions</div>
+                <div class="mr-info-label">@Loc.T("ChronicConditions")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None recorded" : record.ChronicConditions)</div>
             </div>
         </div>
         <div class="mr-info-card">
             <div class="mr-info-icon" style="background:#d1fae5;color:#059669;"><i class="bi bi-journal-text"></i></div>
             <div>
-                <div class="mr-info-label">General Notes</div>
+                <div class="mr-info-label">@Loc.T("GeneralNotes")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.GeneralNotes) ? "—" : record.GeneralNotes)</div>
             </div>
         </div>
@@ -79,23 +80,23 @@
     <div class="mr-tabs-wrap">
         <div class="mr-tabs" id="mrTabs">
             <button class="mr-tab active" onclick="switchTab('operations', this)">
-                <i class="bi bi-scissors"></i> Operations
+                <i class="bi bi-scissors"></i> @Loc.T("Operations")
                 <span class="mr-tab-count">@operations.Count</span>
             </button>
             <button class="mr-tab" onclick="switchTab('diagnoses', this)">
-                <i class="bi bi-activity"></i> Diagnoses
+                <i class="bi bi-activity"></i> @Loc.T("Diagnoses")
                 <span class="mr-tab-count">@diagnoses.Count</span>
             </button>
             <button class="mr-tab" onclick="switchTab('medications', this)">
-                <i class="bi bi-capsule"></i> Medications
+                <i class="bi bi-capsule"></i> @Loc.T("Medications")
                 <span class="mr-tab-count">@medications.Count</span>
             </button>
             <button class="mr-tab" onclick="switchTab('notes', this)">
-                <i class="bi bi-sticky"></i> Notes
+                <i class="bi bi-sticky"></i> @Loc.T("Notes")
                 <span class="mr-tab-count">@notes.Count</span>
             </button>
             <button class="mr-tab" onclick="switchTab('history', this)">
-                <i class="bi bi-clock-history"></i> History
+                <i class="bi bi-clock-history"></i> @Loc.T("History")
                 <span class="mr-tab-count">@Model.AuditLogs.Count</span>
             </button>
         </div>
@@ -103,7 +104,7 @@
         @if (canEdit)
         {
             <button class="btn btn-primary btn-sm" onclick="openAddModal()">
-                <i class="bi bi-plus-lg"></i> Add Entry
+                <i class="bi bi-plus-lg"></i> @Loc.T("AddEntry")
             </button>
         }
     </div>
@@ -112,7 +113,7 @@
     <div class="mr-tab-content active" id="tab-operations">
         @if (!operations.Any())
         {
-            <div class="mr-empty"><i class="bi bi-scissors"></i><p>No operations recorded.</p></div>
+            <div class="mr-empty"><i class="bi bi-scissors"></i><p>@Loc.T("NoOperations")</p></div>
         }
         @foreach (var e in operations)
         {
@@ -126,7 +127,7 @@
     <div class="mr-tab-content" id="tab-diagnoses">
         @if (!diagnoses.Any())
         {
-            <div class="mr-empty"><i class="bi bi-activity"></i><p>No diagnoses recorded.</p></div>
+            <div class="mr-empty"><i class="bi bi-activity"></i><p>@Loc.T("NoDiagnoses")</p></div>
         }
         @foreach (var e in diagnoses)
         {
@@ -140,7 +141,7 @@
     <div class="mr-tab-content" id="tab-medications">
         @if (!medications.Any())
         {
-            <div class="mr-empty"><i class="bi bi-capsule"></i><p>No medications recorded.</p></div>
+            <div class="mr-empty"><i class="bi bi-capsule"></i><p>@Loc.T("NoMedications")</p></div>
         }
         @foreach (var e in medications)
         {
@@ -154,7 +155,7 @@
     <div class="mr-tab-content" id="tab-notes">
         @if (!notes.Any())
         {
-            <div class="mr-empty"><i class="bi bi-sticky"></i><p>No notes recorded.</p></div>
+            <div class="mr-empty"><i class="bi bi-sticky"></i><p>@Loc.T("NoNotes")</p></div>
         }
         @foreach (var e in notes)
         {
@@ -168,7 +169,7 @@
     <div class="mr-tab-content" id="tab-history">
         @if (!Model.AuditLogs.Any())
         {
-            <div class="mr-empty"><i class="bi bi-clock-history"></i><p>No history yet.</p></div>
+            <div class="mr-empty"><i class="bi bi-clock-history"></i><p>@Loc.T("NoHistory")</p></div>
         }
         <div class="mr-timeline">
             @foreach (var log in Model.AuditLogs)
@@ -198,7 +199,7 @@
     <div class="mr-modal-overlay" id="addEntryModal" onclick="closeFn(event,'addEntryModal')">
         <div class="mr-modal">
             <div class="mr-modal-header">
-                <h5><i class="bi bi-plus-circle-fill text-primary me-2"></i>Add Medical Entry</h5>
+                <h5><i class="bi bi-plus-circle-fill text-primary me-2"></i>@Loc.T("AddMedicalEntry")</h5>
                 <button type="button" onclick="closeModal('addEntryModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="AddEntry" method="post">
@@ -207,31 +208,31 @@
                 <div class="mr-modal-body">
                     <div class="mr-form-row">
                         <div class="mr-form-group">
-                            <label>Entry Type</label>
+                            <label>@Loc.T("EntryType")</label>
                             <select name="type" class="mr-select" required>
-                                <option value="Operation">Operation</option>
-                                <option value="Diagnosis" selected>Diagnosis</option>
-                                <option value="Medication">Medication</option>
-                                <option value="Note">Note</option>
+                                <option value="Operation">@Loc.T("Operations")</option>
+                                <option value="Diagnosis" selected>@Loc.T("Diagnoses")</option>
+                                <option value="Medication">@Loc.T("Medications")</option>
+                                <option value="Note">@Loc.T("Notes")</option>
                             </select>
                         </div>
                         <div class="mr-form-group">
-                            <label>Date</label>
+                            <label>@Loc.T("Date")</label>
                             <input type="date" name="date" class="mr-input" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
                         </div>
                     </div>
                     <div class="mr-form-group">
-                        <label>Title</label>
+                        <label>@Loc.T("Title")</label>
                         <input type="text" name="title" class="mr-input" placeholder="e.g. Appendectomy" required />
                     </div>
                     <div class="mr-form-group">
-                        <label>Description</label>
+                        <label>@Loc.T("Description")</label>
                         <textarea name="description" class="mr-textarea" rows="4" placeholder="Detailed description..."></textarea>
                     </div>
                 </div>
                 <div class="mr-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('addEntryModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Save Entry</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addEntryModal')">@Loc.T("Cancel")</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>@Loc.T("SaveEntry")</button>
                 </div>
             </form>
         </div>
@@ -241,7 +242,7 @@
     <div class="mr-modal-overlay" id="editEntryModal" onclick="closeFn(event,'editEntryModal')">
         <div class="mr-modal">
             <div class="mr-modal-header">
-                <h5><i class="bi bi-pencil-fill text-warning me-2"></i>Edit Entry</h5>
+                <h5><i class="bi bi-pencil-fill text-warning me-2"></i>@Loc.T("UpdateEntry")</h5>
                 <button type="button" onclick="closeModal('editEntryModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="EditEntry" method="post">
@@ -251,31 +252,31 @@
                 <div class="mr-modal-body">
                     <div class="mr-form-row">
                         <div class="mr-form-group">
-                            <label>Entry Type</label>
+                            <label>@Loc.T("EntryType")</label>
                             <select name="type" id="edit_type" class="mr-select" required>
-                                <option value="Operation">Operation</option>
-                                <option value="Diagnosis">Diagnosis</option>
-                                <option value="Medication">Medication</option>
-                                <option value="Note">Note</option>
+                                <option value="Operation">@Loc.T("Operations")</option>
+                                <option value="Diagnosis">@Loc.T("Diagnoses")</option>
+                                <option value="Medication">@Loc.T("Medications")</option>
+                                <option value="Note">@Loc.T("Notes")</option>
                             </select>
                         </div>
                         <div class="mr-form-group">
-                            <label>Date</label>
+                            <label>@Loc.T("Date")</label>
                             <input type="date" name="date" id="edit_date" class="mr-input" required />
                         </div>
                     </div>
                     <div class="mr-form-group">
-                        <label>Title</label>
+                        <label>@Loc.T("Title")</label>
                         <input type="text" name="title" id="edit_title" class="mr-input" required />
                     </div>
                     <div class="mr-form-group">
-                        <label>Description</label>
+                        <label>@Loc.T("Description")</label>
                         <textarea name="description" id="edit_description" class="mr-textarea" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="mr-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('editEntryModal')">Cancel</button>
-                    <button type="submit" class="btn btn-warning text-white"><i class="bi bi-check-lg me-1"></i>Update Entry</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editEntryModal')">@Loc.T("Cancel")</button>
+                    <button type="submit" class="btn btn-warning text-white"><i class="bi bi-check-lg me-1"></i>@Loc.T("UpdateEntry")</button>
                 </div>
             </form>
         </div>
@@ -285,7 +286,7 @@
     <div class="mr-modal-overlay" id="editInfoModal" onclick="closeFn(event,'editInfoModal')">
         <div class="mr-modal">
             <div class="mr-modal-header">
-                <h5><i class="bi bi-clipboard2-pulse-fill text-success me-2"></i>Edit General Information</h5>
+                <h5><i class="bi bi-clipboard2-pulse-fill text-success me-2"></i>@Loc.T("EditGeneralInfo")</h5>
                 <button type="button" onclick="closeModal('editInfoModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="UpdateRecordInfo" method="post">
@@ -293,9 +294,9 @@
                 <input type="hidden" name="userId" value="@userId" />
                 <div class="mr-modal-body">
                     <div class="mr-form-group">
-                        <label>Blood Type</label>
+                        <label>@Loc.T("BloodType")</label>
                         <select name="bloodType" class="mr-select">
-                            <option value="">— Unknown —</option>
+                            <option value="">— @Loc.T("Back") —</option>
                             @foreach (var bt in new[]{"A+","A-","B+","B-","AB+","AB-","O+","O-"})
                             {
                                 if (record.BloodType == bt)
@@ -310,21 +311,21 @@
                         </select>
                     </div>
                     <div class="mr-form-group">
-                        <label>Allergies</label>
+                        <label>@Loc.T("Allergies")</label>
                         <textarea name="allergies" class="mr-textarea" rows="2" placeholder="e.g. Penicillin, Pollen...">@record.Allergies</textarea>
                     </div>
                     <div class="mr-form-group">
-                        <label>Chronic Conditions</label>
+                        <label>@Loc.T("ChronicConditions")</label>
                         <textarea name="chronicConditions" class="mr-textarea" rows="2" placeholder="e.g. Hypertension, Diabetes...">@record.ChronicConditions</textarea>
                     </div>
                     <div class="mr-form-group">
-                        <label>General Notes</label>
+                        <label>@Loc.T("GeneralNotes")</label>
                         <textarea name="generalNotes" class="mr-textarea" rows="3">@record.GeneralNotes</textarea>
                     </div>
                 </div>
                 <div class="mr-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('editInfoModal')">Cancel</button>
-                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editInfoModal')">@Loc.T("Cancel")</button>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check-lg me-1"></i>@Loc.T("SaveChanges")</button>
                 </div>
             </form>
         </div>

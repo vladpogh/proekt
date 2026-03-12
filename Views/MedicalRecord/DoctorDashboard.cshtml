@@ -1,4 +1,5 @@
 @model proekt.Models.ViewModels.DoctorDashboardViewModel
+@inject proekt.Services.TranslationService Loc
 @{
     ViewData["Title"] = "Doctor Dashboard";
 }
@@ -9,8 +10,8 @@
     <!-- Header -->
     <div class="dd-header">
         <div>
-            <h2 class="mb-1"><i class="bi bi-clipboard2-pulse me-2"></i>Doctor Dashboard</h2>
-            <p class="text-white-50 mb-0">Search and manage patient medical records</p>
+            <h2 class="mb-1"><i class="bi bi-clipboard2-pulse me-2"></i>@Loc.T("DoctorDashboard")</h2>
+            <p class="text-white-50 mb-0">@Loc.T("SearchManageRecords")</p>
         </div>
     </div>
 
@@ -20,11 +21,11 @@
             <div class="dd-search-box">
                 <i class="bi bi-search dd-search-icon"></i>
                 <input type="text" name="q" value="@Model.SearchQuery"
-                       class="dd-search-input" placeholder="Search by name, email or ID…" autocomplete="off" />
-                <button type="submit" class="btn btn-primary dd-search-btn">Search</button>
+                       class="dd-search-input" placeholder="@Loc.T("SearchPlaceholder")" autocomplete="off" />
+                <button type="submit" class="btn btn-primary dd-search-btn">@Loc.T("Search")</button>
                 @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
                 {
-                    <a href="@Url.Action("DoctorDashboard","MedicalRecord")" class="btn btn-outline-secondary dd-search-btn">Clear</a>
+                    <a href="@Url.Action("DoctorDashboard","MedicalRecord")" class="btn btn-outline-secondary dd-search-btn">@Loc.T("Clear")</a>
                 }
             </div>
         </form>
@@ -35,7 +36,7 @@
         <div class="dd-stat-card">
             <div class="dd-stat-icon" style="background:#dbeafe;color:#2563eb;"><i class="bi bi-people-fill"></i></div>
             <div>
-                <div class="dd-stat-label">Total Patients</div>
+                <div class="dd-stat-label">@Loc.T("TotalPatients")</div>
                 <div class="dd-stat-value">@Model.Patients.Count</div>
             </div>
         </div>
@@ -44,8 +45,8 @@
             <div class="dd-stat-card">
                 <div class="dd-stat-icon" style="background:#d1fae5;color:#059669;"><i class="bi bi-funnel-fill"></i></div>
                 <div>
-                    <div class="dd-stat-label">Search Results</div>
-                    <div class="dd-stat-value">@Model.Patients.Count results for "@Model.SearchQuery"</div>
+                    <div class="dd-stat-label">@Loc.T("SearchResults")</div>
+                    <div class="dd-stat-value">@Model.Patients.Count @Loc.T("ResultsFor") "@Model.SearchQuery"</div>
                 </div>
             </div>
         }
@@ -56,7 +57,7 @@
     {
         <div class="dd-empty">
             <i class="bi bi-person-x"></i>
-            <p>No patients found.</p>
+            <p>@Loc.T("NoPatientsFound")</p>
         </div>
     }
     else
@@ -75,12 +76,12 @@
                         }
                         <div class="dd-patient-role-row">
                             <span class="dd-role-badge dd-role-@patient.Role.ToString().ToLower()">@patient.Role</span>
-                            <span class="dd-patient-since"><i class="bi bi-calendar3"></i> Since @patient.CreatedAt.ToString("MMM yyyy")</span>
+                            <span class="dd-patient-since"><i class="bi bi-calendar3"></i> @Loc.T("Since") @patient.CreatedAt.ToString("MMM yyyy")</span>
                         </div>
                     </div>
                     <a href="@Url.Action("ViewRecord","MedicalRecord", new { userId = patient.Id })"
                        class="btn btn-primary btn-sm dd-view-btn">
-                        <i class="bi bi-folder2-open"></i> View Record
+                        <i class="bi bi-folder2-open"></i> @Loc.T("ViewRecord")
                     </a>
                 </div>
             }

@@ -11,10 +11,10 @@ namespace proekt.Controllers
     public class HomeController : Controller
     {
         private readonly UserService _userService;
-        private readonly MedicalDocumentService _docService;
         private readonly DoctorApplicationService _appService;
         private readonly ContactInquiryService _inquiryService;
         private readonly MedicalRecordService _medRecordService;
+        private readonly TranslationService _loc;
 
         [HttpGet]
         public IActionResult DoctorApplication()
@@ -76,17 +76,17 @@ namespace proekt.Controllers
             };
             _appService.Add(app);
 
-            TempData["Message"] = "Your application has been submitted.";
+            TempData["Message"] = _loc.T("AppSubmitted");
             return RedirectToAction("Index");
         }
 
-        public HomeController(UserService userService, MedicalDocumentService docService, DoctorApplicationService appService, ContactInquiryService inquiryService, MedicalRecordService medRecordService)
+        public HomeController(UserService userService, DoctorApplicationService appService, ContactInquiryService inquiryService, MedicalRecordService medRecordService, TranslationService loc)
         {
             _userService = userService;
-            _docService = docService;
             _appService = appService;
             _inquiryService = inquiryService;
             _medRecordService = medRecordService;
+            _loc = loc;
         }
 
         [HttpPost]
@@ -161,14 +161,11 @@ namespace proekt.Controllers
             if (userId == 0) return RedirectToAction("Login");
 
             _userService.UpdateUserProfile(userId, fullName, phone, location);
-            
-            // Update session if name changed
             if (!string.IsNullOrEmpty(fullName))
             {
                 HttpContext.Session.SetString("UserName", fullName);
             }
-            
-            TempData["ProfileMessage"] = "Profile updated successfully.";
+            TempData["ProfileMessage"] = _loc.T("ProfileUpdated");
             return RedirectToAction("Profile");
         }
 
@@ -180,41 +177,21 @@ namespace proekt.Controllers
 
             if (!_userService.VerifyPassword(userId, currentPassword))
             {
-               TempData["ProfileMessage"] = "Current password is incorrect.";
+               TempData["ProfileMessage"] = _loc.T("CurPassIncorrect");
                return RedirectToAction("Profile", new { tab = "password" });
             }
 
             if (newPassword == "1234")
             {
-                TempData["ProfileMessage"] = "Password '1234' is not allowed.";
+                TempData["ProfileMessage"] = _loc.T("Pass1234NotAllowed");
                 return RedirectToAction("Profile", new { tab = "password" });
             }
 
             var ok = _userService.ChangePassword(userId, newPassword);
-            if (ok) TempData["ProfileMessage"] = "Password changed successfully.";
-            else TempData["ProfileMessage"] = "Failed to change password.";
+            if (ok) TempData["ProfileMessage"] = _loc.T("PassChangedSuccess");
+            else TempData["ProfileMessage"] = _loc.T("PassChangedFailed");
             return RedirectToAction("Profile", new { tab = "password" });
         }
-    [HttpPost]
-    public IActionResult ApproveDocument(int id, string? comment)
-    {
-        var role = HttpContext.Session.GetString("UserRole");
-        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
-            return Unauthorized();
-        _docService.ApproveDocument(id, comment);
-        return RedirectToAction("AdminPanel");
-    }
-
-
-    [HttpPost]
-    public IActionResult RejectDocument(int id, string? comment)
-    {
-        var role = HttpContext.Session.GetString("UserRole");
-        if (role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
-            return Unauthorized();
-        _docService.RejectDocument(id, comment);
-        return RedirectToAction("AdminPanel");
-    }
 
     public IActionResult DoctorApplicationDetails(int id)
     {
@@ -303,7 +280,7 @@ namespace proekt.Controllers
             Message = Message
         };
         _inquiryService.AddInquiry(inquiry);
-        TempData["Message"] = "Your inquiry has been sent.";
+        TempData["Message"] = _loc.T("InquirySent");
         return RedirectToAction("Contact");
     }
 
@@ -340,7 +317,7 @@ namespace proekt.Controllers
             return RedirectToAction("Index");
         }
 
-        ModelState.AddModelError("", "Invalid email or password");
+        ModelState.AddModelError("", _loc.T("InvalidLogin"));
         return View(model);
     }
 
@@ -356,7 +333,7 @@ namespace proekt.Controllers
     {
         if (model.Password == "1234")
         {
-            ModelState.AddModelError("Password", "Password '1234' is not allowed");
+            ModelState.AddModelError("Password", _loc.T("Pass1234NotAllowed"));
         }
 
         if (ModelState.IsValid)
@@ -374,7 +351,7 @@ namespace proekt.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ModelState.AddModelError("", "Email already exists or invalid data");
+            ModelState.AddModelError("", _loc.T("EmailExists"));
         }
 
         return View(model);
