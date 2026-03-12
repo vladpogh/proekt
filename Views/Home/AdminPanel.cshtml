@@ -1,86 +1,327 @@
 @inject proekt.Services.TranslationService Loc
-@{
-    ViewData["Title"] = Loc.T("AdminPanel");
-}
-
-<h2>@Loc.T("AdminPanel")</h2>
-
 @inject proekt.Services.UserService UserService
 @inject proekt.Services.DoctorApplicationService AppService
 @using proekt.Models
+@{
+    ViewData["Title"] = Loc.T("AdminDashboard");
+    var currentRole = Context.Session.GetString("UserRole");
+    var pendingApps = AppService.GetPending();
+    var allUsers = UserService.GetAllUsers();
+    var usersToTerminate = allUsers.Where(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager).ToList();
+    var usersToManage = allUsers.Where(u => u.Role != UserRole.Manager).ToList();
+}
 
-@await Html.PartialAsync("~/Views/ClientMessages/_ClientMessagesNav.cshtml")
-
-
-    <div class="mb-4">
-        <h4>@Loc.T("DoctorApplications")</h4>
-        <div id="applications-list">
-            @foreach (var app in AppService.GetPending())
-            {
-                <div class="card mb-2 p-2">
-                    <div><b>@Loc.T("DoctorApplications") #@app.Id</b> (@Loc.T("FullName"): @(UserService.GetUserById(app.UserId)?.FullName ?? "N/A"), @Loc.T("SubmittedOn"): @app.CreatedAt.ToString("g"))</div>
-                        <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-outline-primary btn-sm mt-2">@Loc.T("ShowMore")</a>
+<div class="admin-dashboard-container py-5">
+    <div class="container">
+        <!-- Header & Stats -->
+        <div class="row mb-5 align-items-end">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="icon-badge bg-primary-soft">
+                        <i class="bi bi-shield-lock text-primary"></i>
+                    </div>
+                    <h6 class="text-primary fw-bold mb-0">@Loc.T("MonitoringControl")</h6>
                 </div>
-            }
-            @if (!AppService.GetPending().Any())
-            {
-                <div class="text-muted">@Loc.T("NoPending")</div>
-            }
-        </div>
-    </div>
-
-<div class="mb-4">
-    <h4>@Loc.T("CloseUserProfiles")</h4>
-    <div id="users-list">
-        @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
-        {
-            <div class="card mb-2 p-2">
-                <div><b>@user.FullName</b> (ID: @user.Id, @Loc.T("Role"): @Loc.T(user.Role.ToString()))</div>
-                <form asp-action="TerminateUser" method="post" class="d-inline ms-2">
-                    <input type="hidden" name="id" value="@user.Id" />
-                    <button type="submit" class="btn btn-danger btn-sm">@Loc.T("Terminate")</button>
-                </form>
+                <h1 class="display-5 fw-black mb-0">@Loc.T("AdminDashboard")</h1>
             </div>
-        }
-        @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Admin && u.Role != UserRole.Manager))
-        {
-            <div class="text-muted">@Loc.T("NoUsersToTerminate")</div>
-        }
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="stats-card-group">
+                    <div class="stat-mini-card">
+                        <span class="stat-label">@Loc.T("TotalUsers")</span>
+                        <span class="stat-value">@allUsers.Count</span>
+                    </div>
+                    <div class="stat-mini-card highlight">
+                        <span class="stat-label">@Loc.T("PendingCount")</span>
+                        <span class="stat-value">@pendingApps.Count</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @await Html.PartialAsync("~/Views/ClientMessages/_ClientMessagesNav.cshtml")
+
+        <!-- Main Content Tabs -->
+        <div class="dashboard-tabs-wrapper mt-4">
+            <ul class="nav nav-pills dashboard-nav mb-4" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="apps-tab" data-bs-toggle="pill" data-bs-target="#apps" type="button" role="tab">
+                        <i class="bi bi-clipboard-pulse me-2"></i> @Loc.T("DoctorApplications")
+                        @if (pendingApps.Any()) { <span class="badge rounded-pill bg-danger ms-2">@pendingApps.Count</span> }
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="users-tab" data-bs-toggle="pill" data-bs-target="#users" type="button" role="tab">
+                        <i class="bi bi-people me-2"></i> @Loc.T("UserManagement")
+                    </button>
+                </li>
+                @if (currentRole == "Manager")
+                {
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="roles-tab" data-bs-toggle="pill" data-bs-target="#roles" type="button" role="tab">
+                            <i class="bi bi-person-badge-fill me-2"></i> @Loc.T("RoleManagement")
+                        </button>
+                    </li>
+                }
+            </ul>
+
+            <div class="tab-content dashboard-content" id="adminTabsContent">
+                <!-- Applications Tab -->
+                <div class="tab-pane fade show active" id="apps" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header-clean border-bottom pb-3 mb-4 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold">@Loc.T("PendingApps")</h5>
+                        </div>
+                        <div class="applications-grid">
+                            @if (pendingApps.Any())
+                            {
+                                @foreach (var app in pendingApps)
+                                {
+                                    <div class="app-row-card py-3 px-4 mb-3 border rounded-3 d-flex align-items-center justify-content-between hover-lift">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-sm">@(UserService.GetUserById(app.UserId)?.FullName?.Substring(0,1).ToUpper() ?? "?")</div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">@(UserService.GetUserById(app.UserId)?.FullName ?? "N/A")</h6>
+                                                <small class="text-muted">@Loc.T("SubmittedOn"): @app.CreatedAt.ToString("g")</small>
+                                            </div>
+                                        </div>
+                                        <div class="actions">
+                                            <a asp-action="DoctorApplicationDetails" asp-route-id="@app.Id" class="btn btn-primary btn-sm px-4 rounded-pill">
+                                                @Loc.T("ReviewApplication")
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="empty-state text-center py-5">
+                                    <i class="bi bi-check2-circle display-4 text-muted mb-3 d-block"></i>
+                                    <span class="text-muted">@Loc.T("NoPending")</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div class="tab-pane fade" id="users" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header-clean border-bottom pb-3 mb-4">
+                            <h5 class="mb-0 fw-bold">@Loc.T("UserManagement")</h5>
+                            <p class="text-muted small mb-0">@Loc.T("UsersToMonitor")</p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>@Loc.T("FullName")</th>
+                                        <th>@Loc.T("Role")</th>
+                                        <th class="text-end">@Loc.T("DangerZone")</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in usersToTerminate)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="fw-bold">@user.FullName</div>
+                                                <small class="text-muted">ID: @user.Id</small>
+                                            </td>
+                                            <td><span class="badge bg-light text-dark border">@Loc.T(user.Role.ToString())</span></td>
+                                            <td class="text-end">
+                                                <form asp-action="TerminateUser" method="post" class="d-inline" onsubmit="return confirm('@Loc.T("TerminateFull")?')">
+                                                    <input type="hidden" name="id" value="@user.Id" />
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                        <i class="bi bi-trash me-1"></i> @Loc.T("Terminate")
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @if (!usersToTerminate.Any())
+                            {
+                                <div class="empty-state text-center py-4">
+                                    <span class="text-muted">@Loc.T("NoUsersToTerminate")</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roles Tab -->
+                @if (currentRole == "Manager")
+                {
+                    <div class="tab-pane fade" id="roles" role="tabpanel">
+                        <div class="content-card standout-card">
+                            <div class="card-header-clean border-bottom pb-3 mb-4 d-flex align-items-center gap-3">
+                                <i class="bi bi-shield-check text-warning fs-4"></i>
+                                <div>
+                                    <h5 class="mb-0 fw-bold">@Loc.T("RoleManagement")</h5>
+                                    <p class="text-muted small mb-0">@Loc.T("ManagerAction")</p>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table align-middle custom-role-table">
+                                    <tbody>
+                                        @foreach (var user in usersToManage)
+                                        {
+                                            <tr>
+                                                <td class="ps-0">
+                                                    <h6 class="mb-0 fw-bold">@user.FullName</h6>
+                                                    <small class="text-muted">@Loc.T("Role"): @Loc.T(user.Role.ToString())</small>
+                                                </td>
+                                                <td class="text-end pe-0">
+                                                    @if (user.Role == UserRole.Admin)
+                                                    {
+                                                        <form asp-action="RemoveAdmin" method="post" class="d-inline">
+                                                            <input type="hidden" name="id" value="@user.Id" />
+                                                            <button type="submit" class="btn btn-warning btn-sm px-3 rounded-pill">
+                                                                <i class="bi bi-arrow-down-square me-1"></i> @Loc.T("RemoveAdmin")
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+                                                        <form asp-action="MakeAdmin" method="post" class="d-inline">
+                                                            <input type="hidden" name="id" value="@user.Id" />
+                                                            <button type="submit" class="btn btn-primary btn-sm px-3 rounded-pill">
+                                                                <i class="bi bi-arrow-up-square me-1"></i> @Loc.T("MakeAdmin")
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 
-@{
-    var currentRole = Context.Session.GetString("UserRole");
-}
-@if (currentRole == "Manager")
-{
-    <div class="mb-4">
-        <h4>@Loc.T("MakeRemoveAdmin")</h4>
-        <div id="admin-management-list">
-            @foreach (var user in UserService.GetAllUsers().Where(u => u.Role != UserRole.Manager))
-            {
-                <div class="card mb-2 p-2">
-                    <div><b>@user.FullName</b> (ID: @user.Id, @Loc.T("Role"): @Loc.T(user.Role.ToString()))</div>
-                    @if (user.Role == UserRole.Admin)
-                    {
-                        <form asp-action="RemoveAdmin" method="post" class="d-inline ms-2">
-                            <input type="hidden" name="id" value="@user.Id" />
-                            <button type="submit" class="btn btn-warning btn-sm">@Loc.T("RemoveAdmin")</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-action="MakeAdmin" method="post" class="d-inline ms-2">
-                            <input type="hidden" name="id" value="@user.Id" />
-                            <button type="submit" class="btn btn-primary btn-sm">@Loc.T("MakeAdmin")</button>
-                        </form>
-                    }
-                </div>
-            }
-            @if (!UserService.GetAllUsers().Any(u => u.Role != UserRole.Manager))
-            {
-                <div class="text-muted">@Loc.T("NoUsersToManage")</div>
-            }
-        </div>
-    </div>
+<style>
+    .admin-dashboard-container {
+        background: #f8faff;
+        min-height: calc(100vh - 100px);
+    }
+    .fw-black { font-weight: 900; letter-spacing: -0.02em; }
+    .icon-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .bg-primary-soft { background: rgba(0, 82, 204, 0.1); }
+    
+    .stats-card-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+    .stat-mini-card {
+        background: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        display: flex;
+        flex-direction: column;
+        min-width: 140px;
+        border: 1px solid #edf2f7;
+    }
+    .stat-mini-card.highlight {
+        background: #0052CC;
+        color: white;
+        border-color: #0052CC;
+    }
+    .stat-mini-card .stat-label { font-size: 0.75rem; font-weight: 600; opacity: 0.8; margin-bottom: 4px; }
+    .stat-mini-card.highlight .stat-label { color: rgba(255,255,255,0.8); }
+    .stat-mini-card .stat-value { font-size: 1.5rem; font-weight: 800; }
+
+    .dashboard-nav {
+        background: #fff;
+        padding: 0.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        display: inline-flex;
+        border: 1px solid #edf2f7;
+    }
+    .dashboard-nav .nav-link {
+        color: #64748b;
+        font-weight: 600;
+        border-radius: 10px;
+        padding: 0.6rem 1.25rem;
+        transition: all 0.2s;
+    }
+    .dashboard-nav .nav-link.active {
+        background: #0052CC !important;
+        color: #fff !important;
+        box-shadow: 0 4px 8px rgba(0, 82, 204, 0.2);
+    }
+    
+    .content-card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        border: 1px solid #edf2f7;
+    }
+    .standout-card {
+        border-top: 4px solid #ffc107;
+    }
+    
+    .app-row-card {
+        background: #fcfdfe;
+        transition: all 0.3s ease;
+    }
+    .hover-lift:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        border-color: #0052CC !important;
+        background: white;
+    }
+    
+    .avatar-sm {
+        width: 40px;
+        height: 40px;
+        background: #e0e7ff;
+        color: #4338ca;
+        font-weight: 800;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .custom-table th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #94a3b8;
+        border-bottom-width: 1px;
+    }
+    .custom-table td { padding: 1.25rem 0.75rem; border-bottom: 1px solid #f1f5f9; }
+    
+    .custom-role-table tr:last-child { border-bottom: none !important; }
+    .custom-role-table tr { border-bottom: 1px solid #f1f5f9; }
+    .custom-role-table td { padding: 1.5rem 0; }
+
+    @@media (max-width: 768px) {
+        .stats-card-group { justify-content: flex-start; }
+        .dashboard-nav { width: 100%; flex-direction: column; }
+        .app-row-card { flex-direction: column; align-items: flex-start !important; gap: 1rem; }
+        .app-row-card .actions { width: 100%; }
+        .app-row-card .btn { width: 100%; }
+    }
+</style>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 }
