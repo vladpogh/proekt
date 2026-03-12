@@ -1,4 +1,4 @@
-﻿@{
+@{
                             var userRole = Context.Session.GetString("UserRole");
                         }
 <!DOCTYPE html>
@@ -120,10 +120,10 @@
                             <path d="M16 11.5C16 11.5 15.1145 12.5 14 12.5C12.8855 12.5 12 11.5 12 11.5" stroke="#0066ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M12 7.5V7.51" stroke="#0066ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>Are you a doctor? Get your rights here!</span>
+                        <span>@Loc.T("Footer_CTA_Q")</span>
                     </div>
                     <a asp-controller="Home" asp-action="DoctorApplication" class="btn-cta">
-                        Apply Now
+                        @Loc.T("Footer_CTA_Btn")
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -145,7 +145,7 @@
                         MedReports
                     </div>
                     <p class="footer-description">
-                        Professional solutions for medical records and health documentation.
+                        @Loc.T("Footer_Brand_Desc")
                     </p>
                     <div class="social-icons">
                         <a href="#" class="social-icon">
@@ -162,21 +162,21 @@
 
                 <!-- Navigation Column -->
                 <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                    <h5>NAVIGATION</h5>
+                    <h5>@Loc.T("Footer_Nav_Title")</h5>
                     <ul>
-                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Index">@Loc.T("Home")</a></li>
                         @if (Context.Session.GetString("UserEmail") != null)
                         {
-                            <li><a asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">Medical Record</a></li>
+                            <li><a asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">@Loc.T("Medical Record")</a></li>
                         }
-                        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contacts</a></li>
+                        <li><a asp-controller="Home" asp-action="About">@Loc.T("About Us")</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">@Loc.T("Contact")</a></li>
                     </ul>
                 </div>
 
                 <!-- Support Column -->
                 <div class="col-lg-2 col-md-4 mb-4 mb-lg-0">
-                    <h5>SUPPORT</h5>
+                    <h5>@Loc.T("Footer_Support_Title")</h5>
                     <ul>
                         <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
                     </ul>
@@ -184,7 +184,7 @@
 
                 <!-- Contact Column -->
                 <div class="col-lg-4 col-md-4">
-                    <h5>CONTACTS</h5>
+                    <h5>@Loc.T("Footer_Contact_Title")</h5>
                     <div class="footer-contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <span>Sofia, Vitosha Blvd 123</span>
