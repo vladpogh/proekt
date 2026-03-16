@@ -44,4 +44,6 @@ public class MedicalAuditLog
     public string DoctorName { get; set; } = "";
     public DateTime Timestamp { get; set; } = DateTime.Now;
     public string Details { get; set; } = "";
+    public string? OldSnapshot { get; set; }  // JSON of record info before change
+    public string? NewSnapshot { get; set; }  // JSON of record info after change
 }

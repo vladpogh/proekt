@@ -1,6 +1,7 @@
 using proekt.Data;
 using proekt.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace proekt.Services;
 
@@ -93,19 +94,37 @@ public class MedicalRecordService
     // ─── General record info update ────────────────────────────────────────────
 
     public void UpdateRecordInfo(int userId, string? bloodType, string? allergies,
-        string? chronicConditions, string? generalNotes, int doctorId, string doctorName)
+        string? chronicConditions, string? generalNotes, int actorId, string actorName)
     {
         var record = _db.MedicalRecords.FirstOrDefault(r => r.UserId == userId);
         if (record == null) return;
 
-        record.BloodType = bloodType;
-        record.Allergies = allergies;
-        record.ChronicConditions = chronicConditions;
-        record.GeneralNotes = generalNotes;
+        // Capture before-state
+        var oldSnap = JsonSerializer.Serialize(new
+        {
+            BloodType        = record.BloodType,
+            Allergies        = record.Allergies,
+            ChronicConditions = record.ChronicConditions,
+            GeneralNotes     = record.GeneralNotes
+        });
+
+        record.BloodType          = bloodType;
+        record.Allergies          = allergies;
+        record.ChronicConditions  = chronicConditions;
+        record.GeneralNotes       = generalNotes;
         _db.SaveChanges();
 
-        AddAuditLog(record.Id, null, "UpdateRecord", doctorId, doctorName,
-            "Updated general record information");
+        // Capture after-state
+        var newSnap = JsonSerializer.Serialize(new
+        {
+            BloodType        = record.BloodType,
+            Allergies        = record.Allergies,
+            ChronicConditions = record.ChronicConditions,
+            GeneralNotes     = record.GeneralNotes
+        });
+
+        AddAuditLogWithSnapshot(record.Id, null, "UpdateRecord", actorId, actorName,
+            "Updated general record information", oldSnap, newSnap);
     }
 
     // ─── Audit log ─────────────────────────────────────────────────────────────
@@ -122,6 +141,24 @@ public class MedicalRecordService
             DoctorName = doctorName,
             Timestamp = DateTime.Now,
             Details = details
+        });
+        _db.SaveChanges();
+    }
+
+    private void AddAuditLogWithSnapshot(int recordId, int? entryId, string actionType,
+        int actorId, string actorName, string details, string? oldSnapshot, string? newSnapshot)
+    {
+        _db.MedicalAuditLogs.Add(new MedicalAuditLog
+        {
+            MedicalRecordId = recordId,
+            EntryId         = entryId,
+            ActionType      = actionType,
+            DoctorId        = actorId,
+            DoctorName      = actorName,
+            Timestamp       = DateTime.Now,
+            Details         = details,
+            OldSnapshot     = oldSnapshot,
+            NewSnapshot     = newSnapshot
         });
         _db.SaveChanges();
     }

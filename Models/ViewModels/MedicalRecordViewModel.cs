@@ -5,7 +5,8 @@ public class MedicalRecordViewModel
     public User Patient { get; set; } = null!;
     public MedicalRecord Record { get; set; } = null!;
     public List<MedicalAuditLog> AuditLogs { get; set; } = new();
-    public bool CanEdit { get; set; } = false; // Doctor or Admin
+    public bool CanEdit { get; set; } = false;         // Doctor or Admin: add/edit entries
+    public bool CanEditBasicInfo { get; set; } = false; // Patient (own record), Doctor, Admin
 }
 
 public class AddMedicalEntryViewModel

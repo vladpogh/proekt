@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Medical Record – " + Model.Patient.FullName;
     var canEdit = Model.CanEdit;
+    var canEditBasicInfo = Model.CanEditBasicInfo;
     var record = Model.Record;
     var userId = Model.Patient.Id;
 
@@ -26,7 +27,7 @@
             </div>
         </div>
         <div class="mr-header-right">
-            @if (canEdit)
+            @if (canEditBasicInfo)
             {
                 <button class="btn btn-light btn-sm" onclick="openEditInfoModal()">
                     <i class="bi bi-pencil-square"></i> @Loc.T("EditGeneralInfo")
@@ -174,6 +175,7 @@
         <div class="mr-timeline">
             @foreach (var log in Model.AuditLogs)
             {
+                var hasDiff = !string.IsNullOrEmpty(log.OldSnapshot) && !string.IsNullOrEmpty(log.NewSnapshot);
                 <div class="mr-timeline-item">
                     <div class="mr-timeline-dot"></div>
                     <div class="mr-timeline-body">
@@ -186,6 +188,43 @@
                             </span>
                         </div>
                         <div class="text-muted small">@log.Details</div>
+                        @if (hasDiff)
+                        {
+                            <button class="btn btn-outline-info btn-xs mt-2 diff-toggle-btn"
+                                    onclick="toggleDiff('diff-@log.Id')">
+                                <i class="bi bi-eye"></i> Show Diff
+                            </button>
+                            <div id="diff-@log.Id" class="audit-diff-panel" style="display:none;">
+                                @{
+                                    var oldD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.OldSnapshot!)!;
+                                    var newD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.NewSnapshot!)!;
+                                    var fieldLabels = new Dictionary<string,string> {
+                                        ["BloodType"]="Blood Type",
+                                        ["Allergies"]="Allergies",
+                                        ["ChronicConditions"]="Chronic Conditions",
+                                        ["GeneralNotes"]="General Notes"
+                                    };
+                                }
+                                <table class="diff-table mt-2">
+                                    <thead>
+                                        <tr><th>Field</th><th class="diff-old">Before</th><th class="diff-new">After</th></tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach (var key in fieldLabels.Keys)
+                                    {
+                                        var oldVal = oldD.ContainsKey(key) ? oldD[key] : null;
+                                        var newVal = newD.ContainsKey(key) ? newD[key] : null;
+                                        var changed = oldVal != newVal;
+                                        <tr class="@(changed ? "diff-row-changed" : "diff-row-same")">
+                                            <td class="diff-field">@fieldLabels[key]</td>
+                                            <td class="diff-old">@(string.IsNullOrWhiteSpace(oldVal) ? "—" : oldVal)</td>
+                                            <td class="diff-new">@(string.IsNullOrWhiteSpace(newVal) ? "—" : newVal)</td>
+                                        </tr>
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
                     </div>
                 </div>
             }
@@ -330,7 +369,7 @@
             </form>
         </div>
     </div>
-}
+
 
 @section Scripts {
 <script>
@@ -353,5 +392,27 @@ function openEditModal(entryId, type, title, description, date) {
     document.getElementById('edit_date').value        = date;
     document.getElementById('editEntryModal').classList.add('show');
 }
+
+function toggleDiff(id) {
+    const panel = document.getElementById(id);
+    const btn   = panel.previousElementSibling;
+    const visible = panel.style.display !== 'none';
+    panel.style.display = visible ? 'none' : 'block';
+    btn.innerHTML = visible
+        ? '<i class="bi bi-eye"></i> Show Diff'
+        : '<i class="bi bi-eye-slash"></i> Hide Diff';
+}
 </script>
+<style>
+.btn-xs { font-size: .75rem; padding: .2rem .5rem; }
+.audit-diff-panel { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; margin-top: .5rem; }
+.diff-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.diff-table th, .diff-table td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+.diff-table thead th { background: #f8f9fa; font-weight: 600; }
+.diff-field { font-weight: 500; white-space: nowrap; }
+.diff-old { background: #fff5f5; color: #c0392b; }
+.diff-new { background: #f0fff4; color: #217a44; }
+.diff-row-same td { opacity: .45; }
+.diff-row-changed .diff-old, .diff-row-changed .diff-new { font-weight: 600; }
+</style>
 }

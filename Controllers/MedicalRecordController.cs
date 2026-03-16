@@ -50,7 +50,8 @@ public class MedicalRecordController : Controller
             Patient = patient,
             Record = record,
             AuditLogs = _medRecordService.GetAuditLogs(record.Id),
-            CanEdit = IsDoctor || IsAdmin
+            CanEdit = IsDoctor || IsAdmin,
+            CanEditBasicInfo = IsDoctor || IsAdmin || currentUserId == userId
         };
 
         return View(vm);
@@ -143,13 +144,20 @@ public class MedicalRecordController : Controller
     public IActionResult UpdateRecordInfo(int userId, string? bloodType, string? allergies,
         string? chronicConditions, string? generalNotes)
     {
-        if (!IsDoctor && !IsAdmin)
+        // Doctors and admins can edit anyone; patients can only edit their own record
+        var currentUserId = SessionUserId;
+        bool isOwnRecord  = currentUserId == userId;
+
+        if (!IsDoctor && !IsAdmin && !isOwnRecord)
             return Unauthorized();
 
-        var doctorId = SessionUserId;
-        var doctorName = HttpContext.Session.GetString("UserName") ?? "Doctor";
+        var actorId   = currentUserId;
+        var actorName = HttpContext.Session.GetString("UserName") ?? "Unknown";
+        // Tag patient-originated edits so the history is clear
+        if (!IsDoctor && !IsAdmin)
+            actorName = $"{actorName} (patient)";
 
-        _medRecordService.UpdateRecordInfo(userId, bloodType, allergies, chronicConditions, generalNotes, doctorId, doctorName);
+        _medRecordService.UpdateRecordInfo(userId, bloodType, allergies, chronicConditions, generalNotes, actorId, actorName);
 
         TempData["RecordMessage"] = "Record information updated.";
         return RedirectToAction("ViewRecord", new { userId });
