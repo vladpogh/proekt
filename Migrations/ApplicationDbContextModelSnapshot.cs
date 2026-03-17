@@ -263,6 +263,9 @@ namespace proekt.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -276,6 +279,9 @@ namespace proekt.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -287,6 +293,7 @@ namespace proekt.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@example.com",
                             FullName = "Admin",
+                            IsEmailVerified = false,
                             Password = "1234",
                             Role = "Admin"
                         },
@@ -296,6 +303,7 @@ namespace proekt.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "manager@example.com",
                             FullName = "Manager",
+                            IsEmailVerified = false,
                             Password = "1234",
                             Role = "Manager"
                         });

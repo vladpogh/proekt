@@ -119,6 +119,16 @@
         </nav>
     </header>
     <main role="main">
+        @if (TempData["Message"] != null)
+        {
+            <div class="container container-xl mt-3">
+                <div class="alert alert-info alert-dismissible fade show rounded-4 border-0 shadow-sm" role="alert">
+                    <i class="bi bi-info-circle me-2"></i>
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        }
         @RenderBody()
 
         <footer class="main-footer">
