@@ -33,8 +33,8 @@
 
     <!-- Stats row -->
     <div class="dd-stats">
-        <div class="dd-stat-card">
-            <div class="dd-stat-icon" style="background:#dbeafe;color:#2563eb;"><i class="bi bi-people-fill"></i></div>
+        <div class="dd-stat-card border-info">
+            <div class="dd-stat-icon bg-info-soft"><i class="bi bi-people-fill"></i></div>
             <div>
                 <div class="dd-stat-label">@Loc.T("TotalPatients")</div>
                 <div class="dd-stat-value">@Model.Patients.Count</div>
@@ -42,8 +42,8 @@
         </div>
         @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
         {
-            <div class="dd-stat-card">
-                <div class="dd-stat-icon" style="background:#d1fae5;color:#059669;"><i class="bi bi-funnel-fill"></i></div>
+            <div class="dd-stat-card border-success">
+                <div class="dd-stat-icon bg-success-soft"><i class="bi bi-funnel-fill"></i></div>
                 <div>
                     <div class="dd-stat-label">@Loc.T("SearchResults")</div>
                     <div class="dd-stat-value">@Model.Patients.Count @Loc.T("ResultsFor") "@Model.SearchQuery"</div>

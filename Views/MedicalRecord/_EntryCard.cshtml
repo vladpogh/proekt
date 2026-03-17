@@ -2,29 +2,36 @@
     var entry = ViewData["Entry"] as proekt.Models.MedicalEntry;
     var userId = (int)ViewData["UserId"]!;
     var canEdit = (bool)ViewData["CanEdit"]!;
-    var borderColor = ViewData["BorderColor"]?.ToString() ?? "#0066ff";
+    var entryType = entry?.Type.ToString() ?? "Note";
+    
+    // Semantic class mapping
+    var typeClass = entryType.ToLower() switch {
+        "operation" => "operation",
+        "diagnosis" => "diagnosis",
+        "medication" => "medication",
+        _ => "note"
+    };
 
     var safeTitle = (entry?.Title ?? "").Replace("'", "\\'").Replace("\"", "&quot;");
     var safeDesc  = (entry?.Description ?? "").Replace("'", "\\'").Replace("\"", "&quot;");
     var dateStr   = entry?.Date.ToString("yyyy-MM-dd") ?? "";
-    var typeStr   = entry?.Type.ToString() ?? "Note";
 }
 
-<div class="mr-entry-card" style="border-left-color: @borderColor;">
+<div class="mr-entry-card border-@typeClass">
     <div class="mr-entry-header">
-        <div>
-            <span class="mr-entry-type-badge" style="background: @(borderColor + "22"); color: @borderColor;">
-                @typeStr
+        <div class="d-flex align-items-center">
+            <span class="mr-entry-type-badge bg-@typeClass-soft">
+                @entryType
             </span>
-            <strong class="ms-2">@entry!.Title</strong>
+            <strong class="ms-3 text-dark">@entry!.Title</strong>
         </div>
         <div class="mr-entry-meta">
             <span><i class="bi bi-calendar3"></i> @entry.Date.ToString("dd MMM yyyy")</span>
             <span><i class="bi bi-person-badge"></i> Dr. @entry.CreatedByDoctorName</span>
             @if (canEdit)
             {
-                <button type="button" class="btn btn-sm btn-outline-secondary ms-2"
-                    onclick="openEditModal(@entry.Id, '@typeStr', '@safeTitle', '@safeDesc', '@dateStr')">
+                <button type="button" class="btn btn-sm btn-light border ms-2"
+                    onclick="openEditModal(@entry.Id, '@entryType', '@safeTitle', '@safeDesc', '@dateStr')">
                     <i class="bi bi-pencil"></i>
                 </button>
             }

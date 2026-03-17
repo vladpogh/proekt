@@ -48,28 +48,28 @@
     <!-- ── General Info Cards ─────────────────────────── -->
     <div class="mr-info-grid">
         <div class="mr-info-card">
-            <div class="mr-info-icon" style="background:#fee2e2;color:#dc2626;"><i class="bi bi-droplet-fill"></i></div>
+            <div class="mr-info-icon bg-blood-soft"><i class="bi bi-droplet-fill"></i></div>
             <div>
                 <div class="mr-info-label">@Loc.T("BloodType")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
             </div>
         </div>
         <div class="mr-info-card">
-            <div class="mr-info-icon" style="background:#fef3c7;color:#d97706;"><i class="bi bi-exclamation-triangle-fill"></i></div>
+            <div class="mr-info-icon bg-allergy-soft"><i class="bi bi-exclamation-triangle-fill"></i></div>
             <div>
                 <div class="mr-info-label">@Loc.T("Allergies")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None recorded" : record.Allergies)</div>
             </div>
         </div>
         <div class="mr-info-card">
-            <div class="mr-info-icon" style="background:#dbeafe;color:#2563eb;"><i class="bi bi-heart-pulse-fill"></i></div>
+            <div class="mr-info-icon bg-chronic-soft"><i class="bi bi-heart-pulse-fill"></i></div>
             <div>
                 <div class="mr-info-label">@Loc.T("ChronicConditions")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None recorded" : record.ChronicConditions)</div>
             </div>
         </div>
         <div class="mr-info-card">
-            <div class="mr-info-icon" style="background:#d1fae5;color:#059669;"><i class="bi bi-journal-text"></i></div>
+            <div class="mr-info-icon bg-note-soft"><i class="bi bi-journal-text"></i></div>
             <div>
                 <div class="mr-info-label">@Loc.T("GeneralNotes")</div>
                 <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.GeneralNotes) ? "—" : record.GeneralNotes)</div>
@@ -404,16 +404,4 @@ function toggleDiff(id) {
         : '<i class="bi bi-eye-slash"></i> Hide Diff';
 }
 </script>
-<style>
-.btn-xs { font-size: .75rem; padding: .2rem .5rem; }
-.audit-diff-panel { border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; margin-top: .5rem; }
-.diff-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-.diff-table th, .diff-table td { padding: 6px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
-.diff-table thead th { background: #f8f9fa; font-weight: 600; }
-.diff-field { font-weight: 500; white-space: nowrap; }
-.diff-old { background: #fff5f5; color: #c0392b; }
-.diff-new { background: #f0fff4; color: #217a44; }
-.diff-row-same td { opacity: .45; }
-.diff-row-changed .diff-old, .diff-row-changed .diff-new { font-weight: 600; }
-</style>
 }
