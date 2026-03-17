@@ -22,7 +22,6 @@
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/bundle/proekt.styles.css
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/scopedcss/projectbundle/proekt.bundle.scp.css
-/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/e15j5ysem7-{0}-61n19gt1b8-61n19gt1b8.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/yydxxz0qcg-{0}-fr7q2aak1r-fr7q2aak1r.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/0qsve7ai46-{0}-bqjiyaj88i-bqjiyaj88i.gz
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/c00ekda4d5-{0}-c2jlpeoesf-c2jlpeoesf.gz
@@ -223,3 +222,4 @@
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net10.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-lizw83799j-lizw83799j.gz
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/e15j5ysem7-{0}-kffulz9k79-kffulz9k79.gz
