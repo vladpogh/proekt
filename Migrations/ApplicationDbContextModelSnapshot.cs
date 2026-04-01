@@ -57,7 +57,7 @@ namespace proekt.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactInquiries");
+                    b.ToTable("ContactInquiries", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.DoctorApplication", b =>
@@ -95,7 +95,7 @@ namespace proekt.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DoctorApplications");
+                    b.ToTable("DoctorApplications", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.MedicalAuditLog", b =>
@@ -138,7 +138,7 @@ namespace proekt.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicalAuditLogs");
+                    b.ToTable("MedicalAuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.MedicalDocument", b =>
@@ -167,7 +167,7 @@ namespace proekt.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicalDocuments");
+                    b.ToTable("MedicalDocuments", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.MedicalEntry", b =>
@@ -212,7 +212,7 @@ namespace proekt.Migrations
 
                     b.HasIndex("MedicalRecordId");
 
-                    b.ToTable("MedicalEntries");
+                    b.ToTable("MedicalEntries", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.MedicalRecord", b =>
@@ -243,7 +243,7 @@ namespace proekt.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicalRecords");
+                    b.ToTable("MedicalRecords", (string)null);
                 });
 
             modelBuilder.Entity("proekt.Models.User", b =>
@@ -263,9 +263,6 @@ namespace proekt.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsEmailVerified")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -279,12 +276,9 @@ namespace proekt.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("VerificationToken")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -293,7 +287,6 @@ namespace proekt.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@example.com",
                             FullName = "Admin",
-                            IsEmailVerified = false,
                             Password = "1234",
                             Role = "Admin"
                         },
@@ -303,7 +296,6 @@ namespace proekt.Migrations
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "manager@example.com",
                             FullName = "Manager",
-                            IsEmailVerified = false,
                             Password = "1234",
                             Role = "Manager"
                         });

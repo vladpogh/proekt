@@ -870,13 +870,42 @@ label {
 }
 
 .hp-trust-logos {
-    opacity: 0.4;
-    filter: grayscale(1);
-    transition: opacity 0.3s ease;
+    transition: all 0.5s ease;
 }
 
-.hp-trust-logos:hover {
-    opacity: 0.8;
+.hp-trust-logo-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 24px;
+    border: 1px solid var(--border-light);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    box-shadow: var(--shadow-sm);
+    filter: grayscale(1);
+    opacity: 0.6;
+}
+
+.hp-trust-logo-card img {
+    max-height: 50px;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.hp-trust-logo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--brand-primary-soft);
+    filter: grayscale(0);
+    opacity: 1;
+}
+
+.hp-trust-logo-card:hover img {
+    transform: scale(1.1);
 }
 
 @media (max-width: 991px) {

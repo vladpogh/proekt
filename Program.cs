@@ -23,7 +23,6 @@ builder.Services.AddScoped<MedicalDocumentService>();
 builder.Services.AddScoped<DoctorApplicationService>();
 builder.Services.AddScoped<ContactInquiryService>();
 builder.Services.AddScoped<MedicalRecordService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

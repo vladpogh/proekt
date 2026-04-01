@@ -18,6 +18,4 @@ public class User
     public string? Password { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public UserRole Role { get; set; } = UserRole.User;
-    public bool IsEmailVerified { get; set; } = false;
-    public string? VerificationToken { get; set; }
 }

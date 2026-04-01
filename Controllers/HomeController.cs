@@ -306,16 +306,10 @@ namespace proekt.Controllers
     {
         if (!string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password) && _userService.VerifyPassword(model.Email, model.Password))
         {
+            HttpContext.Session.SetString("UserEmail", model.Email);
             var user = _userService.GetUserByEmail(model.Email);
             if (user != null)
             {
-                if (!user.IsEmailVerified)
-                {
-                    ModelState.AddModelError("", _loc.T("EmailNotVerified"));
-                    return View(model);
-                }
-
-                HttpContext.Session.SetString("UserEmail", model.Email);
                 HttpContext.Session.SetString("UserName", user.FullName ?? "User");
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserRole", user.Role.ToString());
@@ -335,7 +329,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel model)
+    public IActionResult Register(RegisterViewModel model)
     {
         if (model.Password == "1234")
         {
@@ -344,36 +338,23 @@ namespace proekt.Controllers
 
         if (ModelState.IsValid)
         {
-            var verificationBaseUrl = Url.Action("VerifyEmail", "Home", null, Request.Scheme) ?? "";
-            if (await _userService.RegisterUser(model.FullName ?? "", model.Email ?? "", model.Password ?? "", verificationBaseUrl))
+            if (_userService.RegisterUser(model.FullName ?? "", model.Email ?? "", model.Password ?? ""))
             {
+                HttpContext.Session.SetString("UserEmail", model.Email ?? "");
+                HttpContext.Session.SetString("UserName", model.FullName ?? "");
                 var user = _userService.GetUserByEmail(model.Email ?? "");
                 if (user != null)
                 {
+                    HttpContext.Session.SetInt32("UserId", user.Id);
+                    HttpContext.Session.SetString("UserRole", user.Role.ToString());
                     _medRecordService.CreateEmptyRecord(user.Id);
                 }
-                TempData["Message"] = _loc.T("VerificationEmailSent");
-                return RedirectToAction("Login");
+                return RedirectToAction("Index");
             }
             ModelState.AddModelError("", _loc.T("EmailExists"));
         }
 
         return View(model);
-    }
-
-    [HttpGet]
-    public IActionResult VerifyEmail(string token)
-    {
-        if (string.IsNullOrEmpty(token)) return RedirectToAction("Index");
-
-        if (_userService.VerifyEmail(token))
-        {
-            TempData["Message"] = _loc.T("EmailVerifiedSuccess");
-            return RedirectToAction("Login");
-        }
-
-        TempData["Message"] = _loc.T("EmailVerifiedFailed");
-        return RedirectToAction("Index");
     }
 
     public IActionResult Logout()

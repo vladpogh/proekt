@@ -258,10 +258,6 @@ public class TranslationService
                 ["InquiryDetails"] = "Inquiry Details",
                 ["NeedsResponse"] = "Needs Response",
                 ["Responded"] = "Responded",
-                ["EmailNotVerified"] = "Your email is not verified. Please check your inbox for the verification link.",
-                ["VerificationEmailSent"] = "A verification email has been sent. Please check your inbox.",
-                ["EmailVerifiedSuccess"] = "Your email has been successfully verified! You can now log in.",
-                ["EmailVerifiedFailed"] = "Email verification failed. The link may be invalid or expired.",
             },
             ["bg"] = new Dictionary<string, string>
             {
