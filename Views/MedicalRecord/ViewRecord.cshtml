@@ -106,163 +106,141 @@
         </div>
     </div>
 
-    <!-- ── Tabs ───────────────────────────────────────── -->
-    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 mx-3 rounded-4 shadow-sm glass-card">
-        <ul class="nav nav-pills" id="mrTabs">
-            <li class="nav-item">
-                <button class="nav-link active rounded-pill px-4 py-2 fw-bold" onclick="switchTab('operations', this)">
+    <!-- ── Category Navigation Buttons ────────────────────────────── -->
+    <div class="px-3 mb-5">
+        <div class="glass-card p-3 rounded-4 shadow-sm d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-premium-nav active" id="btn-tab-operations" onclick="toggleMrSection('operations')">
                     <i class="bi bi-scissors me-2"></i> @Loc.T("Operations")
                 </button>
-            </li>
-            <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('diagnoses', this)">
+                <button class="btn btn-premium-nav" id="btn-tab-diagnoses" onclick="toggleMrSection('diagnoses')">
                     <i class="bi bi-activity me-2"></i> @Loc.T("Diagnoses")
                 </button>
-            </li>
-            <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('medications', this)">
+                <button class="btn btn-premium-nav" id="btn-tab-medications" onclick="toggleMrSection('medications')">
                     <i class="bi bi-capsule me-2"></i> @Loc.T("Medications")
                 </button>
-            </li>
-            <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('notes', this)">
+                <button class="btn btn-premium-nav" id="btn-tab-notes" onclick="toggleMrSection('notes')">
                     <i class="bi bi-sticky me-2"></i> @Loc.T("Notes")
                 </button>
-            </li>
-            <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('history', this)">
+                <button class="btn btn-premium-nav" id="btn-tab-history" onclick="toggleMrSection('history')">
                     <i class="bi bi-clock-history me-2"></i> @Loc.T("History")
                 </button>
-            </li>
-        </ul>
-
-        @if (canEdit)
-        {
-            <button class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold hover-scale" onclick="openAddModal()">
-                <i class="bi bi-plus-lg me-2"></i> @Loc.T("AddEntry")
-            </button>
-        }
+            </div>
+            
+            <div id="add-btn-container">
+                @if (canEdit) {
+                    <button class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold hover-scale" id="main-add-btn" onclick="openAddModal()">
+                        <i class="bi bi-plus-lg me-2"></i> @Loc.T("AddEntry")
+                    </button>
+                }
+            </div>
+        </div>
     </div>
 
-    <!-- ── Operations Tab ────────────────────────────── -->
-    <div class="mr-tab-content active" id="tab-operations">
-        @if (!operations.Any())
-        {
-            <div class="mr-empty"><i class="bi bi-scissors"></i><p>@Loc.T("NoOperations")</p></div>
-        }
-        @foreach (var e in operations)
-        {
-            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
-                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#dc2626" }
-            })
-        }
-    </div>
-
-    <!-- ── Diagnoses Tab ─────────────────────────────── -->
-    <div class="mr-tab-content" id="tab-diagnoses">
-        @if (!diagnoses.Any())
-        {
-            <div class="mr-empty"><i class="bi bi-activity"></i><p>@Loc.T("NoDiagnoses")</p></div>
-        }
-        @foreach (var e in diagnoses)
-        {
-            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
-                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#2563eb" }
-            })
-        }
-    </div>
-
-    <!-- ── Medications Tab ──────────────────────────── -->
-    <div class="mr-tab-content" id="tab-medications">
-        @if (!medications.Any())
-        {
-            <div class="mr-empty"><i class="bi bi-capsule"></i><p>@Loc.T("NoMedications")</p></div>
-        }
-        @foreach (var e in medications)
-        {
-            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
-                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#7c3aed" }
-            })
-        }
-    </div>
-
-    <!-- ── Notes Tab ───────────────────────────────── -->
-    <div class="mr-tab-content" id="tab-notes">
-        @if (!notes.Any())
-        {
-            <div class="mr-empty"><i class="bi bi-sticky"></i><p>@Loc.T("NoNotes")</p></div>
-        }
-        @foreach (var e in notes)
-        {
-            @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) {
-                { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit }, { "BorderColor", "#059669" }
-            })
-        }
-    </div>
-
-    <!-- ── History Tab ─────────────────────────────── -->
-    <div class="mr-tab-content" id="tab-history">
-        @if (!Model.AuditLogs.Any())
-        {
-            <div class="mr-empty"><i class="bi bi-clock-history"></i><p>@Loc.T("NoHistory")</p></div>
-        }
-        <div class="mr-timeline">
-            @foreach (var log in Model.AuditLogs)
-            {
-                var hasDiff = !string.IsNullOrEmpty(log.OldSnapshot) && !string.IsNullOrEmpty(log.NewSnapshot);
-                <div class="mr-timeline-item">
-                    <div class="mr-timeline-dot"></div>
-                    <div class="mr-timeline-body">
-                        <div class="mr-timeline-header">
-                            <strong>@log.ActionType</strong>
-                            <span class="mr-timeline-meta">
-                                <i class="bi bi-person-badge"></i> @log.DoctorName
-                                &nbsp;&nbsp;
-                                <i class="bi bi-clock"></i> @log.Timestamp.ToString("dd MMM yyyy, HH:mm")
-                            </span>
-                        </div>
-                        <div class="text-muted small">@log.Details</div>
-                        @if (hasDiff)
-                        {
-                            <button class="btn btn-outline-info btn-xs mt-2 diff-toggle-btn"
-                                    onclick="toggleDiff('diff-@log.Id')">
-                                <i class="bi bi-eye"></i> Show Diff
-                            </button>
-                            <div id="diff-@log.Id" class="audit-diff-panel" style="display:none;">
-                                @{
-                                    var oldD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.OldSnapshot!)!;
-                                    var newD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.NewSnapshot!)!;
-                                    var fieldLabels = new Dictionary<string,string> {
-                                        ["BloodType"]="Blood Type",
-                                        ["Allergies"]="Allergies",
-                                        ["ChronicConditions"]="Chronic Conditions",
-                                        ["GeneralNotes"]="General Notes"
-                                    };
-                                }
-                                <table class="diff-table mt-2">
-                                    <thead>
-                                        <tr><th>Field</th><th class="diff-old">Before</th><th class="diff-new">After</th></tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach (var key in fieldLabels.Keys)
-                                    {
-                                        var oldVal = oldD.ContainsKey(key) ? oldD[key] : null;
-                                        var newVal = newD.ContainsKey(key) ? newD[key] : null;
-                                        var changed = oldVal != newVal;
-                                        <tr class="@(changed ? "diff-row-changed" : "diff-row-same")">
-                                            <td class="diff-field">@fieldLabels[key]</td>
-                                            <td class="diff-old">@(string.IsNullOrWhiteSpace(oldVal) ? "—" : oldVal)</td>
-                                            <td class="diff-new">@(string.IsNullOrWhiteSpace(newVal) ? "—" : newVal)</td>
-                                        </tr>
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
-                        }
-                    </div>
-                </div>
+    <!-- ── Content Sections ───────────────────────────────────────── -->
+    <div class="px-3">
+        <!-- Operations Section -->
+        <div class="mr-category-section active" id="sec-operations">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-900 mb-0"><i class="bi bi-scissors me-2 text-danger"></i> @Loc.T("Operations")</h4>
+                <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">@operations.Count Entries</span>
+            </div>
+            @if (!operations.Any()) {
+                <div class="mr-empty"><i class="bi bi-scissors"></i><p>@Loc.T("NoOperations")</p></div>
+            }
+            @foreach (var e in operations) {
+                @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) { { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit } })
             }
         </div>
+
+        <!-- Diagnoses Section -->
+        <div class="mr-category-section d-none" id="sec-diagnoses">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-900 mb-0"><i class="bi bi-activity me-2 text-primary"></i> @Loc.T("Diagnoses")</h4>
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">@diagnoses.Count Entries</span>
+            </div>
+            @if (!diagnoses.Any()) {
+                <div class="mr-empty"><i class="bi bi-activity"></i><p>@Loc.T("NoDiagnoses")</p></div>
+            }
+            @foreach (var e in diagnoses) {
+                @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) { { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit } })
+            }
+        </div>
+
+        <!-- Medications Section -->
+        <div class="mr-category-section d-none" id="sec-medications">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-900 mb-0"><i class="bi bi-capsule me-2 text-info"></i> @Loc.T("Medications")</h4>
+                <span class="badge bg-info bg-opacity-10 text-info rounded-pill px-3">@medications.Count Entries</span>
+            </div>
+            @if (!medications.Any()) {
+                <div class="mr-empty"><i class="bi bi-capsule"></i><p>@Loc.T("NoMedications")</p></div>
+            }
+            @foreach (var e in medications) {
+                @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) { { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit } })
+            }
+        </div>
+
+        <!-- Notes Section -->
+        <div class="mr-category-section d-none" id="sec-notes">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-900 mb-0"><i class="bi bi-sticky me-2 text-success"></i> @Loc.T("Notes")</h4>
+                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">@notes.Count Entries</span>
+            </div>
+            @if (!notes.Any()) {
+                <div class="mr-empty"><i class="bi bi-sticky"></i><p>@Loc.T("NoNotes")</p></div>
+            }
+            @foreach (var e in notes) {
+                @await Html.PartialAsync("_EntryCard", new ViewDataDictionary(ViewData) { { "Entry", e }, { "UserId", userId }, { "CanEdit", canEdit } })
+            }
+        </div>
+
+        <!-- History Section -->
+        <div class="mr-category-section d-none" id="sec-history">
+            <h4 class="fw-900 mb-4"><i class="bi bi-clock-history me-2 text-secondary"></i> @Loc.T("History")</h4>
+            <div class="mr-timeline">
+                @foreach (var log in Model.AuditLogs) {
+                    var hasDiff = !string.IsNullOrEmpty(log.OldSnapshot) && !string.IsNullOrEmpty(log.NewSnapshot);
+                    <div class="mr-timeline-item">
+                        <div class="mr-timeline-dot"></div>
+                        <div class="mr-timeline-body">
+                            <div class="mr-timeline-header">
+                                <strong>@log.ActionType</strong>
+                                <span class="mr-timeline-meta"><i class="bi bi-person-badge"></i> @log.DoctorName &nbsp;&nbsp; <i class="bi bi-clock"></i> @log.Timestamp.ToString("g")</span>
+                            </div>
+                            <div class="text-muted small">@log.Details</div>
+                            @if (hasDiff) {
+                                <button class="btn btn-outline-info btn-xs mt-2" onclick="toggleDiff('diff-@log.Id')">Show Diff</button>
+                                <div id="diff-@log.Id" class="audit-diff-panel" style="display:none;">
+                                    @{
+                                        var oldD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.OldSnapshot!)!;
+                                        var newD = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string,string?>>(log.NewSnapshot!)!;
+                                        var fieldLabels = new Dictionary<string,string> { ["BloodType"]="Blood Type", ["Allergies"]="Allergies", ["ChronicConditions"]="Chronic Conditions", ["GeneralNotes"]="General Notes" };
+                                    }
+                                    <table class="diff-table mt-2">
+                                        <thead><tr><th>Field</th><th class="diff-old">Before</th><th class="diff-new">After</th></tr></thead>
+                                        <tbody>
+                                        @foreach (var key in fieldLabels.Keys) {
+                                            var oldVal = oldD.ContainsKey(key) ? oldD[key] : null;
+                                            var newVal = newD.ContainsKey(key) ? newD[key] : null;
+                                            var changed = oldVal != newVal;
+                                            <tr class="@(changed ? "diff-row-changed" : "diff-row-same")">
+                                                <td class="diff-field">@fieldLabels[key]</td>
+                                                <td class="diff-old">@(string.IsNullOrWhiteSpace(oldVal) ? "—" : oldVal)</td>
+                                                <td class="diff-new">@(string.IsNullOrWhiteSpace(newVal) ? "—" : newVal)</td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 
@@ -282,9 +260,9 @@
                     <div class="mr-form-row">
                         <div class="mr-form-group">
                             <label>@Loc.T("EntryType")</label>
-                            <select name="type" class="mr-select" required>
+                            <select name="type" id="add_type" class="mr-select" required>
                                 <option value="Operation">@Loc.T("Operations")</option>
-                                <option value="Diagnosis" selected>@Loc.T("Diagnoses")</option>
+                                <option value="Diagnosis">@Loc.T("Diagnoses")</option>
                                 <option value="Medication">@Loc.T("Medications")</option>
                                 <option value="Note">@Loc.T("Notes")</option>
                             </select>
@@ -408,13 +386,43 @@
 
 @section Scripts {
 <script>
-function switchTab(name, btn) {
-    document.querySelectorAll('.mr-tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.mr-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active');
+let currentCategory = 'operations';
+
+function toggleMrSection(category) {
+    // Hide current section
+    document.getElementById('sec-' + currentCategory).classList.add('d-none');
+    document.getElementById('btn-tab-' + currentCategory).classList.remove('active');
+    
+    // Show new section
+    document.getElementById('sec-' + category).classList.remove('d-none');
+    document.getElementById('btn-tab-' + category).classList.add('active');
+    
+    currentCategory = category;
+
+    // Update main add button if needed or handle specific section logic
+    const addBtn = document.getElementById('main-add-btn');
+    if (addBtn) {
+        if (category === 'history') {
+            addBtn.style.display = 'none';
+        } else {
+            addBtn.style.display = 'inline-flex';
+            // Pre-set the type for the next open
+            let typeMap = {
+                'operations': 'Operation',
+                'diagnoses': 'Diagnosis',
+                'medications': 'Medication',
+                'notes': 'Note'
+            };
+            window.lastSelectedType = typeMap[category];
+        }
+    }
 }
-function openAddModal()  { document.getElementById('addEntryModal').classList.add('show'); }
+
+function openAddModal() { 
+    const type = window.lastSelectedType || 'Diagnosis';
+    document.getElementById('add_type').value = type;
+    document.getElementById('addEntryModal').classList.add('show'); 
+}
 function openEditInfoModal() { document.getElementById('editInfoModal').classList.add('show'); }
 function closeModal(id)  { document.getElementById(id).classList.remove('show'); }
 function closeFn(e, id) { if (e.target.id === id) closeModal(id); }

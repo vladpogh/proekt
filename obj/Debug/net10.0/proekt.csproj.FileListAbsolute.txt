@@ -453,4 +453,4 @@
 /Users/vladimirpoghosyan/Downloads/proekt-main/obj/Debug/net10.0/proekt.genruntimeconfig.cache
 /Users/vladimirpoghosyan/Downloads/proekt-main/obj/Debug/net10.0/ref/proekt.dll
 /Users/vladimirpoghosyan/Downloads/proekt-main/obj/Debug/net10.0/compressed/suo7dexssm-{0}-ywgbfxy7w2-ywgbfxy7w2.gz
-/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-hfyuyeb31w-hfyuyeb31w.gz
+/Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net10.0/compressed/suo7dexssm-{0}-s0cr439pvt-s0cr439pvt.gz
