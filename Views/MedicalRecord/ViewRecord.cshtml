@@ -17,13 +17,18 @@
 
 <div class="mr-page">
     <!-- ── Header ─────────────────────────────────────── -->
-    <div class="mr-header">
-        <div class="mr-header-left">
-            <div class="mr-avatar">@(Model.Patient.FullName?.Substring(0,1).ToUpper() ?? "?")</div>
-            <div>
-                <h2 class="mb-0">@Model.Patient.FullName</h2>
-                <small class="text-white-50">@Model.Patient.Email &nbsp;|&nbsp; Member since @Model.Patient.CreatedAt.ToString("MMM yyyy")</small>
-                <div class="mt-1"><span class="mr-role-badge">@Model.Patient.Role</span></div>
+    <div class="mr-header" style="background: var(--grad-dark); border-radius: 24px; padding: 3rem; margin: 1rem; box-shadow: var(--shadow-xl);">
+        <div class="mr-header-left d-flex align-items-center">
+            <div class="mr-avatar shadow-lg" style="width: 80px; height: 80px; font-size: 2.5rem; background: var(--grad-primary); border: 4px solid rgba(255,255,255,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white;">
+                @(Model.Patient.FullName?.Substring(0,1).ToUpper() ?? "?")
+            </div>
+            <div class="ms-4">
+                <h2 class="mb-1 fw-900 text-white" style="letter-spacing: -1px;">@Model.Patient.FullName</h2>
+                <div class="d-flex align-items-center gap-3">
+                    <small class="text-white-50"><i class="bi bi-envelope me-1"></i> @Model.Patient.Email</small>
+                    <small class="text-white-50"><i class="bi bi-calendar-event me-1"></i> Member since @Model.Patient.CreatedAt.ToString("MMM yyyy")</small>
+                </div>
+                <div class="mt-2"><span class="badge rounded-pill px-3 py-2" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.2);">@Model.Patient.Role</span></div>
             </div>
         </div>
         <div class="mr-header-right">
@@ -46,55 +51,55 @@
     }
 
     <!-- ── General Info Cards ─────────────────────────── -->
-    <div class="row g-4 mb-5">
+    <div class="row g-4 px-3 mb-5 fade-in-up">
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden glass-card hover-scale">
                 <div class="card-body p-4 d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-3 me-3">
+                    <div class="flex-shrink-0 p-3 rounded-4 me-3 shadow-sm" style="background: var(--grad-danger); color: white;">
                         <i class="bi bi-droplet-fill fs-3"></i>
                     </div>
                     <div>
-                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("BloodType")</div>
-                        <div class="h4 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
+                        <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">@Loc.T("BloodType")</div>
+                        <div class="h4 mb-0 fw-900">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden glass-card hover-scale">
                 <div class="card-body p-4 d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
+                    <div class="flex-shrink-0 p-3 rounded-4 me-3 shadow-sm" style="background: var(--grad-premium); color: white;">
                         <i class="bi bi-exclamation-triangle-fill fs-3"></i>
                     </div>
                     <div>
-                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("Allergies")</div>
+                        <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">@Loc.T("Allergies")</div>
                         <div class="h6 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None" : record.Allergies)</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden glass-card hover-scale">
                 <div class="card-body p-4 d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
+                    <div class="flex-shrink-0 p-3 rounded-4 me-3 shadow-sm" style="background: var(--grad-primary); color: white;">
                         <i class="bi bi-heart-pulse-fill fs-3"></i>
                     </div>
                     <div>
-                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("Chronic")</div>
+                        <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">@Loc.T("Chronic")</div>
                         <div class="h6 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None" : record.ChronicConditions)</div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden glass-card hover-scale">
                 <div class="card-body p-4 d-flex align-items-center">
-                    <div class="flex-shrink-0 bg-success bg-opacity-10 text-success p-3 rounded-3 me-3">
+                    <div class="flex-shrink-0 p-3 rounded-4 me-3 shadow-sm" style="background: var(--grad-success); color: white;">
                         <i class="bi bi-journal-text fs-3"></i>
                     </div>
                     <div>
-                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("TotalEntries")</div>
-                        <div class="h4 mb-0 fw-bold">@record.Entries.Count</div>
+                        <div class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;">@Loc.T("TotalEntries")</div>
+                        <div class="h4 mb-0 fw-900">@record.Entries.Count</div>
                     </div>
                 </div>
             </div>
@@ -102,30 +107,30 @@
     </div>
 
     <!-- ── Tabs ───────────────────────────────────────── -->
-    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 mx-3 rounded-4 shadow-sm glass-card">
         <ul class="nav nav-pills" id="mrTabs">
             <li class="nav-item">
-                <button class="nav-link active rounded-pill px-4" onclick="switchTab('operations', this)">
+                <button class="nav-link active rounded-pill px-4 py-2 fw-bold" onclick="switchTab('operations', this)">
                     <i class="bi bi-scissors me-2"></i> @Loc.T("Operations")
                 </button>
             </li>
             <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4" onclick="switchTab('diagnoses', this)">
+                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('diagnoses', this)">
                     <i class="bi bi-activity me-2"></i> @Loc.T("Diagnoses")
                 </button>
             </li>
             <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4" onclick="switchTab('medications', this)">
+                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('medications', this)">
                     <i class="bi bi-capsule me-2"></i> @Loc.T("Medications")
                 </button>
             </li>
             <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4" onclick="switchTab('notes', this)">
+                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('notes', this)">
                     <i class="bi bi-sticky me-2"></i> @Loc.T("Notes")
                 </button>
             </li>
             <li class="nav-item ms-2">
-                <button class="nav-link rounded-pill px-4" onclick="switchTab('history', this)">
+                <button class="nav-link rounded-pill px-4 py-2 fw-bold" onclick="switchTab('history', this)">
                     <i class="bi bi-clock-history me-2"></i> @Loc.T("History")
                 </button>
             </li>
@@ -133,7 +138,7 @@
 
         @if (canEdit)
         {
-            <button class="btn btn-primary rounded-pill px-4" onclick="openAddModal()">
+            <button class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold hover-scale" onclick="openAddModal()">
                 <i class="bi bi-plus-lg me-2"></i> @Loc.T("AddEntry")
             </button>
         }
@@ -265,10 +270,10 @@
 @if (canEdit)
 {
     <div class="mr-modal-overlay" id="addEntryModal" onclick="closeFn(event,'addEntryModal')">
-        <div class="mr-modal">
-            <div class="mr-modal-header">
-                <h5><i class="bi bi-plus-circle-fill text-primary me-2"></i>@Loc.T("AddMedicalEntry")</h5>
-                <button type="button" onclick="closeModal('addEntryModal')"><i class="bi bi-x-lg"></i></button>
+        <div class="mr-modal shadow-2xl border-0 overflow-hidden">
+            <div class="mr-modal-header text-white" style="background: var(--grad-primary); border: none; padding: 1.5rem 2rem;">
+                <h5 class="mb-0 fw-900" style="letter-spacing: -0.5px;"><i class="bi bi-plus-circle-fill me-2"></i>@Loc.T("AddMedicalEntry")</h5>
+                <button type="button" class="text-white opacity-75 hover-opacity-100" onclick="closeModal('addEntryModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="AddEntry" method="post">
                 @Html.AntiForgeryToken()
@@ -308,10 +313,10 @@
 
     <!-- ══ Edit Entry Modal ═══════════════════════════════════════ -->
     <div class="mr-modal-overlay" id="editEntryModal" onclick="closeFn(event,'editEntryModal')">
-        <div class="mr-modal">
-            <div class="mr-modal-header">
-                <h5><i class="bi bi-pencil-fill text-warning me-2"></i>@Loc.T("UpdateEntry")</h5>
-                <button type="button" onclick="closeModal('editEntryModal')"><i class="bi bi-x-lg"></i></button>
+        <div class="mr-modal shadow-2xl border-0 overflow-hidden">
+            <div class="mr-modal-header text-white" style="background: var(--grad-premium); border: none; padding: 1.5rem 2rem;">
+                <h5 class="mb-0 fw-900" style="letter-spacing: -0.5px;"><i class="bi bi-pencil-fill me-2"></i>@Loc.T("UpdateEntry")</h5>
+                <button type="button" class="text-white opacity-75 hover-opacity-100" onclick="closeModal('editEntryModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="EditEntry" method="post">
                 @Html.AntiForgeryToken()
@@ -353,10 +358,10 @@
 
     <!-- ══ Edit General Info Modal ═══════════════════════════════ -->
     <div class="mr-modal-overlay" id="editInfoModal" onclick="closeFn(event,'editInfoModal')">
-        <div class="mr-modal">
-            <div class="mr-modal-header">
-                <h5><i class="bi bi-clipboard2-pulse-fill text-success me-2"></i>@Loc.T("EditGeneralInfo")</h5>
-                <button type="button" onclick="closeModal('editInfoModal')"><i class="bi bi-x-lg"></i></button>
+        <div class="mr-modal shadow-2xl border-0 overflow-hidden">
+            <div class="mr-modal-header text-white" style="background: var(--grad-success); border: none; padding: 1.5rem 2rem;">
+                <h5 class="mb-0 fw-900" style="letter-spacing: -0.5px;"><i class="bi bi-clipboard2-pulse-fill me-2"></i>@Loc.T("EditGeneralInfo")</h5>
+                <button type="button" class="text-white opacity-75 hover-opacity-100" onclick="closeModal('editInfoModal')"><i class="bi bi-x-lg"></i></button>
             </div>
             <form asp-controller="MedicalRecord" asp-action="UpdateRecordInfo" method="post">
                 @Html.AntiForgeryToken()

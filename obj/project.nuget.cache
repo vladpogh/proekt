@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "U1Mv8fAiKZ8=",
+  "dgSpecHash": "ZPDkYwA0zgM=",
   "success": true,
-  "projectFilePath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
+  "projectFilePath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
   "expectedPackageFiles": [
     "/Users/vladimirpoghosyan/.nuget/packages/azure.core/1.38.0/azure.core.1.38.0.nupkg.sha512",
     "/Users/vladimirpoghosyan/.nuget/packages/azure.identity/1.11.4/azure.identity.1.11.4.nupkg.sha512",
@@ -63,9 +63,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
-      "projectPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
+      "projectPath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
       "warningLevel": 1,
-      "filePath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
+      "filePath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
       "libraryId": "MailKit",
       "targetGraphs": [
         "net10.0"

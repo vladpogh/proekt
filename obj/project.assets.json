@@ -3203,11 +3203,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
+      "projectUniqueName": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
       "projectName": "proekt",
-      "projectPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
+      "projectPath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
       "packagesPath": "/Users/vladimirpoghosyan/.nuget/packages/",
-      "outputPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/obj/",
+      "outputPath": "/Users/vladimirpoghosyan/Desktop/proekt/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/vladimirpoghosyan/.nuget/NuGet/NuGet.Config"
