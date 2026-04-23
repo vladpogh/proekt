@@ -33,8 +33,9 @@
                         <span class="stat-value">@allUsers.Count</span>
                     </div>
                     <div class="stat-mini-card">
-                        <span class="stat-label">@Loc.T("ClientMessages")</span>
-                        <span class="stat-value">@allInquiries.Count(i => string.IsNullOrEmpty(i.AdminResponse))</span>
+                        @{ var summary = ViewBag.PlatformSummary as proekt.Services.PlatformSummary; }
+                        <span class="stat-label">@Loc.T("TotalRevenue")</span>
+                        <span class="stat-value">@((summary?.TotalRevenue ?? 0).ToString("F0"))</span>
                     </div>
                     <div class="stat-mini-card highlight">
                         <span class="stat-label">@Loc.T("PendingCount")</span>
@@ -63,6 +64,16 @@
                     <button class="nav-link" id="messages-tab" data-bs-toggle="pill" data-bs-target="#messages" type="button" role="tab">
                         <i class="bi bi-envelope-paper me-2"></i> @Loc.T("ClientMessages")
                         @if (allInquiries.Any(i => string.IsNullOrEmpty(i.AdminResponse))) { <span class="badge rounded-pill bg-primary ms-2">@allInquiries.Count(i => string.IsNullOrEmpty(i.AdminResponse))</span> }
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="stats-tab" data-bs-toggle="pill" data-bs-target="#stats" type="button" role="tab">
+                        <i class="bi bi-graph-up-arrow me-2"></i> @Loc.T("Statistics")
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="activity-tab" data-bs-toggle="pill" data-bs-target="#activity" type="button" role="tab">
+                        <i class="bi bi-list-columns-reverse me-2"></i> @Loc.T("ActivityLog")
                     </button>
                 </li>
                 @if (currentRole == "Manager")
@@ -214,6 +225,76 @@
                                     <span class="text-muted">@Loc.T("NoUsersToTerminate")</span>
                                 </div>
                             }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Tab -->
+                <div class="tab-pane fade" id="stats" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header-clean border-bottom pb-3 mb-4">
+                            <h5 class="mb-0 fw-bold">@Loc.T("PlatformSummary")</h5>
+                            <a asp-controller="Statistics" asp-action="Index" class="btn btn-sm btn-outline-primary rounded-pill">@Loc.T("Full Dashboard")</a>
+                        </div>
+                        <div class="row g-4 mt-2">
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 border rounded-3 text-center">
+                                    <h3 class="fw-bold text-primary mb-1">@(summary?.TotalDoctors ?? 0)</h3>
+                                    <span class="text-muted small fw-bold">@Loc.T("Active Doctors")</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 border rounded-3 text-center">
+                                    <h3 class="fw-bold text-success mb-1">@(summary?.TotalAppointments ?? 0)</h3>
+                                    <span class="text-muted small fw-bold">@Loc.T("Total Appointments")</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-box p-3 border rounded-3 text-center">
+                                    <h3 class="fw-bold text-info mb-1">@(summary?.TotalPrescriptions ?? 0)</h3>
+                                    <span class="text-muted small fw-bold">@Loc.T("Total Prescriptions")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Log Tab -->
+                <div class="tab-pane fade" id="activity" role="tabpanel">
+                    <div class="content-card">
+                        <div class="card-header-clean border-bottom pb-3 mb-4">
+                            <h5 class="mb-0 fw-bold">@Loc.T("ActivityLog")</h5>
+                            <p class="text-muted small mb-0">@Loc.T("MonitorSystemActions")</p>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>@Loc.T("User")</th>
+                                        <th>@Loc.T("Action")</th>
+                                        <th>@Loc.T("Details")</th>
+                                        <th>@Loc.T("Time")</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ var logs = ViewBag.ActivityLogs as List<proekt.Models.ActivityLog>; }
+                                    @if (logs != null && logs.Any())
+                                    {
+                                        @foreach (var log in logs)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="fw-bold">@log.UserName</div>
+                                                    <small class="text-muted">ID: @(log.UserId?.ToString() ?? "Anon")</small>
+                                                </td>
+                                                <td><span class="badge bg-light text-dark border">@log.Action</span></td>
+                                                <td class="small">@log.Details</td>
+                                                <td><small>@log.Timestamp.ToString("g")</small></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

@@ -7,47 +7,59 @@
     var userRole = Context.Session.GetString("UserRole");
 }
 
-<div class="profile-container">
-    <!-- Sidebar -->
-    <div class="profile-sidebar">
-        <div class="sidebar-header">
-            <div class="avatar-circle">
-                @(user?.FullName?.Substring(0, 1).ToUpper() ?? "U")
+<div class="profile-container py-5">
+    <div class="row g-4">
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-body p-0">
+                    <div class="bg-primary p-5 text-center">
+                        <div class="avatar-circle mx-auto mb-3 shadow-lg" style="width: 100px; height: 100px; font-size: 2.5rem; background: white; color: var(--primary-color); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold;">
+                            @(user?.FullName?.Substring(0, 1).ToUpper() ?? "U")
+                        </div>
+                        <h4 class="text-white mb-1">@user?.FullName</h4>
+                        <p class="text-white-50 small mb-0">@user?.Email</p>
+                        <div class="mt-3">
+                            <span class="badge bg-white bg-opacity-25 rounded-pill px-3">@user?.Role</span>
+                        </div>
+                    </div>
+                    <div class="list-group list-group-flush p-3">
+                        <a href="#" class="list-group-item list-group-item-action border-0 rounded-3 py-3 mb-1 active" id="link-personal-info" onclick="showSection('personal-info')">
+                            <i class="bi bi-person-circle me-3"></i> @Loc.T("PersonalInfo")
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 rounded-3 py-3 mb-1" id="link-appointments" onclick="showSection('appointments')">
+                            <i class="bi bi-calendar-check me-3"></i> @Loc.T("My Appointments")
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 rounded-3 py-3 mb-1" id="link-prescriptions" onclick="showSection('prescriptions')">
+                            <i class="bi bi-prescription2 me-3"></i> @Loc.T("My Prescriptions")
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 rounded-3 py-3 mb-1" id="link-change-password" onclick="showSection('change-password')">
+                            <i class="bi bi-shield-lock me-3"></i> @Loc.T("Security")
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0 rounded-3 py-3 mb-1" id="link-inquiries" onclick="showSection('inquiries')">
+                            <i class="bi bi-chat-dots me-3"></i> @Loc.T("Support Tickets")
+                            @if(inquiries != null && inquiries.Count > 0) {
+                                <span class="badge bg-primary rounded-pill float-end">@inquiries.Count</span>
+                            }
+                        </a>
+                        <hr class="my-2">
+                        <a href="@Url.Action("Logout", "Home")" class="list-group-item list-group-item-action border-0 rounded-3 py-3 text-danger">
+                            <i class="bi bi-box-arrow-right me-3"></i> @Loc.T("SignOut")
+                        </a>
+                    </div>
+                </div>
             </div>
-            <h5 class="mt-2 mb-0 text-white">@user?.FullName</h5>
-            <small class="text-white-50">@user?.Email</small>
-            <span class="badg-role mt-2">@user?.Role</span>
         </div>
-        
-        <div class="sidebar-menu">
-            <a href="#" class="menu-item active" id="link-personal-info" onclick="showSection('personal-info')">
-                <i class="bi bi-person"></i> @Loc.T("PersonalInfo") <i class="bi bi-chevron-right ms-auto"></i>
-            </a>
-            <a href="#" class="menu-item" id="link-change-password" onclick="showSection('change-password')">
-                <i class="bi bi-lock"></i> @Loc.T("ChangePassword")
-            </a>
 
-            <a href="@Url.Action("Contact", "Home")" class="menu-item">
-                <i class="bi bi-envelope"></i> @Loc.T("Contact")
-            </a>
-            <a href="#" class="menu-item" id="link-inquiries" onclick="showSection('inquiries')">
-                <i class="bi bi-chat-left-text"></i> @Loc.T("MyInquiries")
-                 @if(inquiries != null && inquiries.Count > 0) {
-                    <span class="badge bg-primary ms-auto">@inquiries.Count</span>
-                 }
-            </a>
-            <a href="@Url.Action("Logout", "Home")" class="menu-item text-danger mt-auto">
-                <i class="bi bi-box-arrow-right"></i> @Loc.T("SignOut")
-            </a>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="profile-content">
-        @if (TempData["ProfileMessage"] != null)
-        {
-            <div class="alert alert-info mb-4">@TempData["ProfileMessage"]</div>
-        }
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <div class="profile-content">
+                @if (TempData["ProfileMessage"] != null)
+                {
+                    <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4">
+                        <i class="bi bi-check-circle-fill me-2"></i> @TempData["ProfileMessage"]
+                    </div>
+                }
 
         <div id="personal-info-section">
             <div class="content-card">
@@ -111,6 +123,83 @@
                         <button type="submit" class="btn btn-primary">@Loc.T("SaveChanges")</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div id="appointments-section" class="d-none">
+            <div class="content-card">
+                <div class="card-header-clean">
+                    <div>
+                        <h4 class="mb-1">@Loc.T("Recent Appointments")</h4>
+                        <p class="text-muted mb-0">@Loc.T("Track your upcoming and past visits")</p>
+                    </div>
+                    <a asp-controller="Appointment" asp-action="MyAppointments" class="btn btn-outline-primary btn-sm">@Loc.T("View All")</a>
+                </div>
+
+                <div class="mt-4">
+                    @{ var recentAppts = ViewBag.RecentAppointments as List<proekt.Models.Appointment>; }
+                    @if (recentAppts != null && recentAppts.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var appt in recentAppts)
+                            {
+                                <div class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">@appt.AppointmentDate.ToString("dd MMM yyyy, HH:mm")</h6>
+                                        <span class="badge @(appt.Status == proekt.Models.AppointmentStatus.Confirmed ? "bg-success" : appt.Status == proekt.Models.AppointmentStatus.Cancelled ? "bg-danger" : "bg-warning text-dark")">@appt.Status</span>
+                                    </div>
+                                    <a asp-controller="Appointment" asp-action="Details" asp-route-id="@appt.Id" class="btn btn-sm btn-light border"><i class="bi bi-eye"></i></a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-calendar-x fs-2 d-block mb-2"></i>
+                            <p>@Loc.T("No recent appointments found")</p>
+                            <a asp-controller="Home" asp-action="Doctors" class="btn btn-primary btn-sm rounded-pill">@Loc.T("Book Now")</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div id="prescriptions-section" class="d-none">
+            <div class="content-card">
+                <div class="card-header-clean">
+                    <div>
+                        <h4 class="mb-1">@Loc.T("Recent Prescriptions")</h4>
+                        <p class="text-muted mb-0">@Loc.T("Your latest medical prescriptions")</p>
+                    </div>
+                    <a asp-controller="Prescription" asp-action="MyPrescriptions" class="btn btn-outline-primary btn-sm">@Loc.T("View All")</a>
+                </div>
+
+                <div class="mt-4">
+                    @{ var recentRx = ViewBag.RecentPrescriptions as List<proekt.Models.Prescription>; }
+                    @if (recentRx != null && recentRx.Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var rx in recentRx)
+                            {
+                                <div class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">@rx.Diagnosis</h6>
+                                        <small class="text-muted">Dr. @rx.DoctorName • @rx.IssuedAt.ToString("dd MMM yyyy")</small>
+                                    </div>
+                                    <a asp-controller="Prescription" asp-action="Details" asp-route-id="@rx.Id" class="btn btn-sm btn-light border"><i class="bi bi-eye"></i></a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-file-medical fs-2 d-block mb-2"></i>
+                            <p>@Loc.T("No prescriptions found")</p>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
@@ -299,11 +388,15 @@
         function showSection(sectionName) {
             // Hide all sections
             document.getElementById('personal-info-section').classList.add('d-none');
+            document.getElementById('appointments-section').classList.add('d-none');
+            document.getElementById('prescriptions-section').classList.add('d-none');
             document.getElementById('change-password-section').classList.add('d-none');
             document.getElementById('inquiries-section').classList.add('d-none');
             
             // Remove active class from sidebar links
             document.getElementById('link-personal-info').classList.remove('active');
+            document.getElementById('link-appointments').classList.remove('active');
+            document.getElementById('link-prescriptions').classList.remove('active');
             document.getElementById('link-change-password').classList.remove('active');
             document.getElementById('link-inquiries').classList.remove('active');
             

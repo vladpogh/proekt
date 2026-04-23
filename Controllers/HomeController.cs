@@ -15,6 +15,11 @@ namespace proekt.Controllers
         private readonly ContactInquiryService _inquiryService;
         private readonly MedicalRecordService _medRecordService;
         private readonly TranslationService _loc;
+        private readonly DoctorProfileService _profileService;
+        private readonly ActivityLogService _activityLog;
+        private readonly AppointmentService _apptService;
+        private readonly PrescriptionService _prescriptionService;
+        private readonly StatisticsService _statsService;
 
         [HttpGet]
         public IActionResult DoctorApplication()
@@ -80,13 +85,22 @@ namespace proekt.Controllers
             return RedirectToAction("Index");
         }
 
-        public HomeController(UserService userService, DoctorApplicationService appService, ContactInquiryService inquiryService, MedicalRecordService medRecordService, TranslationService loc)
+        public HomeController(UserService userService, DoctorApplicationService appService,
+            ContactInquiryService inquiryService, MedicalRecordService medRecordService,
+            TranslationService loc, DoctorProfileService profileService,
+            ActivityLogService activityLog, AppointmentService apptService,
+            PrescriptionService prescriptionService, StatisticsService statsService)
         {
-            _userService = userService;
-            _appService = appService;
-            _inquiryService = inquiryService;
-            _medRecordService = medRecordService;
-            _loc = loc;
+            _userService         = userService;
+            _appService          = appService;
+            _inquiryService      = inquiryService;
+            _medRecordService    = medRecordService;
+            _loc                 = loc;
+            _profileService      = profileService;
+            _activityLog         = activityLog;
+            _apptService         = apptService;
+            _prescriptionService = prescriptionService;
+            _statsService        = statsService;
         }
 
         [HttpPost]
@@ -126,6 +140,10 @@ namespace proekt.Controllers
             {
                 return RedirectToAction("Index");
             }
+
+            ViewBag.ActivityLogs = _activityLog.GetRecent(50);
+            ViewBag.PlatformSummary = _statsService.GetPlatformSummary();
+            
             return View();
         }
 
@@ -150,6 +168,10 @@ namespace proekt.Controllers
             {
                 ViewBag.AllInquiries = new List<ContactInquiry>();
             }
+
+            // Enriched data for Profile Dashboard
+            ViewBag.RecentAppointments = _apptService.GetByPatient(userId).Take(5).ToList();
+            ViewBag.RecentPrescriptions = _prescriptionService.GetByPatient(userId).Take(5).ToList();
 
             return View();
         }
@@ -313,6 +335,9 @@ namespace proekt.Controllers
                 HttpContext.Session.SetString("UserName", user.FullName ?? "User");
                 HttpContext.Session.SetInt32("UserId", user.Id);
                 HttpContext.Session.SetString("UserRole", user.Role.ToString());
+                _activityLog.Log(user.Id, user.FullName ?? "User", "Login",
+                    $"User logged in ({user.Role})",
+                    HttpContext.Connection.RemoteIpAddress?.ToString());
             }
             return RedirectToAction("Index");
         }
@@ -348,6 +373,9 @@ namespace proekt.Controllers
                     HttpContext.Session.SetInt32("UserId", user.Id);
                     HttpContext.Session.SetString("UserRole", user.Role.ToString());
                     _medRecordService.CreateEmptyRecord(user.Id);
+                    _activityLog.Log(user.Id, user.FullName ?? "User", "Register",
+                        "New user registered",
+                        HttpContext.Connection.RemoteIpAddress?.ToString());
                 }
                 return RedirectToAction("Index");
             }
@@ -359,8 +387,51 @@ namespace proekt.Controllers
 
     public IActionResult Logout()
     {
+        var userId   = HttpContext.Session.GetInt32("UserId");
+        var userName = HttpContext.Session.GetString("UserName") ?? "User";
+        _activityLog.Log(userId, userName, "Logout", null,
+            HttpContext.Connection.RemoteIpAddress?.ToString());
         HttpContext.Session.Clear();
         return RedirectToAction("Index");
+    }
+
+    // ── Doctors list (patient-facing) ──────────────────────────────────────────
+    public IActionResult Doctors()
+    {
+        var doctorList = _profileService.GetAllDoctors(_userService);
+        ViewBag.Doctors = doctorList;
+        return View();
+    }
+
+    // ── Doctor: Edit own profile ───────────────────────────────────────────────
+    [HttpGet]
+    public IActionResult DoctorProfileEdit()
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != "Doctor") return RedirectToAction("Index");
+        var userId  = HttpContext.Session.GetInt32("UserId") ?? 0;
+        var profile = _profileService.GetOrCreate(userId);
+        return View(profile);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult DoctorProfileEdit(string specialization, string? bio,
+        decimal consultationFee, string availableFrom, string availableTo,
+        string workingDays, int slotDuration)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        if (role != "Doctor") return Unauthorized();
+        var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+
+        // Convert "HH:mm" to total minutes
+        int Parse(string t) { var p = t.Split(':'); return int.Parse(p[0]) * 60 + int.Parse(p[1]); }
+
+        _profileService.Update(userId, specialization, bio, consultationFee,
+            Parse(availableFrom), Parse(availableTo), workingDays, slotDuration);
+
+        TempData["ProfileMessage"] = _loc.T("ProfileUpdated");
+        return RedirectToAction("Profile");
     }
 
     public IActionResult Privacy()

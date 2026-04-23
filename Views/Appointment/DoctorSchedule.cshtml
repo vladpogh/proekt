@@ -1,0 +1,158 @@
+@inject proekt.Services.TranslationService Loc
+@{
+    ViewData["Title"] = Loc.T("My Schedule");
+    var items = ViewBag.Items as List<dynamic>;
+}
+
+<div class="main-container">
+    <div class="dd-header rounded-4 shadow-sm mb-4">
+        <div>
+            <h2 class="text-white mb-1"><i class="bi bi-calendar3 me-2"></i> @Loc.T("Doctor Schedule")</h2>
+            <p class="text-white-50 mb-0">@Loc.T("Manage your daily appointments and patient interactions")</p>
+        </div>
+    </div>
+
+    @if (TempData["ApptSuccess"] != null)
+    {
+        <div class="alert alert-success border-0 shadow-sm rounded-3 mb-4">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["ApptSuccess"]
+        </div>
+    }
+
+    <div class="content-card border-0 shadow-sm rounded-4">
+        @if (items == null || !items.Any())
+        {
+            <div class="text-center py-5">
+                <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-4" style="width: 100px; height: 100px;">
+                    <i class="bi bi-calendar-x text-muted fs-1"></i>
+                </div>
+                <h4 class="text-dark">@Loc.T("No appointments found")</h4>
+                <p class="text-muted">@Loc.T("When patients book appointments with you, they will appear here.")</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="border-0 px-4 py-3">@Loc.T("Patient")</th>
+                            <th class="border-0 py-3">@Loc.T("Date & Time")</th>
+                            <th class="border-0 py-3">@Loc.T("Status")</th>
+                            <th class="border-0 py-3">@Loc.T("Payment")</th>
+                            <th class="border-0 py-3 text-end px-4">@Loc.T("Actions")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in items)
+                        {
+                            var appt = item.Appointment as proekt.Models.Appointment;
+                            var patient = item.Patient as proekt.Models.User;
+                            var payment = item.Payment as proekt.Models.Payment;
+                            
+                            <tr>
+                                <td class="px-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle me-3" style="width: 40px; height: 40px; background: var(--brand-primary-soft); color: var(--brand-primary); display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: bold; font-size: 0.9rem;">
+                                            @(patient?.FullName?.Substring(0, 1).ToUpper() ?? "P")
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark">@patient?.FullName</div>
+                                            <small class="text-muted">@patient?.Email</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@appt.AppointmentDate.ToString("dd MMM yyyy")</div>
+                                    <small class="text-primary fw-600">@appt.AppointmentDate.ToString("HH:mm")</small>
+                                </td>
+                                <td>
+                                    @switch (appt.Status)
+                                    {
+                                        case proekt.Models.AppointmentStatus.Pending:
+                                            <span class="badge bg-warning text-dark rounded-pill px-3">@Loc.T("Pending")</span>
+                                            break;
+                                        case proekt.Models.AppointmentStatus.Confirmed:
+                                            <span class="badge bg-success rounded-pill px-3">@Loc.T("Confirmed")</span>
+                                            break;
+                                        case proekt.Models.AppointmentStatus.Cancelled:
+                                            <span class="badge bg-danger rounded-pill px-3">@Loc.T("Cancelled")</span>
+                                            break;
+                                        case proekt.Models.AppointmentStatus.Completed:
+                                            <span class="badge bg-info rounded-pill px-3">@Loc.T("Completed")</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>
+                                    @if (payment != null)
+                                    {
+                                        <div class="d-flex align-items-center">
+                                            @if (payment.Status == proekt.Models.PaymentStatus.Paid)
+                                            {
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <span class="text-success fw-bold">@payment.Amount.ToString("F2") EUR</span>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-clock-history text-warning me-2"></i>
+                                                <span class="text-muted">@payment.Amount.ToString("F2") EUR</span>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="text-end px-4">
+                                    <div class="dropdown">
+                                        <button class="btn btn-light btn-sm rounded-3 shadow-none" type="button" data-bs-toggle="dropdown">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2">
+                                            <li>
+                                                <a class="dropdown-item rounded-2" asp-action="Details" asp-route-id="@appt.Id">
+                                                    <i class="bi bi-eye me-2 text-primary"></i> @Loc.T("View Details")
+                                                </a>
+                                            </li>
+                                            @if (appt.Status != proekt.Models.AppointmentStatus.Cancelled && appt.Status != proekt.Models.AppointmentStatus.Completed)
+                                            {
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <form asp-action="UpdateStatus" method="post" class="p-0 m-0">
+                                                        <input type="hidden" name="id" value="@appt.Id" />
+                                                        <input type="hidden" name="status" value="Confirmed" />
+                                                        <button type="submit" class="dropdown-item rounded-2">
+                                                            <i class="bi bi-check2-circle me-2 text-success"></i> @Loc.T("Confirm")
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form asp-action="UpdateStatus" method="post" class="p-0 m-0">
+                                                        <input type="hidden" name="id" value="@appt.Id" />
+                                                        <input type="hidden" name="status" value="Completed" />
+                                                        <button type="submit" class="dropdown-item rounded-2">
+                                                            <i class="bi bi-clipboard-check me-2 text-info"></i> @Loc.T("Mark Completed")
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form asp-action="Cancel" method="post" class="p-0 m-0">
+                                                        <input type="hidden" name="id" value="@appt.Id" />
+                                                        <button type="submit" class="dropdown-item rounded-2 text-danger">
+                                                            <i class="bi bi-x-circle me-2"></i> @Loc.T("Cancel")
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

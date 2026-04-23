@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj": {}
+    "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj": {}
   },
   "projects": {
-    "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj": {
+    "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
+        "projectUniqueName": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
         "projectName": "proekt",
-        "projectPath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
+        "projectPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
         "packagesPath": "/Users/vladimirpoghosyan/.nuget/packages/",
-        "outputPath": "/Users/vladimirpoghosyan/Desktop/proekt/obj/",
+        "outputPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/vladimirpoghosyan/.nuget/NuGet/NuGet.Config"

@@ -1,0 +1,99 @@
+@model proekt.Models.Prescription
+@{
+    ViewData["Title"] = "Prescription Details";
+    var patient = ViewBag.Patient as proekt.Models.User;
+    var doctor  = ViewBag.Doctor  as proekt.Models.User;
+    var expired = Model.ExpiresAt.HasValue && Model.ExpiresAt.Value < DateTime.Today;
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="py-5" style="background:#f8faff;min-height:calc(100vh - 100px)">
+<div class="container" style="max-width:700px">
+    <div class="rx-print-card p-5">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#0052CC"/><path d="M16 6L22 14H10L16 6Z" fill="white"/><path d="M10 14L16 26L22 14" fill="white" opacity="0.7"/></svg>
+                    <strong class="text-primary">MedReports</strong>
+                </div>
+                <h5 class="fw-bold mb-0">Medical Prescription</h5>
+                <small class="text-muted">Ref #@Model.Id</small>
+            </div>
+            <div class="text-end">
+                <span class="badge rounded-pill px-3 py-2 @(expired ? "bg-danger text-white" : Model.IsActive ? "bg-success text-white" : "bg-secondary text-white")">
+                    @(expired ? "Expired" : Model.IsActive ? "Active" : "Inactive")
+                </span>
+                <button class="btn btn-sm btn-outline-secondary ms-2 rounded-pill" onclick="window.print()">
+                    <i class="bi bi-printer me-1"></i>Print
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Parties -->
+        <div class="row g-3 mb-4">
+            <div class="col-6">
+                <div class="party-box p-3 rounded-3">
+                    <small class="text-muted fw-semibold d-block mb-1">PATIENT</small>
+                    <strong>@patient?.FullName</strong><br>
+                    <small class="text-muted">@patient?.Email</small>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="party-box p-3 rounded-3">
+                    <small class="text-muted fw-semibold d-block mb-1">PRESCRIBING DOCTOR</small>
+                    <strong>Dr. @doctor?.FullName</strong><br>
+                    <small class="text-muted">@doctor?.Email</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnosis -->
+        <div class="mb-4">
+            <small class="text-muted fw-semibold text-uppercase">Diagnosis</small>
+            <p class="fw-bold fs-5 mb-0">@Model.Diagnosis</p>
+        </div>
+
+        <!-- Medications -->
+        <div class="rx-med-box p-4 rounded-3 mb-4">
+            <small class="text-muted fw-semibold d-block mb-2 text-uppercase">Rx — Medications</small>
+            <p class="mb-0" style="white-space:pre-line;font-family:'Courier New',monospace;font-size:0.95rem">@Model.Medications</p>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Instructions))
+        {
+            <div class="mb-4">
+                <small class="text-muted fw-semibold text-uppercase">Instructions</small>
+                <p class="mb-0">@Model.Instructions</p>
+            </div>
+        }
+
+        <!-- Dates -->
+        <hr>
+        <div class="row g-2 text-muted small">
+            <div class="col-6">Issued: <strong class="text-dark">@Model.IssuedAt.ToString("dd MMMM yyyy")</strong></div>
+            @if (Model.ExpiresAt.HasValue)
+            {
+                <div class="col-6">Expires: <strong class="@(expired ? "text-danger" : "text-dark")">@Model.ExpiresAt.Value.ToString("dd MMMM yyyy")</strong></div>
+            }
+        </div>
+
+        <div class="mt-4">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="bi bi-arrow-left me-2"></i>Back
+            </a>
+        </div>
+    </div>
+</div>
+</div>
+<style>
+.rx-print-card { background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.06);border:1px solid #edf2f7; }
+.party-box { background:#f8faff;border:1px solid #e2e8f0; }
+.rx-med-box { background:#fffbeb;border:2px solid #fde68a; }
+@@media print {
+    header, footer, nav, .btn { display:none !important; }
+    .rx-print-card { box-shadow:none;border:1px solid #ccc; }
+    body { background:white !important; }
+}
+</style>

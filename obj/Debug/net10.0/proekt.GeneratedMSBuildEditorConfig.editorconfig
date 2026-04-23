@@ -19,117 +19,173 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
 build_property.RootNamespace = proekt
 build_property.RootNamespace = proekt
-build_property.ProjectDir = /Users/vladimirpoghosyan/Desktop/proekt/
+build_property.ProjectDir = /Users/vladimirpoghosyan/Downloads/proekt-main/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/vladimirpoghosyan/Desktop/proekt
+build_property.MSBuildProjectDirectory = /Users/vladimirpoghosyan/Downloads/proekt-main
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/ClientMessages/Details.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Appointment/Book.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnQvQm9vay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Appointment/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnQvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Appointment/DoctorSchedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnQvRG9jdG9yU2NoZWR1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Appointment/MyAppointments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnQvTXlBcHBvaW50bWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/ClientMessages/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xpZW50TWVzc2FnZXMvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/ClientMessages/Index.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/ClientMessages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xpZW50TWVzc2FnZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/ClientMessages/_ClientMessagesNav.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/ClientMessages/_ClientMessagesNav.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xpZW50TWVzc2FnZXMvX0NsaWVudE1lc3NhZ2VzTmF2LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/About.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BYm91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/AdminPanel.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/AdminPanel.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BZG1pblBhbmVsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Contact.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Contact.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db250YWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/DoctorApplication.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/DoctorApplication.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Eb2N0b3JBcHBsaWNhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/DoctorApplicationDetails.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/DoctorApplicationDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Eb2N0b3JBcHBsaWNhdGlvbkRldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/FAQ.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/DoctorProfileEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Eb2N0b3JQcm9maWxlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Doctors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Eb2N0b3JzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/FAQ.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9GQVEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Index.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Login.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Privacy.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Products.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Products.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9kdWN0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Profile.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Register.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Home/Support.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Home/Support.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9TdXBwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/DoctorDashboard.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/MedicalRecord/DoctorDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9Eb2N0b3JEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/Unauthorized.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/MedicalRecord/Unauthorized.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9VbmF1dGhvcml6ZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/ViewRecord.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/MedicalRecord/ViewRecord.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9WaWV3UmVjb3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/MedicalRecord/_EntryCard.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/MedicalRecord/_EntryCard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWVkaWNhbFJlY29yZC9fRW50cnlDYXJkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Shared/Error.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Payment/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF5bWVudC9IaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Payment/Initiate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF5bWVudC9Jbml0aWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Payment/Receipt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGF5bWVudC9SZWNlaXB0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Prescription/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJlc2NyaXB0aW9uL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Prescription/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJlc2NyaXB0aW9uL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Prescription/DoctorPrescriptions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJlc2NyaXB0aW9uL0RvY3RvclByZXNjcmlwdGlvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Prescription/MyPrescriptions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJlc2NyaXB0aW9uL015UHJlc2NyaXB0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Shared/_Footer.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Shared/_Footer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Gb290ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/_ViewImports.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Statistics/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RhdGlzdGljcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/_ViewStart.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/vladimirpoghosyan/Desktop/proekt/Views/Shared/_Layout.cshtml]
+[/Users/vladimirpoghosyan/Downloads/proekt-main/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-a3vxj5xfgb

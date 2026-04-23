@@ -1,0 +1,190 @@
+@{
+    ViewData["Title"] = "Platform Statistics";
+    var summary    = ViewBag.Summary    as proekt.Services.PlatformSummary;
+    var diagnoses  = ViewBag.Diagnoses  as List<(string Diagnosis, int Count)> ?? new();
+    var trend      = ViewBag.VisitTrend as List<(DateTime Date, int Count)>    ?? new();
+    var bestDoc    = ViewBag.BestDoctor  as proekt.Models.User;
+    var bestCount  = (int)(ViewBag.BestCount ?? 0);
+    var actLogs    = ViewBag.ActivityLogs as List<proekt.Models.ActivityLog>   ?? new();
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<div class="stats-page py-5">
+<div class="container">
+    <div class="d-flex align-items-center gap-3 mb-5">
+        <div class="icon-badge bg-primary-soft fs-4"><i class="bi bi-bar-chart-line text-primary"></i></div>
+        <div><h1 class="fw-black mb-0">Platform Statistics</h1><p class="text-muted mb-0">Real-time analytics dashboard</p></div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-5">
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4">
+                <i class="bi bi-people-fill text-primary fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@(summary?.TotalUsers ?? 0)</div>
+                <div class="stat-lbl">Total Users</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4">
+                <i class="bi bi-person-badge-fill text-success fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@(summary?.TotalDoctors ?? 0)</div>
+                <div class="stat-lbl">Doctors</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4">
+                <i class="bi bi-folder2-open text-warning fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@(summary?.TotalRecords ?? 0)</div>
+                <div class="stat-lbl">Records</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4">
+                <i class="bi bi-calendar-check text-info fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@(summary?.TotalAppointments ?? 0)</div>
+                <div class="stat-lbl">Appointments</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4">
+                <i class="bi bi-file-medical text-danger fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@(summary?.TotalPrescriptions ?? 0)</div>
+                <div class="stat-lbl">Prescriptions</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-2">
+            <div class="stat-card text-center p-4 highlight">
+                <i class="bi bi-cash-coin text-white fs-3 mb-2 d-block"></i>
+                <div class="stat-num">@((summary?.TotalRevenue ?? 0).ToString("F0"))</div>
+                <div class="stat-lbl">Revenue (BGN)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <!-- Visit Trend Chart -->
+        <div class="col-lg-8">
+            <div class="content-card p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-graph-up me-2 text-primary"></i>Appointment Trend (Last 30 Days)</h5>
+                <canvas id="trendChart" height="200"></canvas>
+            </div>
+        </div>
+        <!-- Best Doctor -->
+        <div class="col-lg-4">
+            <div class="content-card p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-trophy-fill me-2 text-warning"></i>Best Doctor of the Month</h5>
+                @if (bestDoc != null)
+                {
+                    <div class="text-center py-3">
+                        <div class="best-doc-avatar mx-auto mb-3">@(bestDoc.FullName?.Substring(0,1).ToUpper() ?? "?")</div>
+                        <h5 class="fw-bold mb-1">Dr. @bestDoc.FullName</h5>
+                        <p class="text-muted small mb-2">@bestCount completed appointments this month</p>
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">⭐ Top Performer</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-trophy display-4 d-block mb-2"></i>
+                        <p>No completed appointments this month yet.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <!-- Diagnosis Chart -->
+        <div class="col-lg-6">
+            <div class="content-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-activity me-2 text-danger"></i>Top Diagnoses</h5>
+                @if (diagnoses.Any())
+                {
+                    <canvas id="diagChart" height="260"></canvas>
+                }
+                else
+                {
+                    <div class="text-center text-muted py-4"><i class="bi bi-bar-chart display-4 d-block mb-2"></i><p>No diagnosis data yet.</p></div>
+                }
+            </div>
+        </div>
+        <!-- Activity Log -->
+        <div class="col-lg-6">
+            <div class="content-card p-4">
+                <h5 class="fw-bold mb-3"><i class="bi bi-clock-history me-2 text-info"></i>Recent Activity</h5>
+                <div style="max-height:320px;overflow-y:auto">
+                    @foreach (var log in actLogs.Take(20))
+                    {
+                        <div class="activity-row d-flex align-items-start gap-3 py-2">
+                            <div class="activity-dot mt-1"></div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold small">@log.Action</span>
+                                    <small class="text-muted">@log.Timestamp.ToString("HH:mm")</small>
+                                </div>
+                                <small class="text-muted">@log.UserName @(log.Details != null ? "— " + log.Details : "")</small>
+                            </div>
+                        </div>
+                    }
+                    @if (!actLogs.Any())
+                    {
+                        <div class="text-center text-muted py-4">No activity logged yet.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+.stats-page { background:#f8faff;min-height:calc(100vh - 100px); }
+.fw-black { font-weight:900; }
+.icon-badge { width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center; }
+.bg-primary-soft { background:rgba(0,82,204,0.1); }
+.stat-card { background:white;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid #edf2f7; }
+.stat-card.highlight { background:linear-gradient(135deg,#0052CC,#0073e6);color:white; }
+.stat-num { font-size:1.8rem;font-weight:800;line-height:1; }
+.stat-lbl { font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;opacity:.7;margin-top:4px; }
+.content-card { background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.04);border:1px solid #edf2f7; }
+.best-doc-avatar { width:72px;height:72px;background:linear-gradient(135deg,#f59e0b,#f97316);color:white;font-size:1.8rem;font-weight:800;border-radius:20px;display:flex;align-items:center;justify-content:center; }
+.activity-row { border-bottom:1px solid #f1f5f9; }
+.activity-dot { width:8px;height:8px;border-radius:50%;background:#0052CC;flex-shrink:0;margin-top:4px; }
+</style>
+
+@section Scripts {
+<script>
+// Visit Trend Chart
+const trendLabels = [@Html.Raw(string.Join(",", trend.Select(t => $"'{t.Date:MMM dd}'")))];
+const trendData   = [@Html.Raw(string.Join(",", trend.Select(t => t.Count)))];
+new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+        labels: trendLabels,
+        datasets: [{ label: 'Appointments', data: trendData, borderColor: '#0052CC',
+            backgroundColor: 'rgba(0,82,204,0.08)', tension: 0.4, fill: true, pointRadius: 3 }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+});
+
+// Diagnosis Chart
+@if (diagnoses.Any())
+{
+    <text>
+    const diagLabels = [@Html.Raw(string.Join(",", diagnoses.Select(d => $"'{d.Diagnosis}'")))];
+    const diagData   = [@Html.Raw(string.Join(",", diagnoses.Select(d => d.Count)))];
+    new Chart(document.getElementById('diagChart'), {
+        type: 'bar',
+        data: {
+            labels: diagLabels,
+            datasets: [{ label: 'Cases', data: diagData,
+                backgroundColor: ['#0052CC','#0073e6','#2563eb','#3b82f6','#60a5fa','#93c5fd','#1d4ed8','#1e40af','#1e3a8a','#172554'].slice(0, diagLabels.length) }]
+        },
+        options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
+    });
+    </text>
+}
+</script>
+}

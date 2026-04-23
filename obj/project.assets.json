@@ -3203,11 +3203,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
+      "projectUniqueName": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
       "projectName": "proekt",
-      "projectPath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.csproj",
+      "projectPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/proekt.csproj",
       "packagesPath": "/Users/vladimirpoghosyan/.nuget/packages/",
-      "outputPath": "/Users/vladimirpoghosyan/Desktop/proekt/obj/",
+      "outputPath": "/Users/vladimirpoghosyan/Downloads/proekt-main/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/vladimirpoghosyan/.nuget/NuGet/NuGet.Config"
@@ -3701,5 +3701,17 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'MailKit' 4.15.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
+      "libraryId": "MailKit",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

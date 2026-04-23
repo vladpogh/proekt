@@ -17,24 +17,48 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// All services that use DbContext must be Scoped (not Singleton)
+// ── Core services (Scoped — share DbContext lifetime per request) ──────────────
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<MedicalDocumentService>();
 builder.Services.AddScoped<DoctorApplicationService>();
 builder.Services.AddScoped<ContactInquiryService>();
 builder.Services.AddScoped<MedicalRecordService>();
 
+// ── New feature services ───────────────────────────────────────────────────────
+builder.Services.AddScoped<AppointmentService>();
+builder.Services.AddScoped<PrescriptionService>();
+builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<DoctorProfileService>();
+builder.Services.AddScoped<ActivityLogService>();
+builder.Services.AddScoped<StatisticsService>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<TranslationService>();
 
 var app = builder.Build();
 
-// Auto-apply migrations on startup so the database and tables are created automatically
+// ── Auto-apply migrations on startup ─────────────────────────────────────────
+// Wrapped in try/catch so a missing SQL Server shows a clear error instead of
+// crashing the process with exit code 134.
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+        Console.WriteLine("✅ Database connection successful and migrations applied.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("❌ CRITICAL: Could not connect to SQL Server.");
+        Console.WriteLine($"Error: {ex.Message}");
+        Console.WriteLine("Troubleshooting Tips:");
+        Console.WriteLine("1. Ensure Docker is running.");
+        Console.WriteLine("2. Run 'docker-compose up -d' in the project root.");
+        Console.WriteLine("3. Check if your connection string in appsettings.json uses 127.0.0.1,1435.");
+        Console.WriteLine("4. Wait 10-15 seconds for SQL Server to fully initialize inside Docker.");
+    }
 }
 
 // Configure the HTTP request pipeline.

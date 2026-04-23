@@ -49,12 +49,37 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">@Loc.T("Home")</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Doctors">@Loc.T("Doctors")</a>
+                        </li>
+
                         @if (Context.Session.GetString("UserEmail") != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">@Loc.T("Medical Record")</a>
+                            <!-- Medical Hub Dropdown (for all logged users as patients) -->
+                            <li class="nav-item dropdown ms-lg-2">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                    <i class="bi bi-heart-pulse me-1"></i> @Loc.T("Medical Hub")
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 animated-fade-in">
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="MedicalRecord" asp-action="ViewRecord" asp-route-userId="@Context.Session.GetInt32("UserId")">
+                                            <i class="bi bi-clipboard2-pulse me-2 text-primary"></i> @Loc.T("Medical Record")
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Appointment" asp-action="MyAppointments">
+                                            <i class="bi bi-calendar-event me-2 text-primary"></i> @Loc.T("My Appointments")
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Prescription" asp-action="MyPrescriptions">
+                                            <i class="bi bi-file-medical me-2 text-primary"></i> @Loc.T("My Prescriptions")
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         }
+
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">@Loc.T("About Us")</a>
                         </li>
@@ -65,30 +90,48 @@
                         @if (Context.Session.GetString("UserEmail") == null)
                         {
                             <li class="nav-item ms-lg-3">
-                                <a class="btn btn-light btn-sm" asp-area="" asp-controller="Home" asp-action="Login">@Loc.T("Login")</a>
+                                <a class="btn btn-light btn-sm px-3 rounded-pill" asp-area="" asp-controller="Home" asp-action="Login">@Loc.T("Login")</a>
                             </li>
                             <li class="nav-item ms-lg-2">
-                                <a class="btn btn-primary btn-sm" asp-area="" asp-controller="Home" asp-action="Register">@Loc.T("Register")</a>
+                                <a class="btn btn-primary btn-sm px-3 rounded-pill" asp-area="" asp-controller="Home" asp-action="Register">@Loc.T("Register")</a>
                             </li>
                         }
                         else
                         {
                             var userRoleStr = Context.Session.GetString("UserRole");
                             
-                            if (userRoleStr == "Admin" || userRoleStr == "Manager")
+                            if (userRoleStr is "Doctor" or "Admin" or "Manager")
                             {
-                                <li class="nav-item ms-lg-2">
-                                    <a class="nav-link text-primary fw-bold" asp-area="" asp-controller="Home" asp-action="AdminPanel">
-                                        <i class="bi bi-shield-check me-1"></i>@Loc.T("AdminPanel")
+                                <li class="nav-item dropdown ms-lg-2">
+                                    <a class="nav-link dropdown-toggle d-flex align-items-center fw-bold text-primary" href="#" role="button" data-bs-toggle="dropdown">
+                                        <i class="bi bi-hospital me-1"></i> @Loc.T("Staff Portal")
                                     </a>
-                                </li>
-                            }
-                            if (userRoleStr == "Doctor" || userRoleStr == "Admin" || userRoleStr == "Manager")
-                            {
-                                <li class="nav-item ms-lg-2">
-                                    <a class="nav-link text-success fw-bold" asp-controller="MedicalRecord" asp-action="DoctorDashboard">
-                                        <i class="bi bi-clipboard2-pulse me-1"></i>@Loc.T("DoctorDashboard")
-                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 animated-fade-in">
+                                        @if (userRoleStr is "Admin" or "Manager")
+                                        {
+                                            <li>
+                                                <a class="dropdown-item py-2" asp-controller="Home" asp-action="AdminPanel">
+                                                    <i class="bi bi-shield-check me-2 text-danger"></i> @Loc.T("Admin Dashboard")
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item py-2" asp-controller="Statistics" asp-action="Index">
+                                                    <i class="bi bi-bar-chart-line me-2 text-danger"></i> @Loc.T("Statistics")
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                        }
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="Appointment" asp-action="DoctorSchedule">
+                                                <i class="bi bi-calendar3 me-2 text-success"></i> @Loc.T("My Schedule")
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item py-2" asp-controller="MedicalRecord" asp-action="DoctorDashboard">
+                                                <i class="bi bi-clipboard2-pulse me-2 text-success"></i> @Loc.T("Doctor Dashboard")
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             }
                             
@@ -98,6 +141,10 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2">
                                     <li><a class="dropdown-item py-2 px-3" asp-area="" asp-controller="Home" asp-action="Profile"><i class="bi bi-person me-2"></i>@Loc.T("MyProfile")</a></li>
+                                    @if (userRoleStr == "Doctor")
+                                    {
+                                        <li><a class="dropdown-item py-2 px-3" asp-controller="Home" asp-action="DoctorProfileEdit"><i class="bi bi-gear me-2"></i>@Loc.T("Doctor Profile Settings")</a></li>
+                                    }
                                     <li><hr class="dropdown-divider mx-3"></li>
                                     <li><a class="dropdown-item py-2 px-3 text-danger" asp-area="" asp-controller="Home" asp-action="Logout"><i class="bi bi-box-arrow-right me-2"></i>@Loc.T("Logout")</a></li>
                                 </ul>

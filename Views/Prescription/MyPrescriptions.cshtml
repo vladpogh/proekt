@@ -1,0 +1,63 @@
+@{
+    ViewData["Title"] = "My Prescriptions";
+    var items = ViewBag.Items as List<proekt.Models.Prescription> ?? new();
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="py-5" style="background:#f8faff;min-height:calc(100vh - 100px)">
+<div class="container">
+    <div class="d-flex align-items-center gap-3 mb-5">
+        <div class="icon-badge bg-primary-soft fs-4"><i class="bi bi-file-medical text-primary"></i></div>
+        <div><h1 class="fw-black mb-0">My Prescriptions</h1><p class="text-muted mb-0">All prescriptions issued by your doctors</p></div>
+    </div>
+
+    @if (!items.Any())
+    {
+        <div class="empty-state text-center py-5">
+            <i class="bi bi-file-x display-3 text-muted d-block mb-3"></i>
+            <h5 class="text-muted">No prescriptions yet</h5>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var rx in items)
+            {
+                var expired = rx.ExpiresAt.HasValue && rx.ExpiresAt.Value < DateTime.Today;
+                <div class="col-12 col-md-6">
+                    <div class="rx-card p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h6 class="fw-bold mb-1">@rx.Diagnosis</h6>
+                                <small class="text-muted"><i class="bi bi-person-badge me-1"></i>Dr. @rx.DoctorName</small>
+                            </div>
+                            <span class="badge rounded-pill px-3 @(expired ? "bg-danger-soft text-danger" : rx.IsActive ? "bg-success-soft text-success" : "bg-secondary text-white")" style="font-size:0.7rem">
+                                @(expired ? "Expired" : rx.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </div>
+                        <div class="rx-medications p-3 rounded-3 mb-3">
+                            <small class="text-muted fw-semibold d-block mb-1">MEDICATIONS</small>
+                            <p class="mb-0 small" style="white-space:pre-line">@rx.Medications</p>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(rx.Instructions))
+                        {
+                            <p class="text-muted small mb-2"><i class="bi bi-info-circle me-1"></i>@rx.Instructions</p>
+                        }
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Issued: @rx.IssuedAt.ToString("dd MMM yyyy")</small>
+                            <a asp-controller="Prescription" asp-action="Details" asp-route-id="@rx.Id"
+                               class="btn btn-outline-primary btn-sm rounded-pill px-3">View</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+</div>
+<style>
+.fw-black { font-weight:900; }
+.icon-badge { width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center; }
+.bg-primary-soft { background:rgba(0,82,204,0.1); } .bg-success-soft { background:rgba(22,163,74,0.12); } .bg-danger-soft { background:rgba(220,38,38,0.1); }
+.rx-card { background:white;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid #edf2f7; }
+.rx-medications { background:#f8faff;border:1px solid #e2e8f0; }
+</style>

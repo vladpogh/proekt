@@ -1,0 +1,91 @@
+@inject proekt.Services.TranslationService Loc
+@{
+    ViewData["Title"] = "Find a Doctor";
+    var doctors = ViewBag.Doctors as List<(proekt.Models.User User, proekt.Models.DoctorProfile? Profile)>
+                  ?? new();
+    var isLoggedIn = Context.Session.GetString("UserEmail") != null;
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="doctors-page py-5">
+<div class="container">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <span class="badge bg-primary-soft text-primary fw-semibold px-3 py-2 rounded-pill mb-3">Our Medical Team</span>
+        <h1 class="fw-black display-5 mb-2">Find Your Doctor</h1>
+        <p class="text-muted mx-auto" style="max-width:540px">Browse our verified medical professionals and book an appointment in seconds.</p>
+    </div>
+
+    @if (!doctors.Any())
+    {
+        <div class="empty-state text-center py-5">
+            <i class="bi bi-person-x display-3 text-muted d-block mb-3"></i>
+            <h5 class="text-muted">No doctors available yet</h5>
+            <p class="text-muted small">Check back soon as we verify more medical professionals.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var (user, profile) in doctors)
+            {
+                var fee  = profile?.ConsultationFee ?? 50m;
+                var spec = profile?.Specialization ?? "General Practitioner";
+                var from = profile?.AvailableFromMinutes ?? 480;
+                var to   = profile?.AvailableToMinutes   ?? 1020;
+
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="doc-card p-4 h-100 d-flex flex-column">
+                        <!-- Avatar + Name -->
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="doc-avatar">@(user.FullName?.Substring(0,1).ToUpper() ?? "D")</div>
+                            <div>
+                                <h6 class="fw-bold mb-0">Dr. @user.FullName</h6>
+                                <span class="text-primary small fw-semibold">@spec</span>
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(profile?.Bio))
+                        {
+                            <p class="text-muted small mb-3" style="line-height:1.5">@profile.Bio</p>
+                        }
+
+                        <div class="doc-meta mb-4 mt-auto p-3 bg-light rounded-3">
+                            <div class="meta-row"><i class="bi bi-cash-stack text-success"></i> <span class="fw-bold text-dark">@fee.ToString("F2") EUR</span> <small class="text-muted">/ session</small></div>
+                            <div class="meta-row"><i class="bi bi-clock-history text-primary"></i> <span>@($"{from/60:D2}:{from%60:D2}") – @($"{to/60:D2}:{to%60:D2}")</span></div>
+                            <div class="meta-row"><i class="bi bi-calendar-check text-warning"></i> <span>@(profile?.WorkingDays == "1,2,3,4,5" ? "Mon – Fri" : profile?.WorkingDays ?? "Mon – Fri")</span></div>
+                        </div>
+
+                        @if (isLoggedIn)
+                        {
+                            <a asp-controller="Appointment" asp-action="Book" asp-route-doctorId="@user.Id"
+                               class="btn btn-primary w-100 rounded-pill shadow-sm">
+                                <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Home" asp-action="Login" class="btn btn-outline-primary w-100 rounded-pill">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login to Book
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+</div>
+
+<style>
+.doctors-page { background:#f8fafc; min-height:calc(100vh - 100px); }
+.fw-black { font-weight:900; letter-spacing: -1px; }
+.bg-primary-soft { background:rgba(0,82,204,0.08); }
+.doc-card { background:white; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,0.04); border:1px solid #f1f5f9; transition:all .3s cubic-bezier(0.4, 0, 0.2, 1); }
+.doc-card:hover { transform:translateY(-8px); box-shadow:0 20px 40px rgba(0,82,204,0.1); border-color:#e2e8f0; }
+.doc-avatar { width:64px; height:64px; background:linear-gradient(135deg,#0052CC,#00c6ff); color:white; font-size:1.6rem; font-weight:800; border-radius:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2); }
+.doc-meta { display:flex; flex-direction:column; gap:0.75rem; }
+.meta-row { display:flex; align-items:center; gap:0.75rem; font-size:0.9rem; color:#64748b; }
+.meta-row i { font-size: 1.1rem; }
+</style>

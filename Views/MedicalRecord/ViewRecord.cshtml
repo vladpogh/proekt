@@ -46,66 +46,95 @@
     }
 
     <!-- ── General Info Cards ─────────────────────────── -->
-    <div class="mr-info-grid">
-        <div class="mr-info-card">
-            <div class="mr-info-icon bg-blood-soft"><i class="bi bi-droplet-fill"></i></div>
-            <div>
-                <div class="mr-info-label">@Loc.T("BloodType")</div>
-                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-danger bg-opacity-10 text-danger p-3 rounded-3 me-3">
+                        <i class="bi bi-droplet-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("BloodType")</div>
+                        <div class="h4 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.BloodType) ? "—" : record.BloodType)</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mr-info-card">
-            <div class="mr-info-icon bg-allergy-soft"><i class="bi bi-exclamation-triangle-fill"></i></div>
-            <div>
-                <div class="mr-info-label">@Loc.T("Allergies")</div>
-                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None recorded" : record.Allergies)</div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
+                        <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("Allergies")</div>
+                        <div class="h6 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.Allergies) ? "None" : record.Allergies)</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mr-info-card">
-            <div class="mr-info-icon bg-chronic-soft"><i class="bi bi-heart-pulse-fill"></i></div>
-            <div>
-                <div class="mr-info-label">@Loc.T("ChronicConditions")</div>
-                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None recorded" : record.ChronicConditions)</div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
+                        <i class="bi bi-heart-pulse-fill fs-3"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("Chronic")</div>
+                        <div class="h6 mb-0 fw-bold">@(string.IsNullOrWhiteSpace(record.ChronicConditions) ? "None" : record.ChronicConditions)</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="mr-info-card">
-            <div class="mr-info-icon bg-note-soft"><i class="bi bi-journal-text"></i></div>
-            <div>
-                <div class="mr-info-label">@Loc.T("GeneralNotes")</div>
-                <div class="mr-info-value">@(string.IsNullOrWhiteSpace(record.GeneralNotes) ? "—" : record.GeneralNotes)</div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100 overflow-hidden">
+                <div class="card-body p-4 d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-success bg-opacity-10 text-success p-3 rounded-3 me-3">
+                        <i class="bi bi-journal-text fs-3"></i>
+                    </div>
+                    <div>
+                        <div class="text-muted small fw-bold text-uppercase">@Loc.T("TotalEntries")</div>
+                        <div class="h4 mb-0 fw-bold">@record.Entries.Count</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- ── Tabs ───────────────────────────────────────── -->
-    <div class="mr-tabs-wrap">
-        <div class="mr-tabs" id="mrTabs">
-            <button class="mr-tab active" onclick="switchTab('operations', this)">
-                <i class="bi bi-scissors"></i> @Loc.T("Operations")
-                <span class="mr-tab-count">@operations.Count</span>
-            </button>
-            <button class="mr-tab" onclick="switchTab('diagnoses', this)">
-                <i class="bi bi-activity"></i> @Loc.T("Diagnoses")
-                <span class="mr-tab-count">@diagnoses.Count</span>
-            </button>
-            <button class="mr-tab" onclick="switchTab('medications', this)">
-                <i class="bi bi-capsule"></i> @Loc.T("Medications")
-                <span class="mr-tab-count">@medications.Count</span>
-            </button>
-            <button class="mr-tab" onclick="switchTab('notes', this)">
-                <i class="bi bi-sticky"></i> @Loc.T("Notes")
-                <span class="mr-tab-count">@notes.Count</span>
-            </button>
-            <button class="mr-tab" onclick="switchTab('history', this)">
-                <i class="bi bi-clock-history"></i> @Loc.T("History")
-                <span class="mr-tab-count">@Model.AuditLogs.Count</span>
-            </button>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded-4 shadow-sm">
+        <ul class="nav nav-pills" id="mrTabs">
+            <li class="nav-item">
+                <button class="nav-link active rounded-pill px-4" onclick="switchTab('operations', this)">
+                    <i class="bi bi-scissors me-2"></i> @Loc.T("Operations")
+                </button>
+            </li>
+            <li class="nav-item ms-2">
+                <button class="nav-link rounded-pill px-4" onclick="switchTab('diagnoses', this)">
+                    <i class="bi bi-activity me-2"></i> @Loc.T("Diagnoses")
+                </button>
+            </li>
+            <li class="nav-item ms-2">
+                <button class="nav-link rounded-pill px-4" onclick="switchTab('medications', this)">
+                    <i class="bi bi-capsule me-2"></i> @Loc.T("Medications")
+                </button>
+            </li>
+            <li class="nav-item ms-2">
+                <button class="nav-link rounded-pill px-4" onclick="switchTab('notes', this)">
+                    <i class="bi bi-sticky me-2"></i> @Loc.T("Notes")
+                </button>
+            </li>
+            <li class="nav-item ms-2">
+                <button class="nav-link rounded-pill px-4" onclick="switchTab('history', this)">
+                    <i class="bi bi-clock-history me-2"></i> @Loc.T("History")
+                </button>
+            </li>
+        </ul>
 
         @if (canEdit)
         {
-            <button class="btn btn-primary btn-sm" onclick="openAddModal()">
-                <i class="bi bi-plus-lg"></i> @Loc.T("AddEntry")
+            <button class="btn btn-primary rounded-pill px-4" onclick="openAddModal()">
+                <i class="bi bi-plus-lg me-2"></i> @Loc.T("AddEntry")
             </button>
         }
     </div>

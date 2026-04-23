@@ -1,0 +1,84 @@
+@model proekt.Models.Payment
+@{
+    ViewData["Title"] = "Payment";
+    var appt    = ViewBag.Appointment as proekt.Models.Appointment;
+    var doctor  = ViewBag.Doctor      as proekt.Models.User;
+    var profile = ViewBag.Profile     as proekt.Models.DoctorProfile;
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="py-5" style="background:#f8faff;min-height:calc(100vh - 100px)">
+<div class="container" style="max-width:550px">
+    <div class="content-card p-5">
+        <div class="text-center mb-4">
+            <div class="pay-icon mx-auto mb-3"><i class="bi bi-credit-card-2-front text-white fs-3"></i></div>
+            <h4 class="fw-bold">Complete Payment</h4>
+            <p class="text-muted small">Secure simulated payment for your appointment</p>
+        </div>
+
+        <div class="summary-box p-4 rounded-3 mb-4">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Doctor</span>
+                <strong>Dr. @(doctor?.FullName ?? "N/A")</strong>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Specialization</span>
+                <span>@(profile?.Specialization ?? "General Practitioner")</span>
+            </div>
+            @if (appt != null)
+            {
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Date</span>
+                    <span>@appt.AppointmentDate.ToString("dd MMM yyyy, HH:mm")</span>
+                </div>
+            }
+            <hr>
+            <div class="d-flex justify-content-between">
+                <span class="fw-bold">Total</span>
+                <span class="fw-bold fs-5 text-success">@Model.Amount.ToString("F2") @Model.Currency</span>
+            </div>
+        </div>
+
+        @if (Model.Status == proekt.Models.PaymentStatus.Paid)
+        {
+            <div class="alert alert-success rounded-3 text-center">
+                <i class="bi bi-check-circle-fill fs-4 d-block mb-2"></i>
+                <strong>Already Paid</strong>
+                <p class="mb-0 small">Paid on @Model.PaidAt?.ToString("dd MMM yyyy, HH:mm")</p>
+            </div>
+        }
+        else
+        {
+            <form asp-controller="Payment" asp-action="Confirm" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="paymentId" value="@Model.Id" />
+
+                <!-- Simulated card fields (visual only) -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold small">Card Number</label>
+                    <input type="text" class="form-control rounded-3" value="4242 4242 4242 4242" readonly>
+                </div>
+                <div class="row g-2 mb-4">
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">Expiry</label>
+                        <input type="text" class="form-control rounded-3" value="12/28" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label fw-semibold small">CVV</label>
+                        <input type="text" class="form-control rounded-3" value="***" readonly>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-3 rounded-pill fw-bold">
+                    <i class="bi bi-lock-fill me-2"></i>Pay @Model.Amount.ToString("F2") @Model.Currency
+                </button>
+                <p class="text-center text-muted small mt-3"><i class="bi bi-shield-check me-1"></i>Simulated secure payment — no real charges</p>
+            </form>
+        }
+    </div>
+</div>
+</div>
+<style>
+.content-card { background:white;border-radius:24px;box-shadow:0 16px 48px rgba(0,0,0,0.08);border:1px solid #edf2f7; }
+.pay-icon { width:64px;height:64px;background:linear-gradient(135deg,#0052CC,#0073e6);border-radius:16px;display:flex;align-items:center;justify-content:center; }
+.summary-box { background:#f8faff;border:1px solid #e2e8f0; }
+</style>

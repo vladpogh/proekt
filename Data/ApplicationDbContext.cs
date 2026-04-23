@@ -8,7 +8,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 
-    // Each DbSet maps to one table in SQL Server
+    // ── Existing tables ────────────────────────────────────────────────────────
     public DbSet<User> Users { get; set; }
     public DbSet<DoctorApplication> DoctorApplications { get; set; }
     public DbSet<ContactInquiry> ContactInquiries { get; set; }
@@ -17,11 +17,18 @@ public class ApplicationDbContext : DbContext
     public DbSet<MedicalEntry> MedicalEntries { get; set; }
     public DbSet<MedicalAuditLog> MedicalAuditLogs { get; set; }
 
+    // ── New tables ─────────────────────────────────────────────────────────────
+    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<Prescription> Prescriptions { get; set; }
+    public DbSet<Payment> Payments { get; set; }
+    public DbSet<DoctorProfile> DoctorProfiles { get; set; }
+    public DbSet<ActivityLog> ActivityLogs { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        // --- Enum → String conversions (more readable in DB than integers) ---
+        // ── Enum → String conversions ──────────────────────────────────────────
         modelBuilder.Entity<User>()
             .Property(u => u.Role)
             .HasConversion<string>();
@@ -38,14 +45,31 @@ public class ApplicationDbContext : DbContext
             .Property(e => e.Type)
             .HasConversion<string>();
 
-        // --- Navigation: MedicalRecord has many MedicalEntries ---
+        modelBuilder.Entity<Appointment>()
+            .Property(a => a.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.Status)
+            .HasConversion<string>();
+
+        // ── Navigation: MedicalRecord → MedicalEntries ─────────────────────────
         modelBuilder.Entity<MedicalRecord>()
             .HasMany(r => r.Entries)
             .WithOne()
             .HasForeignKey(e => e.MedicalRecordId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // --- Seed: default Admin and Manager users ---
+        // ── Decimal precision for Payment.Amount and DoctorProfile.ConsultationFee
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.Amount)
+            .HasPrecision(18, 2);
+
+        modelBuilder.Entity<DoctorProfile>()
+            .Property(d => d.ConsultationFee)
+            .HasPrecision(18, 2);
+
+        // ── Seed: default Admin and Manager users ─────────────────────────────
         modelBuilder.Entity<User>().HasData(
             new User
             {
