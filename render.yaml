@@ -1,38 +1,29 @@
-# render.yaml — Render IaC Blueprint
-# Docs: https://render.com/docs/blueprint-spec
-#
-# Deployment:
-#   1. Push this repo to GitHub
-#   2. Go to https://dashboard.render.com → "New" → "Blueprint"
-#   3. Connect your repo — Render auto-reads this file
-#   4. Click "Apply" — it creates both the DB and the web service
+# render.yaml
 
 databases:
   - name: medreports-db
     databaseName: proektdb
-    user: postgres
-    plan: free          # 90-day free tier; upgrade to "starter" ($7/mo) for persistent DB
-    region: frankfurt   # change to: oregon, ohio, singapore, virginia
+    plan: free
+    region: frankfurt
+    postgresMajorVersion: "16"
 
 services:
   - type: web
     name: medreports
-    runtime: docker     # uses the Dockerfile in the repo root
+    runtime: docker
     plan: free
-    region: frankfurt   # must match database region
+    region: frankfurt
+
     dockerfilePath: ./Dockerfile
     dockerContext: .
+
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
 
-      # Render injects the DATABASE_URL from the linked DB.
-      # We map it to what ASP.NET Core expects via the Npgsql connection string.
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
           name: medreports-db
           property: connectionString
 
-    # Render free tier spins down after inactivity — first request will be slow
-    # Set autoDeploy to true so every git push triggers a new deploy
     autoDeploy: true
