@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DB Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // MVC
 builder.Services.AddControllersWithViews();
@@ -59,10 +59,13 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
+    // HSTS is handled by Render's edge — do not enable HSTS inside the container
 }
-
-app.UseHttpsRedirection();
+else
+{
+    // In development, redirect to HTTPS if running locally with HTTPS
+    app.UseHttpsRedirection();
+}
 
 app.UseStaticFiles();   // ✅ REPLACEMENT for MapStaticAssets
 

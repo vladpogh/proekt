@@ -1,17 +1,25 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/azure-sql-edge:latest
+  postgres:
+    image: postgres:16-alpine
     environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: "YourStrong!Password1"
+      POSTGRES_DB: proektdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "1435:1433"
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   myapp:
     build: .
     ports:
-      - "8080:8080"
+      - "10000:10000"
     depends_on:
-      - sqlserver
+      postgres:
+        condition: service_healthy
     environment:
-      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=proekt_db;User Id=sa;Password=YourStrong!Password1;TrustServerCertificate=True;"
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=proektdb;Username=postgres;Password=postgres"
