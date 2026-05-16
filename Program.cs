@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // DB Context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("postgres://"))
+if (!string.IsNullOrEmpty(connectionString) && connectionString.Contains("://") && connectionString.Contains("postgres"))
 {
     // Convert Render's postgres://user:password@host/database format to Npgsql format
     var uri = new Uri(connectionString);
@@ -27,7 +27,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Data Protection (Persist keys to DB for Render)
 builder.Services.AddDataProtection()
-    .PersistKeysToDbContext<ApplicationDbContext>();
+    .PersistKeysToDbContext<ApplicationDbContext>()
+    .SetApplicationName("MedReports_Diploma_Project");
 
 // MVC
 builder.Services.AddControllersWithViews();
@@ -66,13 +67,18 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var db = services.GetRequiredService<ApplicationDbContext>();
+        Console.WriteLine("⏳ Applying database migrations...");
         db.Database.Migrate();
         Console.WriteLine("✅ Database connected and migrations applied.");
     }
     catch (Exception ex)
     {
-        Console.WriteLine("❌ DB connection failed.");
-        Console.WriteLine(ex.Message);
+        Console.WriteLine("❌ DB connection or migration failed!");
+        Console.WriteLine($"Error: {ex.Message}");
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine($"Inner Error: {ex.InnerException.Message}");
+        }
     }
 }
 
