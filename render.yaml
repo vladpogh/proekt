@@ -24,6 +24,6 @@ services:
       - key: ConnectionStrings__DefaultConnection
         fromDatabase:
           name: medreports-db
-          property: connectionString
+          property: internalConnectionString
 
     autoDeploy: true
