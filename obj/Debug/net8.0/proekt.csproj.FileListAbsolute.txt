@@ -120,3 +120,10 @@
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net8.0/proekt.pdb
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net8.0/proekt.genruntimeconfig.cache
 /Users/vladimirpoghosyan/Desktop/proekt/obj/Debug/net8.0/ref/proekt.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll

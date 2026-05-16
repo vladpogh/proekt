@@ -1,6 +1,7 @@
-using proekt.Services;
-using proekt.Data;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using proekt.Data;
+using proekt.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,10 @@ if (!string.IsNullOrEmpty(connectionString) && connectionString.StartsWith("post
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+// Data Protection (Persist keys to DB for Render)
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<ApplicationDbContext>();
 
 // MVC
 builder.Services.AddControllersWithViews();

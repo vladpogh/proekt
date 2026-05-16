@@ -1,12 +1,16 @@
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using proekt.Models;
 
 namespace proekt.Data;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IDataProtectionKeyContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
+
+    // ── Data Protection Keys (Required for Render session persistence) ──────────
+    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
     // ── Existing tables ────────────────────────────────────────────────────────
     public DbSet<User> Users { get; set; }
