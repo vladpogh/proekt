@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace proekt.Data.Migrations
+namespace proekt.Migrations
 {
     /// <inheritdoc />
     public partial class AddDataProtectionKeys : Migration
