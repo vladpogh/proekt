@@ -158,7 +158,7 @@ button,
 /* --- Navigation & Layout --- */
 
 .navbar {
-  height: var(--nav-height);
+  min-height: var(--nav-height);
   background: rgba(255, 255, 255, 0.8) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
