@@ -5,6 +5,9 @@ using proekt.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Fix PostgreSQL DateTime strict mode error
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // DB Context
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
