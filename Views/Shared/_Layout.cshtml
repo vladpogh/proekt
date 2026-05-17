@@ -44,8 +44,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
-                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-end">
-                    <ul class="navbar-nav align-items-lg-center">
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav align-items-lg-center me-auto">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">@Loc.T("Home")</a>
                         </li>
@@ -86,7 +86,8 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">@Loc.T("Contact")</a>
                         </li>
-
+                    </ul>
+                    <ul class="navbar-nav align-items-lg-center">
                         @if (Context.Session.GetString("UserEmail") == null)
                         {
                             <li class="nav-item ms-lg-3">
@@ -213,9 +214,7 @@
                             </svg>
                             <span class="ms-2">MedReports</span>
                         </div>
-                        <p class="opacity-75 mb-4">
-                            @Loc.T("Footer_Brand_Desc")
-                        </p>
+
                         <div class="social-icons">
                             <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
                             <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
