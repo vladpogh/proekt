@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Dx0yVegEeVc=",
+  "dgSpecHash": "OZUlqenZdjc=",
   "success": true,
   "projectFilePath": "/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/proekt.Tests.csproj",
   "expectedPackageFiles": [
+    "/Users/vladimirpoghosyan/.nuget/packages/bcrypt.net-next/4.0.3/bcrypt.net-next.4.0.3.nupkg.sha512",
     "/Users/vladimirpoghosyan/.nuget/packages/bouncycastle.cryptography/2.6.2/bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "/Users/vladimirpoghosyan/.nuget/packages/castle.core/5.1.1/castle.core.5.1.1.nupkg.sha512",
     "/Users/vladimirpoghosyan/.nuget/packages/coverlet.collector/6.0.4/coverlet.collector.6.0.4.nupkg.sha512",

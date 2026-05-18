@@ -127,3 +127,4 @@
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
 /Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll
+/Users/vladimirpoghosyan/Desktop/proekt/bin/Debug/net8.0/BCrypt.Net-Next.dll

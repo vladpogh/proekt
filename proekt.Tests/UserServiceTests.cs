@@ -1,11 +1,8 @@
 using Xunit;
-using Moq;
 using Microsoft.EntityFrameworkCore;
 using proekt.Data;
 using proekt.Models;
 using proekt.Services;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace proekt.Tests
 {
@@ -36,6 +33,24 @@ namespace proekt.Tests
             Assert.True(result);
             Assert.Equal(1, db.Users.Count());
             Assert.Equal(email, db.Users.First().Email);
+        }
+
+        [Fact]
+        public void RegisterUser_ShouldStoreHashedPassword_NotPlainText()
+        {
+            // Arrange
+            var db = GetDbContext();
+            var service = new UserService(db);
+            var password = "securePassword!";
+
+            // Act
+            service.RegisterUser("Hash Test", "hash@test.com", password);
+
+            // Assert: the stored password must NEVER equal the plain-text value
+            var stored = db.Users.First().Password;
+            Assert.NotEqual(password, stored);
+            // BCrypt hashes always start with the $2a$ or $2b$ identifier
+            Assert.StartsWith("$2", stored);
         }
 
         [Fact]
@@ -77,7 +92,7 @@ namespace proekt.Tests
             // Arrange
             var db = GetDbContext();
             var service = new UserService(db);
-            service.RegisterUser("role@test.com", "pass", "User");
+            service.RegisterUser("role@test.com", "role@test.com", "pass");
             var user = db.Users.First();
 
             // Act
@@ -87,5 +102,26 @@ namespace proekt.Tests
             var updatedUser = db.Users.Find(user.Id);
             Assert.Equal(UserRole.Doctor, updatedUser.Role);
         }
+
+        [Fact]
+        public void ChangePassword_ShouldUpdateHashAndVerifyCorrectly()
+        {
+            // Arrange
+            var db = GetDbContext();
+            var service = new UserService(db);
+            service.RegisterUser("Change Pass", "change@test.com", "oldPass");
+            var user = db.Users.First();
+
+            // Act
+            service.ChangePassword(user.Id, "newStrongPass!");
+
+            // Assert: old password no longer works
+            Assert.False(service.VerifyPassword(user.Id, "oldPass"));
+            // Assert: new password works
+            Assert.True(service.VerifyPassword(user.Id, "newStrongPass!"));
+            // Assert: new password is stored as a BCrypt hash
+            Assert.StartsWith("$2", db.Users.Find(user.Id)!.Password);
+        }
     }
 }
+

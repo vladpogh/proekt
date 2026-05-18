@@ -74,13 +74,16 @@ public class ApplicationDbContext : DbContext, IDataProtectionKeyContext
             .HasPrecision(18, 2);
 
         // ── Seed: default Admin and Manager users ─────────────────────────────
+        // Passwords are pre-hashed with BCrypt (work factor 12).
+        // Plain-text value is "Admin1234!" for admin and "Manager1234!" for manager.
+        // Change these credentials immediately after first deployment.
         modelBuilder.Entity<User>().HasData(
             new User
             {
                 Id = 1,
                 FullName = "Admin",
                 Email = "admin@example.com",
-                Password = "1234",
+                Password = "$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi", // Admin1234!
                 CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Role = UserRole.Admin
             },
@@ -89,7 +92,7 @@ public class ApplicationDbContext : DbContext, IDataProtectionKeyContext
                 Id = 2,
                 FullName = "Manager",
                 Email = "manager@example.com",
-                Password = "1234",
+                Password = "$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi", // Manager1234!
                 CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Role = UserRole.Manager
             }
