@@ -39,36 +39,82 @@ namespace proekt.Controllers
                 return RedirectToAction("Index");
 
             var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-            if (!Directory.Exists(uploads)) Directory.CreateDirectory(uploads);
+
+            // Strict Validation Rules
+            var allowedExtensions = new[] { ".pdf", ".jpg", ".jpeg", ".png" };
+            var allowedMimeTypes = new[] { "application/pdf", "image/jpeg", "image/png" };
+            const long maxFileSize = 5 * 1024 * 1024; // 5 MB
+
+            bool Validate(IFormFile? file, string fieldLabel, out string? error)
+            {
+                error = null;
+                if (file == null || file.Length == 0) return true;
+
+                if (file.Length > maxFileSize)
+                {
+                    error = $"{fieldLabel}: {_loc.T("FileTooLarge")}";
+                    return false;
+                }
+
+                var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+                if (!allowedExtensions.Contains(ext))
+                {
+                    error = $"{fieldLabel}: {_loc.T("InvalidFileType")}";
+                    return false;
+                }
+
+                var mime = file.ContentType.ToLowerInvariant();
+                if (!allowedMimeTypes.Contains(mime))
+                {
+                    error = $"{fieldLabel}: {_loc.T("InvalidFileType")}";
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (!Validate(employmentContract, _loc.T("EmploymentContract"), out var err1))
+                ModelState.AddModelError("employmentContract", err1!);
+            if (!Validate(idCard, _loc.T("IDCard"), out var err2))
+                ModelState.AddModelError("idCard", err2!);
+            if (!Validate(medicalLicense, _loc.T("MedicalLicense"), out var err3))
+                ModelState.AddModelError("medicalLicense", err3!);
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            // Secure Storage Outside wwwroot
+            var secureFolder = Path.Combine(Directory.GetCurrentDirectory(), "SecureUploads");
+            if (!Directory.Exists(secureFolder)) Directory.CreateDirectory(secureFolder);
 
             string? empPath = null;
             string? idPath = null;
             string? licPath = null;
 
+            async Task<string> SaveSecurely(IFormFile file, string prefix)
+            {
+                var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+                var fname = $"{prefix}_{userId}_{Guid.NewGuid()}{ext}";
+                var fullPath = Path.Combine(secureFolder, fname);
+                
+                using var stream = System.IO.File.Create(fullPath);
+                await file.CopyToAsync(stream);
+                return "/secure-uploads/" + fname;
+            }
+
             if (employmentContract != null && employmentContract.Length > 0)
             {
-                var fname = $"emp_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(employmentContract.FileName)}";
-                var full = Path.Combine(uploads, fname);
-                using var stream = System.IO.File.Create(full);
-                await employmentContract.CopyToAsync(stream);
-                empPath = "/uploads/" + fname;
+                empPath = await SaveSecurely(employmentContract, "emp");
             }
             if (idCard != null && idCard.Length > 0)
             {
-                var fname = $"id_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(idCard.FileName)}";
-                var full = Path.Combine(uploads, fname);
-                using var stream = System.IO.File.Create(full);
-                await idCard.CopyToAsync(stream);
-                idPath = "/uploads/" + fname;
+                idPath = await SaveSecurely(idCard, "id");
             }
             if (medicalLicense != null && medicalLicense.Length > 0)
             {
-                var fname = $"lic_{userId}_{DateTime.Now.Ticks}_{Path.GetFileName(medicalLicense.FileName)}";
-                var full = Path.Combine(uploads, fname);
-                using var stream = System.IO.File.Create(full);
-                await medicalLicense.CopyToAsync(stream);
-                licPath = "/uploads/" + fname;
+                licPath = await SaveSecurely(medicalLicense, "lic");
             }
 
             var app = new DoctorApplication
@@ -443,6 +489,51 @@ namespace proekt.Controllers
 
         TempData["ProfileMessage"] = _loc.T("ProfileUpdated");
         return RedirectToAction("Profile");
+    }
+
+    [HttpGet]
+    public IActionResult DownloadDocument(int id, string type)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+        var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+        if (userId == 0) return RedirectToAction("Login", "Home");
+
+        var app = _appService.GetById(id);
+        if (app == null) return NotFound();
+
+        // Security check: Only the applicant themselves or an Admin/Manager can view the uploaded documents
+        if (app.UserId != userId && role != UserRole.Admin.ToString() && role != UserRole.Manager.ToString())
+        {
+            return Forbid();
+        }
+
+        string? relativePath = type switch
+        {
+            "contract" => app.EmploymentContractPath,
+            "idcard" => app.IdCardPath,
+            "license" => app.MedicalLicensePath,
+            _ => null
+        };
+
+        if (string.IsNullOrEmpty(relativePath)) return NotFound();
+
+        // Convert path to the secure uploads directory
+        var secureFolder = Path.Combine(Directory.GetCurrentDirectory(), "SecureUploads");
+        var fileName = Path.GetFileName(relativePath);
+        var fullPath = Path.Combine(secureFolder, fileName);
+
+        if (!System.IO.File.Exists(fullPath)) return NotFound();
+
+        var ext = Path.GetExtension(fileName).ToLowerInvariant();
+        var contentType = ext switch
+        {
+            ".pdf" => "application/pdf",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            _ => "application/octet-stream"
+        };
+
+        return PhysicalFile(fullPath, contentType);
     }
 
     public IActionResult Privacy()

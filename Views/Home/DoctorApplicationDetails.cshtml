@@ -70,7 +70,7 @@
 
                                     @if (!string.IsNullOrEmpty(Model.EmploymentContractPath))
                                     {
-                                        <a href="@Model.EmploymentContractPath" target="_blank"
+                                        <a asp-action="DownloadDocument" asp-route-id="@Model.Id" asp-route-type="contract" target="_blank"
                                            class="btn btn-light btn-sm mt-auto w-100">
                                             @Loc.T("ViewFile")
                                         </a>
@@ -90,7 +90,7 @@
 
                                     @if (!string.IsNullOrEmpty(Model.IdCardPath))
                                     {
-                                        <a href="@Model.IdCardPath" target="_blank"
+                                        <a asp-action="DownloadDocument" asp-route-id="@Model.Id" asp-route-type="idcard" target="_blank"
                                            class="btn btn-light btn-sm mt-auto w-100">
                                             @Loc.T("ViewFile")
                                         </a>
@@ -110,7 +110,7 @@
 
                                     @if (!string.IsNullOrEmpty(Model.MedicalLicensePath))
                                     {
-                                        <a href="@Model.MedicalLicensePath" target="_blank"
+                                        <a asp-action="DownloadDocument" asp-route-id="@Model.Id" asp-route-type="license" target="_blank"
                                            class="btn btn-light btn-sm mt-auto w-100">
                                             @Loc.T("ViewFile")
                                         </a>

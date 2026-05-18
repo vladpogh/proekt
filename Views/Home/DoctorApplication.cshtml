@@ -15,6 +15,17 @@
             <p style="color: #6B7280; max-width: 500px; margin: 1rem auto 0; font-size: 1.1rem; line-height: 1.5;">@Loc.T("AppDescription")</p>
         </div>
 
+        <!-- Error Messages -->
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.Values.Any(x => x.Errors.Count > 0))
+        {
+            <div style="background: #fee; padding: 1rem; border-radius: 0.75rem; margin-bottom: 2rem; color: #c33; border: 1px solid #fca5a5;">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+                {
+                    <p style="margin: 0; font-size: 0.95rem; font-weight: 500;">@error.ErrorMessage</p>
+                }
+            </div>
+        }
+
         <!-- Application Form -->
         <form asp-action="DoctorApplication" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 2rem;">
             @Html.AntiForgeryToken()
