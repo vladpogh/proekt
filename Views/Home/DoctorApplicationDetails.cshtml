@@ -135,6 +135,7 @@
                     <h5 class="fw-bold mb-4">@Loc.T("Decision")</h5>
 
                     <form asp-action="ApproveDoctorApplication" method="post">
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@Model.Id" />
 
                         <textarea name="adminComment" class="form-control mb-3" rows="3"
@@ -146,6 +147,7 @@
                     </form>
 
                     <form asp-action="RejectDoctorApplication" method="post">
+                        @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@Model.Id" />
 
                         <button type="submit" class="btn btn-outline-danger w-100">

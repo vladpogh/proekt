@@ -31,6 +31,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DoctorApplication(string about, IFormFile employmentContract, IFormFile idCard, IFormFile medicalLicense)
         {
             var role = HttpContext.Session.GetString("UserRole");
@@ -104,6 +105,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult TerminateUser(int id)
         {
             var role = HttpContext.Session.GetString("UserRole");
@@ -114,6 +116,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult MakeAdmin(int id)
         {
             var role = HttpContext.Session.GetString("UserRole");
@@ -124,6 +127,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult RemoveAdmin(int id)
         {
             var role = HttpContext.Session.GetString("UserRole");
@@ -177,6 +181,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult UpdateProfile(string fullName, string? phone, string? location)
         {
             var userId = HttpContext.Session.GetInt32("UserId") ?? 0;
@@ -192,6 +197,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ChangePassword(int userId, string currentPassword, string newPassword)
         {
             var curId = HttpContext.Session.GetInt32("UserId") ?? 0;
@@ -226,6 +232,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult ApproveDoctorApplication(int id, string? adminComment)
     {
         var role = HttpContext.Session.GetString("UserRole");
@@ -240,6 +247,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult RejectDoctorApplication(int id, string? adminComment)
     {
         var role = HttpContext.Session.GetString("UserRole");
@@ -291,6 +299,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Contact(string Name, string Email, string Phone, string Subject, string Message)
     {
         var inquiry = new ContactInquiry
@@ -324,6 +333,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Login(LoginViewModel model)
     {
         if (!string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password) && _userService.VerifyPassword(model.Email, model.Password))
@@ -354,6 +364,7 @@ namespace proekt.Controllers
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Register(RegisterViewModel model)
     {
         if (model.Password == "1234")

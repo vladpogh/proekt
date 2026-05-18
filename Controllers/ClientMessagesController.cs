@@ -26,6 +26,7 @@ namespace proekt.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Respond(int id, string response)
         {
             _inquiryService.RespondToInquiry(id, response);

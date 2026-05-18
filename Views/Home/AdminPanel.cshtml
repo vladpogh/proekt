@@ -209,6 +209,7 @@
                                             <td><span class="badge bg-light text-dark border">@Loc.T(user.Role.ToString())</span></td>
                                             <td class="text-end">
                                                 <form asp-action="TerminateUser" method="post" class="d-inline" onsubmit="return confirm('@Loc.T("TerminateFull")?')">
+                                                    @Html.AntiForgeryToken()
                                                     <input type="hidden" name="id" value="@user.Id" />
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">
                                                         <i class="bi bi-trash me-1"></i> @Loc.T("Terminate")
@@ -325,6 +326,7 @@
                                                     @if (user.Role == UserRole.Admin)
                                                     {
                                                         <form asp-action="RemoveAdmin" method="post" class="d-inline">
+                                                            @Html.AntiForgeryToken()
                                                             <input type="hidden" name="id" value="@user.Id" />
                                                             <button type="submit" class="btn btn-warning btn-sm px-3 rounded-pill">
                                                                 <i class="bi bi-arrow-down-square me-1"></i> @Loc.T("RemoveAdmin")
@@ -334,6 +336,7 @@
                                                     else
                                                     {
                                                         <form asp-action="MakeAdmin" method="post" class="d-inline">
+                                                            @Html.AntiForgeryToken()
                                                             <input type="hidden" name="id" value="@user.Id" />
                                                             <button type="submit" class="btn btn-primary btn-sm px-3 rounded-pill">
                                                                 <i class="bi bi-arrow-up-square me-1"></i> @Loc.T("MakeAdmin")

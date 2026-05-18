@@ -17,6 +17,7 @@
 
         <!-- Application Form -->
         <form asp-action="DoctorApplication" method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 2rem;">
+            @Html.AntiForgeryToken()
             
             <!-- Experience / About Section -->
             <div style="display: flex; flex-direction: column; gap: 0.75rem;">

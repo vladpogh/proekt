@@ -17,6 +17,7 @@
         <!-- Left Column - Contact Form -->
         <div class="col-lg-6">
             <form asp-action="Contact" method="post" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                @Html.AntiForgeryToken()
                 <div>
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: #000;">@Loc.T("Contact_Form_Name")</label>
                     <input name="Name" type="text" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #e5e7eb; border-radius: 0.375rem; font-family: inherit;" placeholder="@Loc.T("Contact_Form_NamePH")" required>

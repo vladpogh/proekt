@@ -81,6 +81,7 @@
                 </div>
 
                 <form asp-action="UpdateProfile" method="post" id="profileForm">
+                    @Html.AntiForgeryToken()
                     <div class="row g-4 mt-2">
                         <div class="col-md-6">
                             <div class="form-group-custom">
@@ -214,6 +215,7 @@
                 </div>
 
                 <form asp-action="ChangePassword" method="post" id="passwordForm" onsubmit="return validatePassword()">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" name="userId" value="@user?.Id" />
                     
                     <div class="row g-4 mt-2">
