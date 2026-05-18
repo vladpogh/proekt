@@ -126,3 +126,10 @@
 /Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/obj/Debug/net8.0/proekt.Tests.pdb
 /Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/obj/Debug/net8.0/proekt.Tests.genruntimeconfig.cache
 /Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/obj/Debug/net8.0/ref/proekt.Tests.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/vladimirpoghosyan/Desktop/proekt/proekt.Tests/bin/Debug/net8.0/System.Security.Cryptography.Xml.dll
