@@ -1,6 +1,6 @@
 @inject proekt.Services.TranslationService Loc
 @{
-    ViewData["Title"] = "Book Appointment";
+    ViewData["Title"] = Loc.T("BookAppointment_Title") + " - MedReports";
     var doctor  = ViewBag.Doctor  as proekt.Models.User;
     var profile = ViewBag.Profile as proekt.Models.DoctorProfile;
     var doctorId = doctor?.Id ?? 0;
@@ -20,9 +20,9 @@
                         @(doctor?.FullName?.Substring(0,1).ToUpper() ?? "D")
                     </div>
                     <h4 class="text-center fw-bold mb-1">Dr. @doctor?.FullName</h4>
-                    <p class="text-center text-primary fw-semibold mb-3">@(profile?.Specialization ?? "General Practitioner")</p>
+                    <p class="text-center text-primary fw-semibold mb-3">@(profile?.Specialization ?? Loc.T("GeneralPractitioner"))</p>
 
-                    <div class="info-row"><i class="bi bi-cash-coin text-success"></i> <span>@((profile?.ConsultationFee ?? 50m).ToString("F2")) BGN / visit</span></div>
+                    <div class="info-row"><i class="bi bi-cash-coin text-success"></i> <span>@((profile?.ConsultationFee ?? 50m).ToString("F2")) EUR / @Loc.T("Visit")</span></div>
                     <div class="info-row"><i class="bi bi-clock text-primary"></i>
                         <span>
                             @{ var f = profile?.AvailableFromMinutes ?? 480; var t = profile?.AvailableToMinutes ?? 1020; }
@@ -30,7 +30,7 @@
                         </span>
                     </div>
                     <div class="info-row"><i class="bi bi-calendar-week text-warning"></i>
-                        <span>@(profile?.WorkingDays == "1,2,3,4,5" ? "Mon – Fri" : profile?.WorkingDays ?? "Mon – Fri")</span>
+                        <span>@(profile?.WorkingDays == "1,2,3,4,5" ? (Loc.CurrentLanguageCode() == "bg" ? "Пон – Пет" : "Mon – Fri") : profile?.WorkingDays ?? (Loc.CurrentLanguageCode() == "bg" ? "Пон – Пет" : "Mon – Fri"))</span>
                     </div>
                     @if (!string.IsNullOrWhiteSpace(profile?.Bio))
                     {
@@ -46,7 +46,7 @@
                     <div class="d-flex align-items-center gap-3 mb-4">
                         <div class="icon-badge bg-primary-soft"><i class="bi bi-calendar-plus text-primary"></i></div>
                         <div>
-                            <h5 class="fw-bold mb-0">Book an Appointment</h5>
+                            <h5 class="fw-bold mb-0">@Loc.T("BookAnAppointment")</h5>
                             <p class="text-muted small mb-0">Select a date and an available time slot</p>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
 
                     <!-- Date picker -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Select Date</label>
+                        <label class="form-label fw-semibold">@Loc.T("SelectDate")</label>
                         <input type="date" id="apptDate" class="form-control rounded-3"
                                value="@dateStr" min="@DateTime.Today.ToString("yyyy-MM-dd")"
                                onchange="loadSlots(this.value)">
@@ -66,7 +66,7 @@
 
                     <!-- Time slots -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold">Available Time Slots</label>
+                        <label class="form-label fw-semibold">@Loc.T("AvailableTimeSlots")</label>
                         <div id="slots-container" class="d-flex flex-wrap gap-2">
                             @foreach (var slot in slots)
                             {
@@ -76,7 +76,7 @@
                             }
                             @if (!slots.Any())
                             {
-                                <p class="text-muted" id="no-slots-msg">No slots available for this date.</p>
+                                <p class="text-muted" id="no-slots-msg">@Loc.T("NoSlotsAvailable")</p>
                             }
                         </div>
                     </div>
@@ -89,17 +89,17 @@
                         <input type="hidden" name="time" id="hiddenTime" value="" />
 
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Notes for Doctor <span class="text-muted fw-normal">(optional)</span></label>
-                            <textarea name="notes" class="form-control rounded-3" rows="3" placeholder="Describe your symptoms or reason for visit..."></textarea>
+                            <label class="form-label fw-semibold">@Loc.T("NotesForDoctor") <span class="text-muted fw-normal">(@Loc.T("Cancel").ToLower())</span></label>
+                            <textarea name="notes" class="form-control rounded-3" rows="3" placeholder="@Loc.T("NotesPlaceholder")"></textarea>
                         </div>
 
                         <div class="selected-slot-display mb-4 d-none" id="selectionDisplay">
                             <i class="bi bi-check-circle-fill text-success me-2"></i>
-                            <span>Selected: <strong id="selectionText"></strong></span>
+                            <span>@Loc.T("Selected"): <strong id="selectionText"></strong></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary px-5 py-2 rounded-pill" id="submitBtn" disabled>
-                            <i class="bi bi-calendar-check me-2"></i>Confirm Booking
+                            <i class="bi bi-calendar-check me-2"></i>@Loc.T("ConfirmBooking")
                         </button>
                     </form>
                 </div>
@@ -133,7 +133,7 @@ function loadSlots(date) {
         .then(r => r.json())
         .then(slots => {
             const c = document.getElementById('slots-container');
-            if (!slots.length) { c.innerHTML = '<p class="text-muted">No slots available for this date.</p>'; return; }
+            if (!slots.length) { c.innerHTML = '<p class="text-muted">@Loc.T("NoSlotsAvailable")</p>'; return; }
             c.innerHTML = slots.map(s =>
                 `<button type="button" class="slot-btn" onclick="selectSlot(this,'${s}')">${s}</button>`
             ).join('');

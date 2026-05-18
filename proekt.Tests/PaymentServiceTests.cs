@@ -26,7 +26,7 @@ namespace proekt.Tests
             var service = new PaymentService(db);
 
             // Act
-            var payment = service.InitiatePayment(1, 1, 2, 100, "BGN");
+            var payment = service.InitiatePayment(1, 1, 2, 100, "EUR");
 
             // Assert
             Assert.NotNull(payment);
@@ -40,7 +40,7 @@ namespace proekt.Tests
             // Arrange
             var db = GetDbContext();
             var service = new PaymentService(db);
-            var payment = service.InitiatePayment(1, 1, 2, 50, "BGN");
+            var payment = service.InitiatePayment(1, 1, 2, 50, "EUR");
 
             // Act
             var result = service.ConfirmPayment(payment.Id);

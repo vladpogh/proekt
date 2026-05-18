@@ -1,6 +1,6 @@
 @inject proekt.Services.TranslationService Loc
 @{
-    ViewData["Title"] = "My Appointments";
+    ViewData["Title"] = Loc.T("MyAppointments_Title") + " - MedReports";
     var items = ViewBag.Items as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
 }
 
@@ -11,11 +11,11 @@
         <div class="d-flex align-items-center gap-3 mb-5">
             <div class="icon-badge bg-primary-soft fs-4"><i class="bi bi-calendar2-heart text-primary"></i></div>
             <div>
-                <h1 class="fw-black mb-0">My Appointments</h1>
-                <p class="text-muted mb-0">Track all your scheduled visits</p>
+                <h1 class="fw-black mb-0">@Loc.T("MyAppointments_Title")</h1>
+                <p class="text-muted mb-0">@Loc.T("TrackScheduledVisits")</p>
             </div>
             <a asp-controller="Home" asp-action="Doctors" class="btn btn-primary ms-auto rounded-pill px-4">
-                <i class="bi bi-plus-lg me-2"></i>Book New
+                <i class="bi bi-plus-lg me-2"></i>@Loc.T("BookNew")
             </a>
         </div>
 
@@ -30,9 +30,9 @@
         {
             <div class="empty-state text-center py-5">
                 <i class="bi bi-calendar-x display-3 text-muted d-block mb-3"></i>
-                <h5 class="text-muted">No appointments yet</h5>
-                <p class="text-muted small">Browse our doctors and book your first visit.</p>
-                <a asp-controller="Home" asp-action="Doctors" class="btn btn-primary rounded-pill px-4 mt-2">Find a Doctor</a>
+                <h5 class="text-muted">@Loc.T("NoAppointmentsYet")</h5>
+                <p class="text-muted small">@Loc.T("BrowseDoctorsBook")</p>
+                <a asp-controller="Home" asp-action="Doctors" class="btn btn-primary rounded-pill px-4 mt-2">@Loc.T("FindDoctor")</a>
             </div>
         }
         else
@@ -70,28 +70,28 @@
                                 @if (payment != null)
                                 {
                                     <span class="badge bg-light text-dark border" style="font-size:0.7rem">
-                                        <i class="bi bi-credit-card me-1"></i>@payment.Amount.ToString("F2") BGN — @payment.Status
+                                        <i class="bi bi-credit-card me-1"></i>@payment.Amount.ToString("F2") EUR — @payment.Status
                                     </span>
                                 }
                             </div>
                             <div class="d-flex flex-column gap-2 align-items-end">
                                 <a asp-controller="Appointment" asp-action="Details" asp-route-id="@appt.Id"
-                                   class="btn btn-outline-primary btn-sm rounded-pill px-3">Details</a>
+                                   class="btn btn-outline-primary btn-sm rounded-pill px-3">@Loc.T("Details")</a>
 
                                 @if (appt.Status == proekt.Models.AppointmentStatus.Completed && payment == null)
                                 {
                                     <a asp-controller="Payment" asp-action="Initiate" asp-route-appointmentId="@appt.Id"
                                        class="btn btn-success btn-sm rounded-pill px-3">
-                                        <i class="bi bi-credit-card me-1"></i>Pay
+                                        <i class="bi bi-credit-card me-1"></i>@Loc.T("Pay")
                                     </a>
                                 }
                                 @if (appt.Status == proekt.Models.AppointmentStatus.Pending || appt.Status == proekt.Models.AppointmentStatus.Confirmed)
                                 {
                                     <form asp-controller="Appointment" asp-action="Cancel" method="post" class="d-inline"
-                                          onsubmit="return confirm('Cancel this appointment?')">
+                                          onsubmit="return confirm('@Html.Raw(Loc.T("CancelBookingConfirm"))')">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="@appt.Id" />
-                                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3">Cancel</button>
+                                        <button class="btn btn-outline-danger btn-sm rounded-pill px-3">@Loc.T("Cancel")</button>
                                     </form>
                                 }
                             </div>
